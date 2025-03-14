@@ -1,23 +1,30 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MyPageAside = (props) => {
-  const [activeIdx, setActiveIdx] = useState(null);
-  const menus = props.menus;
   const navigate = useNavigate();
+  const location = useLocation();
+  const menus = props.menus;
+
+  // 경로: /my/path -> activePath에는 path만 저장. undefined인 경우 첫번째 메뉴링크 사용
+  const [activePath, setActivePath] = useState(
+    location.pathname.split("/")[2] ?? menus[0].link
+  );
+
   return (
-    <aside>
+    <aside className="mypage__aside">
       <ul>
-        {menus.map((menu, idx) => {
-          const isActiveMenu = activeIdx === idx;
+        {menus.map((menu) => {
+          const isActiveMenu = activePath === menu.link;
           return (
-            <li>
+            <li key={menu.link}>
               <button
+                color="text"
                 onClick={() => {
-                  setActiveIdx(idx);
-                  navigate(menus.link);
+                  setActivePath(menu.link);
+                  navigate(`${menu.link}`);
                 }}
-                className={`mypage__btn-menu ${isActiveMenu ? "--active" : ""}`}
+                className={`mypage__btn-menu${isActiveMenu ? "--active" : ""}`}
               >
                 {menu.title}
               </button>

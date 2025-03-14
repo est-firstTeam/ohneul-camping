@@ -41,6 +41,13 @@
     border: 1px solid $btn-black;
   }
 
+  &--text {
+    color: $btn-black;
+    font-weight: $font-weight-semibold;
+    background-color: transparent;
+    border: none;
+  }
+
   &--icon-only {
     padding: 1rem;
     border-radius: 50%;
@@ -57,4 +64,18 @@
 
 .btn-location {
   color: $btn-black;
+}
+
+.mypage__btn-menu {
+  font-size: 2rem;
+  padding: 1.6rem 2.4rem;
+  width: 100%;
+  text-align: start;
+  &--active {
+    font-size: 2rem;
+    padding: 1.6rem 2.4rem;
+    text-align: start;
+    width: 100%;
+    color: $secondary;
+  }
 }

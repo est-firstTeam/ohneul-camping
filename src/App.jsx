@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
 import { Suspense } from "react";
+import { Navigate } from "react-router-dom";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
 const Main = lazy(() => import("./pages/Main.jsx"));
@@ -26,6 +27,10 @@ function App() {
           path: "/my",
           element: <MyPage />,
           children: [
+            {
+              path: "/my",
+              element: <Navigate to="reservation" replace />,
+            },
             { path: "reservation", element: <Reservation /> },
             { path: "cart", element: <Cart /> },
           ],

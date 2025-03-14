@@ -1,19 +1,19 @@
 import MyPageAside from "../components/MyPageAside";
-import MyPageContentLayout from "./MyPageLayout";
+import MyPageContentLayout from "../components/MyPageContentLayout";
 
 const MyPage = () => {
   const menus = [
     {
       title: "예약 현황",
-      link: "/reservation",
+      link: "reservation",
     },
     // {
     //   title: "정보 변경",
-    //   link: "/information",
+    //   link: "information",
     // },
     {
       title: "장바구니",
-      link: "/cart",
+      link: "cart",
     },
   ];
   return (
