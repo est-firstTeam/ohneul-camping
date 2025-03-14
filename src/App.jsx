@@ -1,9 +1,13 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { Navigate } from "react-router-dom";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
 const Main = lazy(() => import("./pages/Main.jsx"));
 const SearchResult = lazy(() => import("./pages/SearchResult.jsx"));
+const MyPage = lazy(() => import("./pages/MyPage.jsx"));
+const Reservation = lazy(() => import("./pages/Reservation.jsx"));
+const Cart = lazy(() => import("./pages/Cart.jsx"));
 const LoginHome = lazy(() => import("./pages/LoginHome.jsx"));
 const CreateAccount = lazy(() => import("./components/CreateAccount.jsx"));
 const Login = lazy(() => import("./components/Login.jsx"));
@@ -20,6 +24,18 @@ function App() {
         {
           path: "/searchResult/:id",
           element: <SearchResult />,
+        },
+        {
+          path: "/my",
+          element: <MyPage />,
+          children: [
+            {
+              path: "/my",
+              element: <Navigate to="reservation" replace />,
+            },
+            { path: "reservation", element: <Reservation /> },
+            { path: "cart", element: <Cart /> },
+          ],
         },
         {
           path: "loginHome",
