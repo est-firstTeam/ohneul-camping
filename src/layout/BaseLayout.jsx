@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 const BaseLayout = () => {
   return (
-    <div>
-      {/* TODO: <Header />자리*/}
+    <div className="baselayout">
+      <Header />
       <main>
         <Outlet />
       </main>
-      {/* TODO: footer자리 */}
       <Footer />
     </div>
   );

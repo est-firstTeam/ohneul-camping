@@ -1,0 +1,4 @@
+@use "../abstracts/" as *;
+.logo__title {
+  @include a11y-hidden;
+}
