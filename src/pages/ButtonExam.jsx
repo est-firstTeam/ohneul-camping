@@ -1,7 +1,7 @@
-import Button from "../components/Button/Button";
+import Button from "../components/Button";
 import fav from "../../public/favicon.svg";
-import right_arr from "../../public/ico_right_arrow.svg";
-import cart from "../../public/ico-cart.svg";
+import right_arr from "../images/ico-rightArrow.svg";
+import cart from "../images/ico-cart.svg";
 
 const ButtonExam = () => {
   const onclickHandler = () => {

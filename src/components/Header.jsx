@@ -1,6 +1,6 @@
 import Logo from "./Logo";
-import cart from "../../public/ico-cart.svg";
-import search from "../../public/ico-search.svg";
+import cart from "../images/ico-cart.svg";
+import search from "../images/ico-search.svg";
 import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
