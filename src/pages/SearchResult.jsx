@@ -1,4 +1,4 @@
 const SearchResult = () => {
-  <div></div>;
+    <div></div>;
 };
 export default SearchResult;
