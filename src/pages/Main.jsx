@@ -1,3 +1,4 @@
+import TopBtn from "./../components/Topbtn";
 import ButtonExam from "./ButtonExam";
 
 const Main = () => {
@@ -5,6 +6,7 @@ const Main = () => {
     <div>
       <div>SAY HELLO</div>
       <ButtonExam />
+      <TopBtn />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -9,6 +9,9 @@ const SearchResult = lazy(() => import("./pages/SearchResult.jsx"));
 const MyPage = lazy(() => import("./pages/MyPage.jsx"));
 const Reservation = lazy(() => import("./pages/Reservation.jsx"));
 const Cart = lazy(() => import("./pages/Cart.jsx"));
+const LoginHome = lazy(() => import("./pages/LoginHome.jsx"));
+const CreateAccount = lazy(() => import("./components/CreateAccount.jsx"));
+const Login = lazy(() => import("./components/Login.jsx"));
 function App() {
   const router = createBrowserRouter([
     {
@@ -35,12 +38,24 @@ function App() {
             { path: "cart", element: <Cart /> },
           ],
         },
+        {
+          path: "loginHome",
+          element: <LoginHome />,
+        },
+        {
+          path: "createAccount",
+          element: <CreateAccount />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
       ],
     },
   ]);
   return (
-    <Suspense fallback={<div></div>}>
-      <RouterProvider router={router} />;
+    <Suspense fallback={<div>"..loading"</div>}>
+      <RouterProvider router={router} />
     </Suspense>
   );
 }

@@ -10,7 +10,19 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
+  &--small {
+    font-size: small;
+  }
   &--small {
     font-size: small;
   }
@@ -18,11 +30,22 @@
   &--midium {
     font-size: medium;
   }
+  &--midium {
+    font-size: medium;
+  }
 
   &--large {
     font-size: large;
   }
+  &--large {
+    font-size: large;
+  }
 
+  // 버튼 색상
+  &--primary {
+    color: $white;
+    background-color: $primary;
+  }
   // 버튼 색상
   &--primary {
     color: $white;
@@ -34,7 +57,17 @@
     background-color: $white;
     border: 1px solid $primary;
   }
+  &--secondary {
+    color: $primary;
+    background-color: $white;
+    border: 1px solid $primary;
+  }
 
+  &--white {
+    color: $btn-black;
+    background-color: $white;
+    border: 1px solid $btn-black;
+  }
   &--white {
     color: $btn-black;
     background-color: $white;
@@ -55,7 +88,18 @@
     align-items: center;
     justify-content: center;
   }
+  &--icon-only {
+    padding: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
+  &:disabled {
+    color: $btn-gray;
+    background-color: $btn-white;
+  }
   &:disabled {
     color: $btn-gray;
     background-color: $btn-white;
@@ -64,6 +108,22 @@
 
 .btn-location {
   color: $btn-black;
+  color: $btn-black;
+}
+
+.btn-searchbar {
+  gap: 1rem;
+  color: $btn-black;
+  gap: 1rem;
+  color: $btn-black;
+}
+
+.btn-top {
+  position: fixed;
+  bottom: 4rem;
+  right: 2rem;
+  cursor: pointer;
+  z-index: 999;
 }
 
 .mypage__btn-menu {
