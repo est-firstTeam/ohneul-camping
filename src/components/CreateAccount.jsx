@@ -73,7 +73,7 @@ const CreateAccount = () => {
 
   return (
     <div className="account__wrapper">
-      <h2>Create Account</h2>
+      <h2 style={{ fontSize: "20px" }}>Create Account</h2>
       <form className="account__form" onSubmit={handleSubmit(onValid)}>
         {/* 닉네임 파트 */}
         <div>
@@ -166,8 +166,12 @@ const CreateAccount = () => {
         </div>
       </form>
       <span className="hr-sect">OR</span>
-      <button onClick={googleLogin} style={{ margin: "10px 0px" }}>
-        구글 로그인
+      <button
+        className="btn btn__google"
+        onClick={googleLogin}
+        style={{ margin: "10px 0px" }}
+      >
+        ......
       </button>
       <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button>
     </div>

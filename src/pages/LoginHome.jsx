@@ -15,8 +15,13 @@ const Home = () => {
 
   return (
     <>
-      <h1>LoginHome.jsx...</h1>
-      <Link to={"/createAccount"}>Go Create Account</Link>
+      <h1 style={{ fontSize: "30px" }}>LoginHome.jsx...</h1>
+      <Link
+        style={{ margin: "20px", display: "block", fontSize: "15px" }}
+        to={"/createAccount"}
+      >
+        Go Create Account
+      </Link>
       <br />
       {user === null ? (
         <button onClick={login}>LogIn</button>
