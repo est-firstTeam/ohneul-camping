@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import Footer from "../components/Footer";
 const BaseLayout = () => {
   return (
     <div>
@@ -7,6 +8,7 @@ const BaseLayout = () => {
         <Outlet />
       </main>
       {/* TODO: footer자리 */}
+      <Footer />
     </div>
   );
 };
