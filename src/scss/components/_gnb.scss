@@ -1,0 +1,13 @@
+@use "../abstracts/" as *;
+.gnb {
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 3.6rem;
+  }
+
+  &__item-text {
+    color: $gray2;
+    font-size: 1.8rem;
+  }
+}
