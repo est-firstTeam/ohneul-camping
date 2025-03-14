@@ -1,0 +1,97 @@
+@use "../abstracts/" as *;
+
+.account__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  width: 25rem;
+  padding: 50px 0px;
+}
+
+.account__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.account__input {
+  border: 1px solid #ff4e01;
+  height: 40px;
+  border-radius: 20px;
+  background-color: white;
+  width: 100%;
+  color: black;
+  line-height: 20px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  outline: none;
+  border-radius: 3px;
+  text-indent: 45px;
+  font-size: 16px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background-image: url("../../images/ico_nickname.svg");
+}
+
+.account__error {
+  display: block;
+  color: red;
+  padding-left: 20px;
+  padding-top: 5px;
+}
+
+.btn__account-submit {
+  height: 48px;
+  border-radius: 20px;
+  width: 100%;
+  border: none;
+  font-size: 20px;
+  margin-top: 20px;
+  background-color: #ff4e01;
+}
+
+.hr-sect {
+  display: flex;
+  width: 100%;
+  flex-basis: 100%;
+  align-items: center;
+  color: #ff4e01;
+  font-size: 12px;
+  margin: 15px 0px;
+}
+.hr-sect::before,
+.hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: #ff4e01;
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
+}
+
+.btn__google {
+  width: 100%;
+  height: 4rem;
+  background-image: url("../../images/ico_google.svg") no-repeat;
+  border: 1px solid black;
+  border-radius: 2rem;
+}
+
+// .account__nickname {
+//   background-image: url("../../images/ico_nickname.svg");
+// }
+
+// .account__email {
+//   background-image: url("../../images/ico_email.svg");
+// }
+
+// .account__password {
+//   background-image: url("../../images/ico_password.svg");
+// }
+
+// .account__password-chk {
+//   background-image: url("../../images/ico_passwordChk.svg");
+// }
