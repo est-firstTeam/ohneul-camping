@@ -33,12 +33,12 @@ const Header = () => {
     },
   ];
   return (
-    <hader className="header">
+    <header className="header">
       <Logo />
       <nav className="gnb">
         <ul className="gnb__list">
-          {menus.map((menu) => (
-            <li className="gnb__item">
+          {menus.map((menu, idx) => (
+            <li key={idx} className="gnb__item">
               <button onClick={() => navigate(menu.path)}>
                 <span className="gnb__item-text">
                   {menu.title && menu.title}
@@ -55,7 +55,7 @@ const Header = () => {
           ))}
         </ul>
       </nav>
-    </hader>
+    </header>
   );
 };
 
