@@ -3,7 +3,13 @@ import { auth } from "../firebase";
 import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  GoogleAuthProvider,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { errorCodes } from "../constants/errorCodes";
 
 const Login = () => {
@@ -17,13 +23,30 @@ const Login = () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      navi("/");
+      navi("/loginHome");
     } catch (error) {
       if (error instanceof FirebaseError) console.log("code -> ", error.code);
       setErr(errorCodes[error.code]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const googleLogin = async () => {
+    const googleProvider = new GoogleAuthProvider();
+    // setPersistence -> 로그인을 얼만큼 유지할것인가. Session단위로 유지시키려면
+    // browserSessionPersistence 을 두 번째 인자로 넘겨준다.
+    setPersistence(auth, browserSessionPersistence).then(() => {
+      signInWithPopup(auth, googleProvider)
+        .then((data) => {
+          console.log("Login Data -> ", data);
+          navi("/loginHome");
+        })
+        .catch((err) => {
+          console.log("Err!!!", error);
+          console.log(err);
+        });
+    });
   };
 
   return (
@@ -56,6 +79,7 @@ const Login = () => {
             {formState.errors?.password?.message}
           </span>
         </div>
+        {/* submit 버튼 */}
         <div>
           <input
             className="btn btn__account-submit"
@@ -68,6 +92,13 @@ const Login = () => {
           )}
         </div>
       </form>
+      <div>
+        <span className="hr-sect">OR</span>
+        <button onClick={googleLogin} style={{ margin: "10px 0px" }}>
+          구글 로그인
+        </button>
+        <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button>
+      </div>
     </div>
   );
 };

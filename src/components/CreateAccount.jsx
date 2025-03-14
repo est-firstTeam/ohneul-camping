@@ -1,4 +1,11 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  setPersistence,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../firebase";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -47,6 +54,21 @@ const CreateAccount = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const googleLogin = async () => {
+    const googleProvider = new GoogleAuthProvider();
+    setPersistence(auth, browserSessionPersistence).then(() => {
+      signInWithPopup(auth, googleProvider)
+        .then((data) => {
+          console.log("Login Data -> ", data);
+          navi("/loginHome");
+        })
+        .catch((err) => {
+          console.log("Err!!!", error);
+          console.log(err);
+        });
+    });
   };
 
   return (
@@ -144,7 +166,9 @@ const CreateAccount = () => {
         </div>
       </form>
       <span className="hr-sect">OR</span>
-      <button style={{ margin: "10px 0px" }}>구글 로그인</button>
+      <button onClick={googleLogin} style={{ margin: "10px 0px" }}>
+        구글 로그인
+      </button>
       <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button>
     </div>
   );
