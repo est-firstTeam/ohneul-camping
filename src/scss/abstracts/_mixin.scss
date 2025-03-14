@@ -19,10 +19,8 @@
   }
 }
 
-@mixin bg($image) {
-  background: url("/images/#{$image}.svg") no-repeat;
-}
-
-@mixin bgCenter($image) {
-  background: url("/images/#{$image}.svg") no-repeat center;
+// 이미지명, 좌표, 배경색, 크기
+@mixin background($file, $coordinate: null, $color: null, $size: contain) {
+  background: url(#{$url}#{$file}) no-repeat $coordinate $color;
+  background-size: $size;
 }

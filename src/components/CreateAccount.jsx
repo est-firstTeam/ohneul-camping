@@ -46,7 +46,7 @@ const CreateAccount = () => {
       );
       //마이페이지의 닉네임을 출력하기위해 현재 유저에 닉네임을 설정.
       await updateProfile(credential.user, { displayName: data.name });
-      navi("/");
+      navi("/loginHome");
     } catch (error) {
       if (error instanceof FirebaseError)
         console.log("ERR code -> ", error.code);
@@ -170,9 +170,7 @@ const CreateAccount = () => {
         className="btn btn__google"
         onClick={googleLogin}
         style={{ margin: "10px 0px" }}
-      >
-        ......
-      </button>
+      ></button>
       <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button>
     </div>
   );

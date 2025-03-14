@@ -75,23 +75,28 @@
 .btn__google {
   width: 100%;
   height: 4rem;
-  background-image: url("../../images/ico_google.svg") no-repeat;
   border: 1px solid black;
   border-radius: 2rem;
+  @include background("ico_google.svg", center center, null, contain);
 }
 
-// .account__nickname {
-//   background-image: url("../../images/ico_nickname.svg");
-// }
+.account__nickname {
+  @include background("ico_nickname.svg", left 10px bottom 10px, null, inherit);
+}
 
-// .account__email {
-//   background-image: url("../../images/ico_email.svg");
-// }
+.account__email {
+  @include background("ico_email.svg", left 10px bottom 10px, null, inherit);
+}
 
-// .account__password {
-//   background-image: url("../../images/ico_password.svg");
-// }
+.account__password {
+  @include background("ico_password.svg", left 10px bottom 7px, null, inherit);
+}
 
-// .account__password-chk {
-//   background-image: url("../../images/ico_passwordChk.svg");
-// }
+.account__password-chk {
+  @include background(
+    "ico_passwordChk.svg",
+    left 10px bottom 7px,
+    null,
+    inherit
+  );
+}
