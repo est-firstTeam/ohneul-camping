@@ -30,7 +30,7 @@ function App() {
           element: <MyPage />,
           children: [
             {
-              path: "/my",
+              path: "",
               element: <Navigate to="reservation" replace />,
             },
             { path: "reservation", element: <Reservation /> },
