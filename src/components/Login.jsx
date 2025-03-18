@@ -19,7 +19,7 @@ const Login = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setErr] = useState("");
   const navi = useNavigate();
-  const setUser = useUserStore((state) => state.setUser);
+  const setUser = useUserStore();
 
   const onValid = async (data) => {
     console.log("data is..", data);
@@ -34,6 +34,7 @@ const Login = () => {
       //DB에서 유저정보 가져오고 Zustand에 세팅.
       const userQuery = doc(db, "users", auth.currentUser.uid);
       const userSnapData = (await getDoc(userQuery)).data();
+      console.log("userSnapshotData ....", userSnapData);
       setUser(userSnapData);
 
       // const userQuery = query(

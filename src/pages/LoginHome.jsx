@@ -6,7 +6,7 @@ import { useUserStore } from "../store/zustandStore";
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userInfo = useUserStore((state) => state.user);
+  const userInfo = useUserStore();
   const navi = useNavigate();
 
   useEffect(() => {
@@ -15,6 +15,7 @@ const Home = () => {
         setIsLoggedIn(true);
       }
     });
+    console.log("UserInfo ...", userInfo);
 
     return unsubscribe;
   }, []);
@@ -49,9 +50,9 @@ const Home = () => {
         <button onClick={login}>LogIn</button>
       )}
       <br></br>
-      <h2>id is... {userInfo.id}</h2>
-      <h2>email is... {userInfo.email}</h2>
-      <h2>name is... {userInfo.name}</h2>
+      <h2 style={{ fontSize: "20px" }}>id is... {userInfo.id}</h2>
+      <h2 style={{ fontSize: "20px" }}>email is... {userInfo.email}</h2>
+      <h2 style={{ fontSize: "20px" }}>name is... {userInfo.name}</h2>
     </>
   );
 };
