@@ -8,4 +8,38 @@
     width: 70rem;
     height: 7rem;
     flex-shrink: 0;
+    gap: 1.2rem;
+}
+
+// 캠핑 사이트 모달
+.modal__site {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: #fff;
+
+    .site__title {
+        color: #212529;
+        font-size: 1.875rem;
+        font-weight: bold;
+        line-height: 2.125rem;
+    }
+
+    .site__container {
+        display: grid;
+        padding: 2rem;
+        gap: 1rem;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .content__name {
+        color: #000;
+        font-size: 1.1rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1.5rem;
+    }
 }

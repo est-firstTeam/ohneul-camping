@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useRef } from "react";
 import Modal from "../components/Modal";
 import SearchBar from "../components/Searchbar";
 
 const SearchResult = () => {
-    const [showModal, setShowModal] = useState(false);
+    const modalRef = useRef(null);
+
+    // 모달 열기
+    const openModal = () => {
+        if (modalRef.current) {
+            modalRef.current.showModal();
+        }
+    };
 
     return (
         <>
-            <button onClick={() => setShowModal(true)}>모달</button>
-            {showModal && (
-                <Modal onClose={() => setShowModal(false)}>모달모달모달</Modal>
-            )}
+            <button onClick={openModal}>모달</button>
+            <Modal modalRef={modalRef}>모달모달모달</Modal>
             <SearchBar />
         </>
     );
