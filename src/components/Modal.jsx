@@ -1,8 +1,8 @@
-// import Button from "./Button";
-
 import Button from "./Button";
 
-const Modal = ({ children, modalRef }) => {
+// modalRef에는 모달의 useRef를 사용해 dialog요소를 직접 제어할 수 있게 합니다.
+// children에는 모달에 들어갈 내용을 직접 정의합니다.
+const Modal = ({ modalRef, children }) => {
     return (
         <dialog ref={modalRef} className="modal__overlay">
             <div className="modal__content">

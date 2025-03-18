@@ -1,3 +1,4 @@
+// 검색바
 .search__bar {
     border-radius: 6.25rem;
     background: #fff;
@@ -9,6 +10,41 @@
     height: 7rem;
     flex-shrink: 0;
     gap: 1.2rem;
+}
+
+.content__name {
+    color: #000;
+    font-size: 1.3rem;
+    font-style: normal;
+    line-height: 1.5rem;
+}
+
+// 지역 선택 모달
+.modal__location {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: #fff;
+
+    .modal__header {
+        display: flex;
+        align-items: center;
+
+        .location__title {
+            color: #212529;
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 2rem;
+        }
+    }
+    .location__content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 1rem;
+    }
 }
 
 // 캠핑 사이트 모달
@@ -23,23 +59,15 @@
 
     .site__title {
         color: #212529;
-        font-size: 1.875rem;
+        font-size: 2rem;
         font-weight: bold;
-        line-height: 2.125rem;
+        line-height: 2rem;
     }
 
     .site__container {
         display: grid;
-        padding: 2rem;
+        padding: 1.3rem;
         gap: 1rem;
         grid-template-columns: 1fr 1fr;
-    }
-
-    .content__name {
-        color: #000;
-        font-size: 1.1rem;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 1.5rem;
     }
 }
