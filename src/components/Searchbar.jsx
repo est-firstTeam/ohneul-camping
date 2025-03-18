@@ -7,6 +7,32 @@ import { useRef } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 
+// 지역 옵션 배열
+const locations = [
+    "전체",
+    "서울특별시",
+    "충청남도",
+    "울산광역시",
+    "인천광역시",
+    "경기도",
+    "대구광역시",
+    "강원특별자치도",
+    "부산광역시",
+    "대전광역시",
+    "세종특별자치시",
+    "광주광역시",
+    "충청남도",
+    "전라남도",
+    "충청북도",
+    "경상북도",
+    "경상남도",
+    "전북특별자치도",
+    "제주특별자치도",
+];
+
+// 사이트 옵션 배열
+const sites = ["소(1~3인)", "중(4~6인)", "대(7~10인)", "카라반(1~4인)"];
+
 const SearchBar = () => {
     const locationModal = useRef(null); // 위치 모달 관리
     const dateModal = useRef(null); // 날짜 및 일정 모달 관리
@@ -81,128 +107,16 @@ const SearchBar = () => {
                         <h2 className="location__title">어디로 가세요?</h2>
                     </div>
                     <div className="location__content">
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">전체</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">서울특별시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">충청남도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">울산광역시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">인천광역시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">경기도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">대구광역시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">
-                                강원특별자치도
-                            </span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">부산광역시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">대전광역시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">
-                                세종특별자치시
-                            </span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">광주광역시</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">충청남도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">전라남도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">충청북도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">경상북도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">경상남도</span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">
-                                전북특별자치도
-                            </span>
-                        </Button>
-                        <Button
-                            className={"btn-locationcontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">
-                                제주특별자치도
-                            </span>
-                        </Button>
+                        {locations.map((location) => (
+                            <Button
+                                className={"btn-locationcontent"}
+                                color={"secondary"}
+                            >
+                                <span className="content__name">
+                                    {location}
+                                </span>
+                            </Button>
+                        ))}
                     </div>
                 </div>
             </Modal>
@@ -215,32 +129,14 @@ const SearchBar = () => {
                 <div className="modal__site">
                     <h2 className="site__title">캠핑 사이트</h2>
                     <div className="site__container">
-                        <Button
-                            className={"btn-sitecontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">소(1~3인)</span>
-                        </Button>
-                        <Button
-                            className={"btn-sitecontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">중(4~6인)</span>
-                        </Button>
-
-                        <Button
-                            className={"btn-sitecontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">대(7~10인)</span>
-                        </Button>
-
-                        <Button
-                            className={"btn-sitecontent"}
-                            color={"secondary"}
-                        >
-                            <span className="content__name">카라반(1~4인)</span>
-                        </Button>
+                        {sites.map((site) => (
+                            <Button
+                                className={"btn-sitecontent"}
+                                color={"secondary"}
+                            >
+                                <span className="content__name">{site}</span>
+                            </Button>
+                        ))}
                     </div>
                 </div>
             </Modal>
