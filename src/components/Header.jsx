@@ -17,11 +17,6 @@ const menus = [
     iconPath: null,
   },
   {
-    title: "마이페이지",
-    path: "/my",
-    iconPath: null,
-  },
-  {
     title: null,
     path: "/",
     iconPath: cart,
@@ -33,6 +28,7 @@ const menus = [
   },
 ];
 const Header = () => {
+  const isLoggedIn = false; // TODO: 로그인 되었는지 확인하는 변수값
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
@@ -59,26 +55,38 @@ const Header = () => {
   return (
     <header className={`header ${showNav ? "" : "header--hide"}`}>
       <Logo />
-      <nav className="gnb">
-        <ul className="gnb__list">
-          {menus.map((menu, idx) => (
-            <li key={idx} className="gnb__item">
-              <button onClick={() => navigate(menu.path)}>
-                <span className="gnb__item-text">
-                  {menu.title && menu.title}
-                </span>
-                <span>
-                  {menu.iconPath && (
-                    <div>
-                      <img src={menu.iconPath} />
-                    </div>
-                  )}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div className="header__inner">
+        <nav className="gnb">
+          <ul className="gnb__list">
+            {menus.map((menu, idx) => (
+              <li key={idx} className="gnb__item">
+                <button onClick={() => navigate(menu.path)}>
+                  <span className="gnb__item-text">
+                    {menu.title && menu.title}
+                  </span>
+                  <span>
+                    {menu.iconPath && (
+                      <div>
+                        <img src={menu.iconPath} />
+                      </div>
+                    )}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <button
+          className="header__auth-btn"
+          onClick={() => {
+            // TODO:로그인 안되어있으면 로그인 모달 오픈
+            isLoggedIn ? navigate("/my") : () => {};
+          }}
+        >
+          {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
+        </button>
+      </div>
     </header>
   );
 };
