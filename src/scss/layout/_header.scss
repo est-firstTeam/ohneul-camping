@@ -13,4 +13,14 @@
   &--hide {
     display: none;
   }
+
+  &__auth-btn {
+    padding: 0.8rem 1.6rem;
+    color: $gray1;
+  }
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
 }
