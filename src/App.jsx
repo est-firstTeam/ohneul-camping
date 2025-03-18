@@ -12,51 +12,39 @@ const LoginHome = lazy(() => import("./pages/LoginHome.jsx"));
 const CreateAccount = lazy(() => import("./components/CreateAccount.jsx"));
 const Login = lazy(() => import("./components/Login.jsx"));
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <BaseLayout />,
-      children: [
+    const router = createBrowserRouter([
         {
-          path: "/",
-          element: <Main />,
+            path: "/",
+            element: <BaseLayout />,
+            children: [
+                {
+                    path: "/",
+                    element: <Main />,
+                },
+                {
+                    path: "/searchResult",
+                    element: <SearchResult />,
+                },
+                {
+                    path: "loginHome",
+                    element: <LoginHome />,
+                },
+                {
+                    path: "createAccount",
+                    element: <CreateAccount />,
+                },
+                {
+                    path: "login",
+                    element: <Login />,
+                },
+            ],
         },
-        {
-          path: "/searchResult/:id",
-          element: <SearchResult />,
-        },
-        {
-          path: "/my",
-          element: <MyPage />,
-          children: [
-            {
-              path: "",
-              element: <Navigate to="reservation" replace />,
-            },
-            { path: "reservation", element: <Reservation /> },
-            { path: "cart", element: <Cart /> },
-          ],
-        },
-        {
-          path: "loginHome",
-          element: <LoginHome />,
-        },
-        {
-          path: "createAccount",
-          element: <CreateAccount />,
-        },
-        {
-          path: "login",
-          element: <Login />,
-        },
-      ],
-    },
-  ]);
-  return (
-    <Suspense fallback={<div>"..loading"</div>}>
-      <RouterProvider router={router} />
-    </Suspense>
-  );
+    ]);
+    return (
+        <Suspense fallback={<div>"..loading"</div>}>
+            <RouterProvider router={router} />
+        </Suspense>
+    );
 }
 
 export default App;
