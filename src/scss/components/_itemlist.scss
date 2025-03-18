@@ -1,0 +1,133 @@
+@use "../abstracts/" as *;
+
+.product {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.1);
+  border-radius: 1.5rem;
+  padding: 1rem;
+
+  // 마이페이지 리스트
+  &__w-26 {
+    width: 26rem;
+  }
+
+  // 상품 리스트
+  &__w-35 {
+    width: 35rem;
+  }
+
+  &__image {
+    width: 100%;
+    height: 22rem;
+    object-fit: cover;
+    justify-content: center;
+    border-radius: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .detail-list {
+    padding: 1rem;
+    text-align: left;
+
+    // 텍스트 색상
+    &__primary {
+      color: $primary;
+    }
+
+    &__semiblack {
+      color: $semi-black;
+    }
+
+    &__gray3 {
+      color: $gray3;
+    }
+
+    &__gray4 {
+      color: $gray4;
+    }
+
+    // 폰트 사이즈
+    &__16 {
+      font-size: 1.6rem;
+    }
+    &__20 {
+      font-size: 2rem;
+    }
+    &__24 {
+      font-size: 2.4rem;
+    }
+    &__32 {
+      font-size: 3.2rem;
+    }
+
+    // 굵은 글씨
+    &__bold {
+      font-weight: 600;
+    }
+
+    //margin
+    &__mb-0 {
+      margin-bottom: 0;
+    }
+
+    &__mb-12 {
+      margin-bottom: 1.2rem;
+    }
+
+    &__mb-20 {
+      margin-bottom: 2rem;
+    }
+
+    &__mr-4 {
+      margin-right: 0.4rem;
+    }
+
+    // 인라인
+    &__inline {
+      display: inline-block;
+    }
+
+    // 타이틀 : 길어지면 말줄임표
+    &__overflow {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+// 리스트 : 그리드 배열
+.product-list {
+  display: grid;
+  gap: 3.2rem 2.8rem;
+
+  // 3열
+  &__grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  // 4열
+  &__grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// TODO
+// 1. 각각 데이터와 연결(어 떠 케?)
+// 2. 소중대카라반 중에 데이터가 없는 건 처음부터 보이지 않게 하기
+//    ㄴ 재고가 0인 것과 데이터가 없는 것을 구분해야 함
+// 3. 예약 취소 / 불가 상태(회색버튼)
+// 4. 카드를 클릭하면 디테일 페이지로 넘어가게
+
+// <재고 없을 때>
+// 1. 남은 자리 0, primary color
+// 2. 가격 회색 글씨로 바꾸기
+
+// <데이터가 없을 때>
+// - 보이지 않음
+
+// <리스트로 만들기>
+// 1. 그리드
+// 2. 3열 / 4열 선택 가능하게
