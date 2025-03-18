@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
@@ -11,19 +11,37 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { errorCodes } from "../constants/errorCodes";
+import { doc, getDoc } from "firebase/firestore";
+import { useUserStore } from "../store/zustandStore";
 
 const Login = () => {
   const { register, handleSubmit, formState } = useForm();
   const [isLoading, setLoading] = useState(false);
   const [error, setErr] = useState("");
   const navi = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
 
   const onValid = async (data) => {
     console.log("data is..", data);
     setLoading(true);
     try {
+      //로그인 처리
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      navi("/loginHome");
+      //Session 로그인 정보 저장
+      setPersistence(auth, browserSessionPersistence).then(() => {
+        navi("/loginHome");
+      });
+      //DB에서 유저정보 가져오고 Zustand에 세팅.
+      const userQuery = doc(db, "users", auth.currentUser.uid);
+      const userSnapData = (await getDoc(userQuery)).data();
+      setUser(userSnapData);
+
+      // const userQuery = query(
+      //   collection(db, "users"),
+      //   where("userEmail", "==", data.email)
+      // );
+      // const userSnapShot = await getDocs(userQuery);
+      // userSnapShot.forEach((doc) => console.log(doc.id, "=>", doc.data()));
     } catch (error) {
       if (error instanceof FirebaseError) console.log("code -> ", error.code);
       setErr(errorCodes[error.code]);
@@ -34,12 +52,10 @@ const Login = () => {
 
   const googleLogin = async () => {
     const googleProvider = new GoogleAuthProvider();
-    // setPersistence -> 로그인을 얼만큼 유지할것인가. Session단위로 유지시키려면
-    // browserSessionPersistence 을 두 번째 인자로 넘겨준다.
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, googleProvider)
         .then((data) => {
-          console.log("Login Data -> ", data);
+          console.log("Google Login Data -> ", data);
           navi("/loginHome");
         })
         .catch((err) => {
@@ -94,9 +110,11 @@ const Login = () => {
       </form>
       <div>
         <span className="hr-sect">OR</span>
-        <button onClick={googleLogin} style={{ margin: "10px 0px" }}>
-          구글 로그인
-        </button>
+        <button
+          className="btn btn__google"
+          onClick={googleLogin}
+          style={{ margin: "10px 0px" }}
+        ></button>
         <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button>
       </div>
     </div>

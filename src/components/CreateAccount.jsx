@@ -6,12 +6,13 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FirebaseError } from "firebase/app";
 import { useEffect, useState } from "react";
 import { errorCodes } from "../constants/errorCodes";
+import { doc, setDoc } from "firebase/firestore";
 
 const CreateAccount = () => {
   const navi = useNavigate();
@@ -23,8 +24,19 @@ const CreateAccount = () => {
     formState,
     reset,
     getValues,
-    //Mode 값으로 -> OnBlur, OnChange, OnSubmit 을 줘서 어떤 시점에 Validation을 할지 정할 수 있다.
+    //Mode 값으로 -> OnBlur, OnChange, OnSubmit 가능. 어떤 시점에 Validation을 할지 정할 수 있다.
   } = useForm({ mode: "onBlur" });
+
+  const saveDataToDB = async (method, data) => {
+    const uid = auth.currentUser.uid;
+    await setDoc(doc(db, "users", uid), {
+      userId: uid,
+      userName: method === "email" ? data.nickname : data.displayName,
+      userEmail: data.email,
+      userBasket: [],
+      userBooking: [],
+    });
+  };
 
   //에러없이 모든게 Ok되면 FormState를 리셋해준다.
   useEffect(() => {
@@ -36,7 +48,7 @@ const CreateAccount = () => {
 
   //Submit되면 onValid에서 입력된 input값을 가지고 유저를 생성한다.
   const onValid = async (data) => {
-    console.log("data is..", data);
+    console.log("Submit Form data is...", data);
     setLoading(true);
     try {
       const credential = await createUserWithEmailAndPassword(
@@ -45,11 +57,18 @@ const CreateAccount = () => {
         data.password
       );
       //마이페이지의 닉네임을 출력하기위해 현재 유저에 닉네임을 설정.
-      await updateProfile(credential.user, { displayName: data.name });
+      await updateProfile(credential.user, { displayName: data.nickname });
+      console.log("credential.user is...", credential.user);
+      // users DB에 사용자 데이터 넣기.
+      saveDataToDB("email", data);
+      // Session에 로그인 정보 넣기.
+      setPersistence(auth, browserSessionPersistence);
+
       navi("/loginHome");
     } catch (error) {
-      if (error instanceof FirebaseError)
+      if (error instanceof FirebaseError) {
         console.log("ERR code -> ", error.code);
+      }
       setErr(errorCodes[error.code]);
     } finally {
       setLoading(false);
@@ -58,10 +77,17 @@ const CreateAccount = () => {
 
   const googleLogin = async () => {
     const googleProvider = new GoogleAuthProvider();
+    // setPersistence -> 로그인을 얼만큼 유지할것인가. Session단위로 유지시키려면
+    // browserSessionPersistence 을 두 번째 인자로 넘겨준다.
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, googleProvider)
-        .then((data) => {
-          console.log("Login Data -> ", data);
+        .then(async (data) => {
+          console.log("Google User Data -> ", data);
+          await saveDataToDB("google", data.user);
+          await updateProfile(data.user, {
+            displayName: data.user.displayName,
+          });
+
           navi("/loginHome");
         })
         .catch((err) => {
