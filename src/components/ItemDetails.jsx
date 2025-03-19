@@ -1,31 +1,29 @@
 // 상품 리스트 : 아이템
-const ItemDetails = ({
-  text,
-  children,
-  fontSize = "16",
-  color = "semiblack",
-  bold = false,
-  mb = "12",
-  mr = false,
-  inline = false,
-  overflow = false,
-}) => {
-  const itemClassName = `
-    detail-list__${fontSize} 
-    detail-list__${color} 
-    ${bold ? "detail-list__bold" : ""} 
-    detail-list__mb-${mb}
-    ${mr ? "detail-list__mr-4" : ""} 
-    ${inline ? "detail-list__inline" : ""} 
-    ${overflow ? "detail-list__overflow" : ""} 
-  `.trim();
+const CLASS_MAP = {
+  title: {
+    small: "detail-list__title detail-list__title--small",
+    large: "detail-list__title detail-list__title--large",
+    chked: "detail-list__title detail-list__title--chked",
+  },
+  text: {
+    gray: "detail-list__text detail-list__text--gray",
+    black: "detail-list__text detail-list__text--black",
+  },
+  price: {
+    default: "detail-list__price detail-list__price--def",
+    disabled: "detail-list__price detail-list__price--disabled",
+    reserved: "detail-list__price detail-list__price--rsv",
+  },
+  unit: {
+    default: "detail-list__unit detail-list__unit--def",
+    disabled: "detail-list__unit detail-list__unit--disabled",
+    reserved: "detail-list__unit detail-list__unit--rsv",
+  },
+};
 
-  return (
-    <li className={itemClassName}>
-      {text}
-      {children}
-    </li>
-  );
+const ItemDetails = ({ type, size, color, children }) => {
+  const className = CLASS_MAP[type]?.[size || color] || "";
+  return <div className={className}>{children}</div>;
 };
 
 export default ItemDetails;
