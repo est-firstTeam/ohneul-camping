@@ -39,7 +39,7 @@ const Cart = () => {
 
     // 밀리초를 일 단위로 변환 (1일 = 24시간 * 60분 * 60초 * 1000밀리초)
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
+    console.log(diffDays);
     return diffDays;
   }
 
@@ -69,7 +69,7 @@ const Cart = () => {
               firstImageUrl={cartItem.firstImageUrl}
               startDate={monthDateFormat(cartItem.rsvStartDate)}
               endDate={monthDateFormat(cartItem.rsvEndDate)}
-              date={getDaysBetweenDates(
+              day={getDaysBetweenDates(
                 cartItem.rsvStartDate,
                 cartItem.rsvEndDate
               )}
