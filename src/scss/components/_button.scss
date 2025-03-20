@@ -96,12 +96,13 @@
     }
 }
 
-// 위치 선택 모달 컨텐츠 버튼
-.btn-locationcontent {
+// 모달 컨텐츠 버튼
+.btn-content {
     border: 1px solid #e5e5e5;
-}
+    color: $black;
 
-// 캠핑 사이트 모달 컨텐츠 버튼
-.btn-sitecontent {
-    border: 1px solid #e5e5e5;
+    &.active {
+        border: 1px solid #f57b21;
+        color: $secondary;
+    }
 }

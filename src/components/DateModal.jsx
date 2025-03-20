@@ -14,17 +14,47 @@ const DateModal = ({ modalRef }) => {
             key: "selection",
         },
     ]);
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+
+    console.log(startDate, endDate);
+
+    // 날짜 선택 핸들러 추가
+    const handleDateChange = (item) => {
+        setState([item.selection]);
+        setStartDate(
+            item.selection.startDate
+                .toLocaleDateString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                })
+                .replace(/\. /g, "-")
+                .replace(".", "")
+        );
+        setEndDate(
+            item.selection.endDate
+                ? item.selection.endDate
+                      .toLocaleDateString("ko-KR", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                      })
+                      .replace(/\. /g, "-")
+                      .replace(".", "")
+                : null
+        );
+    };
 
     return (
         <Modal modalRef={modalRef}>
             <div className="modal__date">
                 <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => setState([item.selection])}
+                    onChange={handleDateChange}
                     moveRangeOnFirstSelection={false}
                     ranges={state}
-                    months={2} // 2달 보여주기
-                    direction="horizontal" // 수평(가로)로 보여주기
+                    months={1} // 2달 보여주기
                     minDate={new Date()} // 오늘을 기준으로 이전날은 선택불가
                 />
             </div>
