@@ -4,7 +4,7 @@ import search from "../images/ico-search.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useUserStore } from "../store/zustandStore";
+import { useUserStore } from "../store/useUserStore";
 const menus = [
   {
     title: "홈",
@@ -82,7 +82,7 @@ const Header = () => {
           className="header__auth-btn"
           onClick={() => {
             // TODO:로그인 안되어있으면 로그인 모달 오픈
-            isLoggedIn ? navigate("/my") : navigate("/createAccount");
+            isLoggedIn ? navigate("/my") : navigate("/Login");
           }}
         >
           {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
