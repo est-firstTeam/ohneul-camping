@@ -100,7 +100,6 @@ const CreateAccount = () => {
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, googleProvider)
         .then(async (data) => {
-          console.log("Google User Data -> ", data);
           await saveDataToDB(data.user);
           await updateProfile(data.user, {
             displayName: data.user.displayName,

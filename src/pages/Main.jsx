@@ -15,7 +15,6 @@ const Main = () => {
   return (
     <div>
       <div>SAY HELLO</div>
-      <ButtonExam />
       <TopBtn />
     </div>
   );

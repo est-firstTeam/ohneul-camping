@@ -33,7 +33,7 @@ const Login = () => {
         navi("/");
       });
       //DB에서 유저정보 가져오고 Zustand에 세팅.
-      const userQuery = doc(firebaseDB, "user", auth.currentUser.uid);
+      const userQuery = doc(firebaseDB, "User", auth.currentUser.uid);
       const userSnapShot = await getDoc(userQuery);
       await setUser(userSnapShot.data());
     } catch (error) {
@@ -53,8 +53,12 @@ const Login = () => {
           navi("/");
         })
         .catch((err) => {
-          console.log("Err!!!", error);
-          console.log(err);
+          if (err instanceof FirebaseError) {
+            console.log("DB ERROR!!!");
+            console.log("code -> ", err.code);
+            setErr(errorCodes[err.code]);
+          }
+          console.log("Err!!!", err);
         });
     });
   };
