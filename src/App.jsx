@@ -1,6 +1,10 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  Navigate,
+} from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
 const Main = lazy(() => import("./pages/Main.jsx"));
@@ -58,10 +62,15 @@ function App() {
       ],
     },
   ]);
+
+  const queryClient = new QueryClient();
+
   return (
-    <Suspense fallback={<div>"..loading"</div>}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<div>"..loading"</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </QueryClientProvider>
   );
 }
 

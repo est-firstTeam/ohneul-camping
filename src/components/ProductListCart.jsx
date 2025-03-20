@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ItemDetails from "./ItemDetails";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
+import { commaNumber } from "../util/util";
 
 //TODO
 // - data 연결
@@ -51,25 +52,25 @@ const ProductListCart = ({
             onClick={() => handleCheckboxChange(facltNm)}
             label={
               <ItemDetails type="title" size="chked">
-                {facltNm} 예약한 야영장 이름
+                {facltNm}
               </ItemDetails>
             }
           />
         ) : (
           <ItemDetails type="title" size="small">
-            {facltNm} 예약한 야영장 이름
+            {facltNm}
           </ItemDetails>
         )}
         <ItemDetails type="text" color="gray">
-          {startDate}시작날짜 ~ {endDate}끝날짜 ({day}9박)
-          <br />소 {selected1} 9자리, 중 {selected2} 9자리, 대 {selected3}{" "}
-          9자리, 카라반 {selected4} 9자리
+          {startDate} ~ {endDate} ({day}박)
+          <br />소 {selected1}자리, 중 {selected2}자리, 대 {selected3}자리,
+          카라반 {selected4}자리
         </ItemDetails>
         <ItemDetails type="price" size="reserved">
-          {sumPrice}99,999
+          {commaNumber(sumPrice)}
         </ItemDetails>
         <ItemDetails type="unit" size="reserved">
-          원 ~
+          원 {!isCart && "~"}
         </ItemDetails>
       </div>
       {/* 예약 확인에서 true */}
