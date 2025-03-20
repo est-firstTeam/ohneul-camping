@@ -4,6 +4,7 @@ import search from "../images/ico-search.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useUserStore } from "../store/zustandStore";
 const menus = [
   {
     title: "홈",
@@ -28,7 +29,7 @@ const menus = [
   },
 ];
 const Header = () => {
-  const isLoggedIn = false; // TODO: 로그인 되었는지 확인하는 변수값
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
@@ -81,7 +82,7 @@ const Header = () => {
           className="header__auth-btn"
           onClick={() => {
             // TODO:로그인 안되어있으면 로그인 모달 오픈
-            isLoggedIn ? navigate("/my") : () => {};
+            isLoggedIn ? navigate("/my") : navigate("/createAccount");
           }}
         >
           {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
