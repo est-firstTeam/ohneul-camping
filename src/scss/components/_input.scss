@@ -1,0 +1,47 @@
+@use "../abstracts" as *;
+
+.account__input {
+  border: 1px solid #ff4e01;
+  height: 40px;
+  border-radius: 20px;
+  background-color: white;
+  width: 100%;
+  color: black;
+  line-height: 20px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  outline: none;
+  border-radius: 3px;
+  text-indent: 45px;
+  font-size: 16px;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.account__error {
+  display: block;
+  color: red;
+  padding-left: 20px;
+  padding-top: 5px;
+}
+
+.account__nickname {
+  @include background("ico_nickname.svg", left 10px bottom 10px, null, inherit);
+}
+
+.account__email {
+  @include background("ico_email.svg", left 10px bottom 10px, null, inherit);
+}
+
+.account__password {
+  @include background("ico_password.svg", left 10px bottom 7px, null, inherit);
+}
+
+.account__password-chk {
+  @include background(
+    "ico_passwordChk.svg",
+    left 10px bottom 7px,
+    null,
+    inherit
+  );
+}

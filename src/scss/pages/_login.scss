@@ -1,0 +1,51 @@
+@use "../abstracts" as *;
+
+.account {
+  width: 25rem;
+}
+
+.account__wrapper {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.account__etc {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account__form {
+  display: block;
+}
+
+.btn__google {
+  width: 100%;
+}
+
+.account__link {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+}
+
+.account__icon,
+.account__icon-slash {
+  width: 2.5rem;
+  height: 2.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.8rem;
+  &:hover {
+    cursor: pointer;
+  }
+  @include background("ico_eye.svg", center center, null, contain);
+}
+
+.account__icon-slash {
+  @include background("ico_eye-slash.svg", center center, null, contain);
+}
