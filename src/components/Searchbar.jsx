@@ -6,6 +6,7 @@ import Button from "./Button";
 import { useRef, useState } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
+import Chip from "./Chip";
 
 // 지역 옵션 배열
 const locations = [
@@ -37,8 +38,10 @@ const SearchBar = () => {
     const locationModal = useRef(null); // 위치 모달 관리
     const dateModal = useRef(null); // 날짜 및 일정 모달 관리
     const siteModal = useRef(null); // 캠프 사이트 모달 관리
-    const [activeLocation, setActiveLocation] = useState(0); // 위치 컨텐츠 버튼 상태 관리
-    const [activeSite, setActiveSite] = useState(0); // 캠프 사이트 버튼 상태 관리
+    const [activeLocation, setActiveLocation] = useState(""); // 위치 컨텐츠 칩 상태 관리
+    const [activeSite, setActiveSite] = useState(""); // 사이트 컨텐츠 칩 상태 관리
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     // 위치 모달 열기
     const openLocationModal = () => {
@@ -67,18 +70,25 @@ const SearchBar = () => {
             label: "어디로 가세요?",
             icon: <img src={mapico} width={"20px"} height={"20px"} />,
             onClick: openLocationModal,
+            onValue: activeLocation,
         },
         {
             label: "날짜 및 일정",
             icon: <img src={calico} width={"20px"} height={"20px"} />,
             onClick: openDateModal,
+            onValue: startDate && endDate ? `${startDate} ~ ${endDate}` : null,
         },
         {
             label: "사이트 형태",
             icon: <img src={siteico} width={"20px"} height={"20px"} />,
             onClick: openSiteModal,
+            onValue: activeSite,
         },
     ];
+
+    const changeValue = (e, setState) => {
+        setState(e.target.value);
+    };
 
     return (
         <>
@@ -93,7 +103,11 @@ const SearchBar = () => {
                         icon={button.icon}
                         onClick={button.onClick}
                     >
-                        {button.label}
+                        {button.onValue ? (
+                            <>{button.onValue}</>
+                        ) : (
+                            <>{button.label}</>
+                        )}
                     </Button>
                 ))}
                 <Button
@@ -114,25 +128,25 @@ const SearchBar = () => {
                     </div>
                     <div className="location__content">
                         {locations.map((location, index) => (
-                            <Button
+                            <Chip
                                 key={index}
-                                className={`btn-content ${
-                                    activeLocation === index ? "active" : null
-                                }`}
-                                color={"secondary"}
-                                onClick={() => setActiveLocation(index)}
-                            >
-                                <span className="content__name">
-                                    {location}
-                                </span>
-                            </Button>
+                                chipValue={location}
+                                groupName="캠핑 사이트"
+                                onClick={(e) =>
+                                    changeValue(e, setActiveLocation)
+                                }
+                            />
                         ))}
                     </div>
                 </div>
             </Modal>
 
             {/* 날짜 모달 창 */}
-            <DateModal modalRef={dateModal} />
+            <DateModal
+                modalRef={dateModal}
+                setStartDate={setStartDate} // 콜백 함수 전달
+                setEndDate={setEndDate} // 콜백 함수 전달
+            />
 
             {/* 캠핑 모달 창 */}
             <Modal modalRef={siteModal}>
@@ -140,16 +154,12 @@ const SearchBar = () => {
                     <h2 className="site__title">캠핑 사이트</h2>
                     <div className="site__container">
                         {sites.map((site, index) => (
-                            <Button
+                            <Chip
                                 key={index}
-                                className={`btn-content ${
-                                    activeSite === index ? "active" : null
-                                }`}
-                                color={"secondary"}
-                                onClick={() => setActiveSite(index)}
-                            >
-                                <span className="content__name">{site}</span>
-                            </Button>
+                                chipValue={site}
+                                groupName="캠핑 사이트"
+                                onClick={(e) => changeValue(e, setActiveSite)}
+                            />
                         ))}
                     </div>
                 </div>
