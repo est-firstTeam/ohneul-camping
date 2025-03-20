@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <span className="footer__copyright">
-        ©2025 OHNEULL-CAMPING. All rights reserved.
+        © {new Date().getFullYear()} Ohneul-Camping All rights reserved
       </span>
     </footer>
   );
