@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { auth, db } from "../firebase";
+import { auth, firebaseDB } from "../firebaseConfig";
 import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, getDoc } from "firebase/firestore";
-import { useUserStore } from "../store/zustandStore";
+import { useUserStore } from "../store/useUserStore";
 import Button from "./Button";
 
 const Login = () => {
@@ -30,10 +30,10 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       //Session 로그인 정보 저장
       setPersistence(auth, browserSessionPersistence).then(() => {
-        navi("/loginHome");
+        navi("/");
       });
       //DB에서 유저정보 가져오고 Zustand에 세팅.
-      const userQuery = doc(db, "user", auth.currentUser.uid);
+      const userQuery = doc(firebaseDB, "user", auth.currentUser.uid);
       const userSnapShot = await getDoc(userQuery);
       await setUser(userSnapShot.data());
     } catch (error) {
@@ -50,7 +50,7 @@ const Login = () => {
       signInWithPopup(auth, googleProvider)
         .then((data) => {
           console.log("Google Login Data -> ", data);
-          navi("/loginHome");
+          navi("/");
         })
         .catch((err) => {
           console.log("Err!!!", error);

@@ -6,14 +6,14 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { auth, db } from "../firebase";
+import { auth, firebaseDB } from "../firebaseConfig";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FirebaseError } from "firebase/app";
 import { useEffect, useState } from "react";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
-import { useUserStore } from "../store/zustandStore";
+import { useUserStore } from "../store/useUserStore";
 import Button from "./Button";
 
 const CreateAccount = () => {
@@ -55,7 +55,7 @@ const CreateAccount = () => {
       // Session에 로그인 정보 넣기.
       setPersistence(auth, browserSessionPersistence);
 
-      navi("/loginHome");
+      navi("/");
     } catch (error) {
       if (error instanceof FirebaseError) {
         console.log("ERR code -> ", error.code);
@@ -68,7 +68,7 @@ const CreateAccount = () => {
 
   const saveDataToDB = async (data) => {
     const uid = auth.currentUser.uid;
-    await setDoc(doc(db, "user", uid), {
+    await setDoc(doc(firebaseDB, "User", uid), {
       Id: uid,
       Name: data.displayName,
       Email: data.email,
@@ -106,7 +106,7 @@ const CreateAccount = () => {
             displayName: data.user.displayName,
           });
 
-          navi("/loginHome");
+          navi("/");
         })
         .catch((err) => {
           console.log("Err!!!", error);

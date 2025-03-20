@@ -12,12 +12,12 @@ const initialState = {
 export const useUserStore = create((set) => ({
   ...initialState,
 
-  setUser: (user) => {
+  setUser: (userInfo) => {
     set(() => {
       return {
-        id: user.Id,
-        name: user.Name,
-        email: user.Email,
+        id: userInfo.Id,
+        name: userInfo.Name,
+        email: userInfo.Email,
         isLoggedIn: true,
       };
     });
