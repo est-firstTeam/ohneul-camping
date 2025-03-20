@@ -18,7 +18,7 @@ const menus = [
   },
   {
     title: null,
-    path: "/",
+    path: "my/cart",
     iconPath: cart,
   },
   {

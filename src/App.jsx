@@ -23,6 +23,18 @@ function App() {
           element: <Main />,
         },
         {
+          path: "/my",
+          element: <MyPage />,
+          children: [
+            {
+              path: "",
+              element: <Navigate to="reservation" replace />,
+            },
+            { path: "reservation", element: <Reservation /> },
+            { path: "cart", element: <Cart /> },
+          ],
+        },
+        {
           path: "/searchResult",
           element: <SearchResult />,
         },
