@@ -1,21 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useUserStore } from "../store/zustandStore";
 
 const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userInfo = useUserStore();
+  const userId = useUserStore((state) => state.id);
+  const userName = useUserStore((state) => state.name);
+  const userEmail = useUserStore((state) => state.email);
+  const userIsLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const setUserLoggedIn = useUserStore((state) => state.setUserLoggedIn);
+
   const navi = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setIsLoggedIn(true);
+        setUserLoggedIn(true);
       }
     });
-    console.log("UserInfo ...", userInfo);
 
     return unsubscribe;
   }, []);
@@ -26,12 +29,11 @@ const Home = () => {
 
   const logOut = () => {
     auth.signOut();
-    setIsLoggedIn(false);
+    setUserLoggedIn(false);
   };
 
   return (
     <>
-      <h1 style={{ fontSize: "30px" }}>LoginHome.jsx page</h1>
       <Link
         style={{
           margin: "20px",
@@ -44,15 +46,15 @@ const Home = () => {
         Go Create Account
       </Link>
       <br />
-      {isLoggedIn ? (
+      {userIsLoggedIn ? (
         <button onClick={logOut}>LogOut</button>
       ) : (
         <button onClick={login}>LogIn</button>
       )}
       <br></br>
-      <h2 style={{ fontSize: "20px" }}>id is... {userInfo.id}</h2>
-      <h2 style={{ fontSize: "20px" }}>email is... {userInfo.email}</h2>
-      <h2 style={{ fontSize: "20px" }}>name is... {userInfo.name}</h2>
+      <h2 style={{ fontSize: "20px" }}>id is... {userId}</h2>
+      <h2 style={{ fontSize: "20px" }}>email is... {userEmail}</h2>
+      <h2 style={{ fontSize: "20px" }}>name is... {userName}</h2>
     </>
   );
 };
