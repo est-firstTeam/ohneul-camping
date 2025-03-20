@@ -5,7 +5,7 @@ import { DateRange } from "react-date-range";
 import { useState } from "react";
 
 // 날짜 및 일정 관리하는 모달
-const DateModal = ({ modalRef }) => {
+const DateModal = ({ modalRef, setStartDate, setEndDate }) => {
     // 달력 라이브러리 상태 관리
     const [state, setState] = useState([
         {
@@ -14,10 +14,6 @@ const DateModal = ({ modalRef }) => {
             key: "selection",
         },
     ]);
-    const [startDate, setStartDate] = useState();
-    const [endDate, setEndDate] = useState();
-
-    console.log(startDate, endDate);
 
     // 날짜 선택 핸들러 추가
     const handleDateChange = (item) => {
