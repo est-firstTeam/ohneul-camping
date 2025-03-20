@@ -1,0 +1,203 @@
+@use "../abstracts/" as *;
+
+.detail__overview {
+  display: flex;
+  margin-bottom: 5rem;
+
+  &-image {
+    width: 55%;
+  }
+
+  &-reserv {
+    flex: 1; // 남은 공간만큼만 차지하도록 설정
+    max-width: 45%;
+    margin-left: 3rem;
+
+    &--title {
+      font-size: 3rem;
+      color: $black1;
+      margin-bottom: 1rem;
+    }
+
+    &--subtitle {
+      font-size: 1.8rem;
+      color: $secondary;
+      margin-bottom: 1rem;
+    }
+
+    &--location {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    &--campstyle {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        height: 1.5rem;
+        width: 3rem;
+        @include background("ico-camping.svg", center center, null, contain);
+      }
+    }
+
+    &--option {
+      &-text {
+        font-size: 1.2rem;
+        color: $secondary;
+      }
+    }
+
+    &--payment {
+      display: inline-flex;
+      width: 90%;
+      &-text {
+        font-size: 1.2rem;
+        line-height: 4rem;
+        padding-right: 2rem;
+      }
+      &-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 4rem;
+        color: $secondary;
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  &--optionbox {
+    width: 90%;
+    height: 15rem;
+    background-color: $box-primary;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    &-option {
+      display: inline-block;
+      font-size: 1rem;
+      margin: 1.4rem;
+      padding: 0.2rem 0.5rem;
+      border: 0.5px solid $gray3;
+      border-radius: 1rem;
+      background-color: $white;
+    }
+
+    &-date {
+      display: inline-block;
+      font-size: 1.2rem;
+    }
+
+    &-size {
+      margin: 1rem;
+      font-size: 1.2rem;
+      line-height: 2rem;
+    }
+  }
+}
+
+.detail__add-on {
+  display: flex;
+
+  &-left {
+    width: 55%;
+
+    &--title-amenity {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    &--title-intro {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    &--content {
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+      width: 90%;
+      word-break: keep-all; // 띄어쓰기 되어있는 부분 줄바꿈
+    }
+  }
+
+  &-right {
+    margin-left: 3rem;
+    &--title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    &--homepage {
+      // color: blue;
+      text-decoration: underline;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      &::before {
+        content: "";
+        display: inline-block;
+        height: 1.5rem;
+        width: 3rem;
+        @include background("ico-homepage.svg", center center, null, contain);
+      }
+    }
+
+    &--addr {
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        height: 1.5rem;
+        width: 3rem;
+        @include background("ico-geoAlt.svg", center center, null, contain);
+      }
+    }
+  }
+}
+
+.detail__orange-box {
+  border: 1px solid $primary;
+  border-radius: 0.5rem;
+  height: 12rem;
+  width: 90%;
+  margin-bottom: 2rem;
+
+  &--title {
+    margin: 1rem;
+    font-size: 1.5rem;
+  }
+
+  &--contents {
+    margin-top: 2rem;
+    font-size: 1rem;
+  }
+
+  &--amenity {
+    display: inline;
+    padding: 0 1.5rem;
+    color: $secondary;
+  }
+
+  &--contents {
+    font-size: 1.2rem;
+    padding: 0 1.5rem;
+    color: $gray2;
+  }
+}
+
+.row-line {
+  border: 0.5px solid $secondary;
+  width: 90%;
+  margin-bottom: 1rem;
+}
+
+.col-line {
+  border-left: thin solid $gray4;
+  height: auto;
+  min-height: 100%;
+}
