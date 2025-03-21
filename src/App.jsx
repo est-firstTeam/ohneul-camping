@@ -1,6 +1,10 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  Navigate,
+} from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import DetailPage from "./pages/DetailPage.jsx";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
@@ -25,6 +29,18 @@ function App() {
           element: <Main />,
         },
         {
+          path: "/my",
+          element: <MyPage />,
+          children: [
+            {
+              path: "",
+              element: <Navigate to="reservation" replace />,
+            },
+            { path: "reservation", element: <Reservation /> },
+            { path: "cart", element: <Cart /> },
+          ],
+        },
+        {
           path: "/searchResult",
           element: <SearchResult />,
         },
@@ -37,21 +53,26 @@ function App() {
           element: <Login />,
         },
         {
-          path: "detail",
-          element: <DetailPage />,
-        },
-        {
           // 임시 페이지 (추후 삭제)
           path: "/productListExam",
           element: <ProductListExam />,
         },
+        {
+          path: "detail",
+          element: <DetailPage />,
+        },
       ],
     },
   ]);
+
+  const queryClient = new QueryClient();
+
   return (
-    <Suspense fallback={<div>"..loading"</div>}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<div>"..loading"</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </QueryClientProvider>
   );
 }
 export default App;

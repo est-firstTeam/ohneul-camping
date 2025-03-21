@@ -12,6 +12,18 @@ class FBService {
     }
   };
 
+  getCartItems = async (userId) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.User),
+        where("id", "==", userId)
+      );
+      return firebaseAPI.getQueryDocs(q);
+    } catch (e) {
+      throw new Error("get all Reservation Error: %o", e);
+    }
+  };
+
   getSearchCampSite = async () => {
     try {
       const q = query(

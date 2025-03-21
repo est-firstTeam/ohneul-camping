@@ -1,7 +1,10 @@
 import MyPageAside from "../components/MyPageAside";
 import MyPageContentLayout from "../components/MyPageContentLayout";
+import myPageTitleStore from "../store/mypageTitleStore";
 
 const MyPage = () => {
+  const { title } = myPageTitleStore();
+
   const menus = [
     {
       title: "예약 현황",
@@ -18,7 +21,7 @@ const MyPage = () => {
   ];
   return (
     <section className="mypage">
-      <div className="mypage__title">오캠님, 반가워요!</div>
+      <div className="mypage__title">{title}</div>
       <hr className="mypage__hr" />
       <div className="mypage__inner">
         <MyPageAside menus={menus} />

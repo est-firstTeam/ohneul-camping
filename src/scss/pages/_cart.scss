@@ -1,0 +1,7 @@
+@use "../abstracts/" as *;
+
+.cart {
+  &__title {
+    @include a11y-hidden;
+  }
+}
