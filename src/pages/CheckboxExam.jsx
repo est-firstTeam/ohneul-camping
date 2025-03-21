@@ -34,14 +34,14 @@ const CheckboxExam = () => {
       <h1>체크박스 예시</h1>
       <Checkbox
         checked={allChecked}
-        onClick={handleSelectAll}
+        onChange={handleSelectAll}
         label="전체 선택"
       />
       {items.map((item) => (
         <Checkbox
           key={item}
           checked={checkedItems[item] || false}
-          onClick={() => handleCheckboxChange(item)}
+          onChange={() => handleCheckboxChange(item)}
           label={item}
         />
       ))}
