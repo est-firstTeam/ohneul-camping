@@ -43,26 +43,42 @@ const Cart = () => {
     return diffDays;
   }
 
+  // useEffect(() => {
+  //   if (carts) {
+  //     console.log("cart:%o", carts[0].data.userBasket);
+  //     setCheckedItems(() => carts[0].data.userBasket);
+  //   }
+  // }, [carts]);
+  // TODO : 체크박스 연동
   useEffect(() => {
-    if (carts) {
-      console.log("cart:%o", carts[0].data.userBasket);
-      setCheckedItems(() => carts[0].data.userBasket);
-    }
-  }, [carts]);
+    console.log("checked?: %o", checkedItems);
+  }, [checkedItems]);
 
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
     setTitle("나의 장바구니");
   }, []);
+  const hasCartItems =
+    carts &&
+    carts[0] &&
+    carts[0].data &&
+    carts[0].data.userBasket &&
+    carts[0].data.userBasket.length > 0;
+
   return (
     <section className="cart">
       <h2 className="cart__title"></h2>
-      <Checkbox
-        checked={allChecked}
-        onClick={handleSelectAll}
-        label="전체 선택"
-      />
-      {carts &&
+      {hasCartItems && (
+        <Checkbox
+          checked={allChecked}
+          onClick={handleSelectAll}
+          label="전체 선택"
+        />
+      )}
+
+      {!hasCartItems ? (
+        <div>장바구니가 비어 있습니다.</div>
+      ) : (
         carts[0].data.userBasket.map((cartItem) => {
           return (
             <ProductListCart
@@ -82,7 +98,8 @@ const Cart = () => {
               isCart
             />
           );
-        })}
+        })
+      )}
     </section>
   );
 };
