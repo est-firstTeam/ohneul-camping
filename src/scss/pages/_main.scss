@@ -7,3 +7,8 @@
 
   @include background("img_homeBg.png", center center, null, contain);
 }
+
+.main__intro-left {
+  display: flex;
+  align-items: center;
+}
