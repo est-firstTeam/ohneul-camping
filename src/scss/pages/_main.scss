@@ -1,0 +1,9 @@
+@use "../abstracts" as *;
+
+.main__intro {
+  display: grid;
+  height: 50vh;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include background("img_homeBg.png", center center, null, contain);
+}
