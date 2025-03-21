@@ -9,27 +9,49 @@ import { monthDateFormat } from "../util/util";
 
 const Cart = () => {
   // TODO: 현재 유저의 토큰으로 조회해야 함
-  // const auth = getAuth();
-  // const user = auth.currentUser;
 
   const { data: carts } = useQuery({
     queryKey: [`/cart/id`], //TODO: userId
     queryFn: () => fBService.getCartItems("KvsuGtPyBORD2OHATEwpvthlQKt1"),
   });
-  console.log(carts);
 
+  const { setTitle } = myPageTitleStore();
+  useEffect(() => {
+    setTitle("나의 장바구니");
+  }, []);
+
+  // 체크박스 데이터
   const initialCheckedItems = {};
   const [checkedItems, setCheckedItems] = useState(initialCheckedItems);
 
   const allChecked = Object.values(checkedItems).every(Boolean);
 
+  useEffect(() => {
+    const newCheckedState = {};
+
+    if (carts && carts[0] && carts[0].data.carts) {
+      carts[0].data.carts.forEach((item) => {
+        newCheckedState[item.id] = true;
+      });
+      setCheckedItems(newCheckedState);
+    }
+  }, [carts]);
+
   const handleSelectAll = () => {
     const newCheckedState = {};
-    carts.forEach((item) => {
-      newCheckedState[item] = !allChecked;
+    carts[0].data.carts.forEach((item) => {
+      newCheckedState[item.id] = !allChecked;
     });
     setCheckedItems(newCheckedState);
   };
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   function getDaysBetweenDates(startDate, endDate) {
     // 문자열을 Date 객체로 변환
     const start = new Date(startDate);
@@ -44,19 +66,9 @@ const Cart = () => {
 
     // 밀리초를 일 단위로 변환 (1일 = 24시간 * 60분 * 60초 * 1000밀리초)
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays);
     return diffDays;
   }
 
-  // TODO : 체크박스 연동
-  useEffect(() => {
-    console.log("checked?: %o", checkedItems);
-  }, [checkedItems]);
-
-  const { setTitle } = myPageTitleStore();
-  useEffect(() => {
-    setTitle("나의 장바구니");
-  }, []);
   const hasCartItems =
     carts &&
     carts[0] &&
@@ -70,7 +82,7 @@ const Cart = () => {
       {hasCartItems && (
         <Checkbox
           checked={allChecked}
-          onClick={handleSelectAll}
+          onChange={handleSelectAll}
           label="전체 선택"
         />
       )}
@@ -78,27 +90,32 @@ const Cart = () => {
       {!hasCartItems ? (
         <div>장바구니가 비어 있습니다.</div>
       ) : (
-        carts[0].data.carts.map((cartItem) => {
-          return (
-            <ProductListCart
-              key={cartItem.id}
-              firstImageUrl={cartItem.firstImageUrl}
-              startDate={monthDateFormat(cartItem.rsvStartDate)}
-              endDate={monthDateFormat(cartItem.rsvEndDate)}
-              day={getDaysBetweenDates(
-                cartItem.rsvStartDate,
-                cartItem.rsvEndDate
-              )}
-              facltNm={cartItem.facltNm}
-              selected1={cartItem.rsvSiteS}
-              selected2={cartItem.rsvSiteM}
-              selected3={cartItem.rsvSiteL}
-              selected4={cartItem.rsvSiteC}
-              sumPrice={cartItem.rsvTotalPrice}
-              isCart
-            />
-          );
-        })
+        <div className={"cart__list"}>
+          {carts[0].data.carts.map((cartItem, index) => {
+            return (
+              <ProductListCart
+                id={cartItem.id}
+                key={index}
+                firstImageUrl={cartItem.firstImageUrl}
+                checked={checkedItems[cartItem.id] || false}
+                startDate={monthDateFormat(cartItem.rsvStartDate)}
+                endDate={monthDateFormat(cartItem.rsvEndDate)}
+                day={getDaysBetweenDates(
+                  cartItem.rsvStartDate,
+                  cartItem.rsvEndDate
+                )}
+                facltNm={cartItem.facltNm}
+                selected1={cartItem.rsvSiteS}
+                selected2={cartItem.rsvSiteM}
+                selected3={cartItem.rsvSiteL}
+                selected4={cartItem.rsvSiteC}
+                sumPrice={cartItem.rsvTotalPrice}
+                handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
+                isCart
+              />
+            );
+          })}
+        </div>
       )}
     </section>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ItemDetails from "./ItemDetails";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
@@ -9,6 +9,7 @@ import { commaNumber } from "../util/util";
 
 // 마이페이지 상품 리스트
 const ProductListCart = ({
+  id,
   firstImageUrl,
   facltNm, //item
   startDate,
@@ -21,23 +22,9 @@ const ProductListCart = ({
   sumPrice, // 옵션 합산 가격
   isRSV, // 장바구니 (true)
   isCart, // 예약 확인 (true)
+  checked,
+  handleCheckboxChange,
 }) => {
-  const [checkedItems, setCheckedItems] = useState({});
-
-  useEffect(() => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [facltNm]: true, // 기본 체크상태 : 예약 유도
-    }));
-  }, [facltNm]);
-
-  const handleCheckboxChange = () => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [facltNm]: !prev[facltNm],
-    }));
-  };
-
   return (
     <div className="product product--w26">
       <img src={firstImageUrl} className="product__image" />
@@ -46,8 +33,8 @@ const ProductListCart = ({
         {isCart ? (
           <Checkbox
             key={facltNm}
-            checked={checkedItems[facltNm] || false}
-            onClick={() => handleCheckboxChange(facltNm)}
+            checked={checked}
+            onChange={() => handleCheckboxChange(id)}
             label={
               <ItemDetails type="title" size="chked">
                 {facltNm}

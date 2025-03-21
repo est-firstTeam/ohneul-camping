@@ -4,4 +4,11 @@
   &__title {
     @include a11y-hidden;
   }
+
+  &__list {
+    display: grid;
+    flex-wrap: wrap;
+    gap: 2.8rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
