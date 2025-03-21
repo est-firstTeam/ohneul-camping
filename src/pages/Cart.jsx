@@ -6,14 +6,17 @@ import { useState } from "react";
 import { fBService } from "../util/fbService";
 import ProductListCart from "../components/ProductListCart";
 import { monthDateFormat } from "../util/util";
+import { useUserStore } from "../store/useUserStore";
+import { getDaysBetweenDates } from "../util/util";
 
 const Cart = () => {
-  // TODO: 현재 유저의 토큰으로 조회해야 함
-
+  const userId = useUserStore((state) => state.id);
   const { data: carts } = useQuery({
-    queryKey: [`/cart/id`], //TODO: userId
-    queryFn: () => fBService.getCartItems("KvsuGtPyBORD2OHATEwpvthlQKt1"),
+    queryKey: [`/cart/${userId}`],
+    queryFn: () => fBService.getCartItems(userId),
   });
+
+  console.log("cart!!!: %o", carts);
 
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
@@ -51,23 +54,6 @@ const Cart = () => {
       [id]: !prev[id],
     }));
   };
-
-  function getDaysBetweenDates(startDate, endDate) {
-    // 문자열을 Date 객체로 변환
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    // 시간, 분, 초, 밀리초를 0으로 설정하여 날짜만 고려
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
-
-    // 밀리초 단위로 차이 계산
-    const diffTime = Math.abs(end - start);
-
-    // 밀리초를 일 단위로 변환 (1일 = 24시간 * 60분 * 60초 * 1000밀리초)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
 
   const hasCartItems =
     carts &&
@@ -117,6 +103,13 @@ const Cart = () => {
           })}
         </div>
       )}
+      <article>
+        <h3>결제 금액</h3>
+        <section>
+          <span>옵션</span>
+          <span>예약일자: {}</span>
+        </section>
+      </article>
     </section>
   );
 };
