@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import DetailPage from "./pages/DetailPage.jsx";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
 const Main = lazy(() => import("./pages/Main.jsx"));
@@ -12,10 +13,11 @@ const SearchResult = lazy(() => import("./pages/SearchResult.jsx"));
 const MyPage = lazy(() => import("./pages/MyPage.jsx"));
 const Reservation = lazy(() => import("./pages/Reservation.jsx"));
 const Cart = lazy(() => import("./pages/Cart.jsx"));
-const LoginHome = lazy(() => import("./pages/LoginHome.jsx"));
 const CreateAccount = lazy(() => import("./components/CreateAccount.jsx"));
 const Login = lazy(() => import("./components/Login.jsx"));
+const DetailPage = lazy(() => import("./pages/DetailPage.jsx"));
 const ProductListExam = lazy(() => import("./pages/ProductListExam.jsx"));
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -43,10 +45,6 @@ function App() {
           element: <SearchResult />,
         },
         {
-          path: "loginHome",
-          element: <LoginHome />,
-        },
-        {
           path: "createAccount",
           element: <CreateAccount />,
         },
@@ -58,6 +56,10 @@ function App() {
           // 임시 페이지 (추후 삭제)
           path: "/productListExam",
           element: <ProductListExam />,
+        },
+        {
+          path: "detail",
+          element: <DetailPage />,
         },
       ],
     },
@@ -73,5 +75,4 @@ function App() {
     </QueryClientProvider>
   );
 }
-
 export default App;
