@@ -7,8 +7,21 @@
   font-size: 1.6rem;
   cursor: pointer;
 
-  input {
-    display: none; // 기존의 체크박스 스타일 제거
+  .checkbox-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
   }
 
   .checkmark {
@@ -19,15 +32,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
   }
 
-  input:checked + .checkmark {
+  // 체크 상태일 때 스타일 변경
+  .checkbox-input:checked + .checkbox-label .checkmark {
     background-color: $primary;
     border: 1px solid $primary;
   }
 
-  .label // 텍스트(프로젝트에서는 사용 x)
-  {
+  .label {
     font-size: 1.5rem;
     color: $black;
   }
