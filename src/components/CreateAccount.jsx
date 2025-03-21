@@ -43,7 +43,6 @@ const CreateAccount = () => {
       );
       //마이페이지의 닉네임을 출력하기위해 현재 유저에 닉네임을 설정.
       await updateProfile(credential.user, { displayName: data.displayName });
-
       setUser({
         Id: credential.user.uid,
         Name: credential.user.displayName,
@@ -69,11 +68,11 @@ const CreateAccount = () => {
   const saveDataToDB = async (data) => {
     const uid = auth.currentUser.uid;
     await setDoc(doc(firebaseDB, "User", uid), {
-      Id: uid,
-      Name: data.displayName,
-      Email: data.email,
-      userBasket: [],
-      userBooking: [],
+      id: uid,
+      name: data.displayName,
+      email: data.email,
+      profileImg: "",
+      carts: [],
     });
   };
 
@@ -100,7 +99,6 @@ const CreateAccount = () => {
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, googleProvider)
         .then(async (data) => {
-          console.log("Google User Data -> ", data);
           await saveDataToDB(data.user);
           await updateProfile(data.user, {
             displayName: data.user.displayName,
@@ -131,7 +129,7 @@ const CreateAccount = () => {
               })}
               className="account__input account__displayName"
               placeholder="닉네임"
-            ></input>
+            />
             <span className="account__error">
               {formState.errors?.displayName?.message}
             </span>
@@ -149,7 +147,7 @@ const CreateAccount = () => {
               })}
               className="account__input account__email"
               placeholder="이메일"
-            ></input>
+            />
             <span className="account__error">
               {formState.errors?.email?.message}
             </span>
@@ -167,7 +165,7 @@ const CreateAccount = () => {
               className="account__input account__password"
               placeholder="비밀번호"
               type={pwIcons[0] ? "password" : "text"}
-            ></input>
+            />
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
@@ -194,7 +192,7 @@ const CreateAccount = () => {
               className="account__input account__password-chk"
               placeholder="비밀번호 확인"
               type={pwIcons[1] ? "password" : "text"}
-            ></input>
+            />
             <span className="account__error">
               {formState.errors?.passwordCheck?.message}
             </span>
