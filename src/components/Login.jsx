@@ -82,7 +82,7 @@ const Login = () => {
               })}
               className="account__input account__email"
               placeholder="이메일"
-            ></input>
+            />
             <span className="account__error">
               {formState.errors?.email?.message}
             </span>
@@ -96,7 +96,7 @@ const Login = () => {
               className="account__input account__password"
               placeholder="비밀번호"
               type={pwIcon ? "password" : "text"}
-            ></input>
+            />
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>

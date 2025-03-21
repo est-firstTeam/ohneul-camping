@@ -1,29 +1,28 @@
 import { create } from "zustand";
 
 const initialState = {
-    id: "",
-    name: "",
-    email: "",
-    isLoggedIn: false,
-    userBooking: [],
-    userBasket: [],
+  id: "",
+  name: "",
+  email: "",
+  profileImg: "",
+  isLoggedIn: false,
+  carts: [],
 };
 
 export const useUserStore = create((set) => ({
-    ...initialState,
+  ...initialState,
 
-    setUser: (user) => {
-        set(() => {
-            return {
-                id: user.Id,
-                name: user.Name,
-                email: user.Email,
-                isLoggedIn: true,
-            };
-        });
-    },
-    setUserLoggedIn: (loginFlag) => set(() => ({ isLoggedIn: loginFlag })),
-    setUserBooking: (user) =>
-        set(() => ({ userBooking: [...user.userBooking] })),
-    setUserBasket: (user) => set(() => ({ userBasket: [...user.userBasket] })),
+  setUser: (userInfo) => {
+    set(() => {
+      return {
+        id: userInfo.Id,
+        name: userInfo.Name,
+        email: userInfo.Email,
+        profileImg: "",
+        isLoggedIn: true,
+      };
+    });
+  },
+  setUserLoggedIn: (loginFlag) => set(() => ({ isLoggedIn: loginFlag })),
+  setCarts: (cart) => set((state) => ({ carts: [...state.carts, cart] })),
 }));
