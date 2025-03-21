@@ -6,10 +6,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70rem;
-    height: 7rem;
+    width: 80rem;
+    padding: 1.5rem 2rem;
     flex-shrink: 0;
-    gap: 1.2rem;
+    gap: 1.5rem;
 }
 
 .content__name {
@@ -43,6 +43,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: 1rem;
+        padding: 1rem;
     }
 }
 
