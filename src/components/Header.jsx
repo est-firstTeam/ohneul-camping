@@ -1,34 +1,11 @@
 import Logo from "./Logo";
-import cart from "../images/ico-cart.svg";
-import search from "../images/ico-search.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import Gnb from "./Gnb";
-const menus = [
-  {
-    title: "홈",
-    path: "/",
-    iconPath: null,
-  },
-  // TODO: 모든 캠핑장 정보로 스크롤
-  {
-    title: "예약",
-    path: "/",
-    iconPath: null,
-  },
-  {
-    title: null,
-    path: "my/cart",
-    iconPath: cart,
-  },
-  {
-    title: null,
-    path: "/",
-    iconPath: search,
-  },
-];
+import { menus } from "../constants/headerMenus";
+
 const Header = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const navigate = useNavigate();
