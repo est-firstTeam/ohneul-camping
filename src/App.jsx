@@ -41,7 +41,7 @@ function App() {
           ],
         },
         {
-          path: "/searchResult",
+          path: "searchResult",
           element: <SearchResult />,
         },
         {
