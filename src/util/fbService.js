@@ -12,6 +12,14 @@ class FBService {
     }
   };
 
+  getAllCampsites = async () => {
+    try {
+      return firebaseAPI.getAllDocs(CollectionName.Campsite);
+    } catch (e) {
+      throw new Error("get all Reservation Error: %o", e);
+    }
+  };
+
   getCartItems = async (userId) => {
     try {
       const q = query(
