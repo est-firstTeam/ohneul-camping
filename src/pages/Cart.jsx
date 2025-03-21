@@ -8,10 +8,15 @@ import ProductListCart from "../components/ProductListCart";
 import { monthDateFormat } from "../util/util";
 
 const Cart = () => {
+  // TODO: 현재 유저의 토큰으로 조회해야 함
+  // const auth = getAuth();
+  // const user = auth.currentUser;
+
   const { data: carts } = useQuery({
     queryKey: [`/cart/id`], //TODO: userId
-    queryFn: () => fBService.getCartItems("pDzbEYJz5DdiRgkCbafD2NCwe0R2"),
+    queryFn: () => fBService.getCartItems("KvsuGtPyBORD2OHATEwpvthlQKt1"),
   });
+  console.log(carts);
 
   const initialCheckedItems = {};
   const [checkedItems, setCheckedItems] = useState(initialCheckedItems);
@@ -43,12 +48,6 @@ const Cart = () => {
     return diffDays;
   }
 
-  // useEffect(() => {
-  //   if (carts) {
-  //     console.log("cart:%o", carts[0].data.userBasket);
-  //     setCheckedItems(() => carts[0].data.userBasket);
-  //   }
-  // }, [carts]);
   // TODO : 체크박스 연동
   useEffect(() => {
     console.log("checked?: %o", checkedItems);
@@ -62,8 +61,8 @@ const Cart = () => {
     carts &&
     carts[0] &&
     carts[0].data &&
-    carts[0].data.userBasket &&
-    carts[0].data.userBasket.length > 0;
+    carts[0].data.carts &&
+    carts[0].data.carts.length > 0;
 
   return (
     <section className="cart">
@@ -79,9 +78,10 @@ const Cart = () => {
       {!hasCartItems ? (
         <div>장바구니가 비어 있습니다.</div>
       ) : (
-        carts[0].data.userBasket.map((cartItem) => {
+        carts[0].data.carts.map((cartItem) => {
           return (
             <ProductListCart
+              key={cartItem.id}
               firstImageUrl={cartItem.firstImageUrl}
               startDate={monthDateFormat(cartItem.rsvStartDate)}
               endDate={monthDateFormat(cartItem.rsvEndDate)}
