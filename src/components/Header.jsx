@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
+import Gnb from "./Gnb";
 const menus = [
   {
     title: "홈",
@@ -57,27 +58,7 @@ const Header = () => {
     <header className={`header ${showNav ? "" : "header--hide"}`}>
       <Logo />
       <div className="header__inner">
-        <nav className="gnb">
-          <ul className="gnb__list">
-            {menus.map((menu, idx) => (
-              <li key={idx} className="gnb__item">
-                <button onClick={() => navigate(menu.path)}>
-                  <span className="gnb__item-text">
-                    {menu.title && menu.title}
-                  </span>
-                  <span>
-                    {menu.iconPath && (
-                      <div>
-                        <img src={menu.iconPath} />
-                      </div>
-                    )}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
+        <Gnb menus={menus} />
         <button
           className="header__auth-btn"
           onClick={() => {
