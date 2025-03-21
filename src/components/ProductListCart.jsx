@@ -6,8 +6,6 @@ import { commaNumber } from "../util/util";
 
 //TODO
 // - data 연결
-// - selected(선택 상품 수) 값이 없을 경우 : 보이지 않게 처리
-// - startDate가 오늘 이전일 경우 (오늘 포함) : 취소 불가 버튼이 보이게
 
 // 마이페이지 상품 리스트
 const ProductListCart = ({
