@@ -138,15 +138,11 @@ const CreateAccount = () => {
           <div>
             <input
               {...register("email", {
-                pattern: {
-                  value:
-                    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
-                  message: "이메일 형식에 맞지 않습니다.",
-                },
                 required: "이메일을 입력해주세요.",
               })}
               className="account__input account__email"
               placeholder="이메일"
+              type="email"
             />
             <span className="account__error">
               {formState.errors?.email?.message}
@@ -171,6 +167,8 @@ const CreateAccount = () => {
             </span>
             <div
               onClick={() => eyeToggle(0)}
+              type="button"
+              color="none"
               className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
             ></div>
           </div>
@@ -198,6 +196,8 @@ const CreateAccount = () => {
             </span>
             <div
               onClick={() => eyeToggle(1)}
+              type="button"
+              color="none"
               className={pwIcons[1] ? "account__icon" : "account__icon-slash"}
             ></div>
           </div>
@@ -213,7 +213,7 @@ const CreateAccount = () => {
           </div>
         </form>
         <span className="hr-sect">OR</span>
-        <Button className="btn btn__google" onClick={googleLogin}></Button>
+        <Button className="btn-google" onClick={googleLogin}></Button>
         {/* <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button> */}
       </div>
     </section>

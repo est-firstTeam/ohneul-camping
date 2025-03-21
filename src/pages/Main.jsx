@@ -13,7 +13,8 @@ const Main = () => {
     fBService.getSearchCampSite().then((result) => {
       console.log("%o", result);
     });
-  }, []);
+  });
+
   return (
     <div>
       <div>SAY HELLO</div>
@@ -36,6 +37,10 @@ const Main = () => {
         </button>
       </div>
       <TopBtn />
+      <section className="main__intro">
+        <div></div>
+        <div></div>
+      </section>
     </div>
   );
 };

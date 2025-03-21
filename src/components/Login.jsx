@@ -82,6 +82,7 @@ const Login = () => {
               })}
               className="account__input account__email"
               placeholder="이메일"
+              type="email"
             />
             <span className="account__error">
               {formState.errors?.email?.message}
@@ -100,10 +101,12 @@ const Login = () => {
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <div
+            <Button
+              type="button"
               onClick={eyeToggle}
+              color="none"
               className={pwIcon ? "account__icon" : "account__icon-slash"}
-            ></div>
+            ></Button>
           </div>
           {/* submit 버튼 */}
           <div>
@@ -118,11 +121,7 @@ const Login = () => {
         </form>
         <div className="account__etc">
           <span className="hr-sect">OR</span>
-          <Button
-            className="btn btn__google"
-            onClick={googleLogin}
-            style={{ margin: "10px 0px" }}
-          ></Button>
+          <Button className="btn-google" onClick={googleLogin}></Button>
           <Link className="account__link" to="/createAccount">
             회원가입은 여기를 클릭해주세요
           </Link>
