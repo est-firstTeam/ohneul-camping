@@ -1,7 +1,7 @@
 import ItemDetails from "./ItemDetails";
 import React from "react";
 import noImage from "./../images/no_image.png";
-import useCampsiteData from "../hooks/useCampsiteData";
+// import useCampsiteData from "../hooks/useCampsiteData";
 
 // Campsite 컬렉션
 // doNm, facltNm, firstImageUrl, induty, sigunguNm, caravSiteCo, siteMg1Co, siteMg2Co, siteMg3Co
@@ -10,15 +10,16 @@ import useCampsiteData from "../hooks/useCampsiteData";
 // Available_RSV 컬렉션
 // siteS, siteM, siteL, siteC, ... (선택 날짜에 따라 변경되는 값)
 
-const ProductList = ({ stock }) => {
-  const { campsiteData, loading } = useCampsiteData();
+const ProductList = ({ stock, campsiteData }) => {
+  // const { campsiteData, loading } = useCampsiteData();
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
 
   return (
     <div className="product-list">
       {campsiteData.map((camp) => {
-        const { siteMg1Co, siteMg2Co, siteMg3Co, caravSiteCo } = camp.data;
+        // const { siteMg1Co, siteMg2Co, siteMg3Co, caravSiteCo } = camp.data;
+        const { siteS, siteM, siteL, siteC } = camp.data;
         // 재고 옵션
         // 현재 넣어둔 데이터는 임시(Campsite 컬렉션 데이터)
         // 검색 결과 페이지에서는
@@ -26,10 +27,14 @@ const ProductList = ({ stock }) => {
         // 아예 옵션이 존재하지 않는 경우 : Campsite 데이터 값이 0임
         // 품절돼서 0인 경우 : [최대재고-예약수 = 0]이어야 함
         const stockData = [
-          { label: "소", value: siteMg1Co },
-          { label: "중", value: siteMg2Co },
-          { label: "대", value: siteMg3Co },
-          { label: "카라반", value: caravSiteCo },
+          // { label: "소", value: siteMg1Co },
+          // { label: "중", value: siteMg2Co },
+          // { label: "대", value: siteMg3Co },
+          // { label: "카라반", value: caravSiteCo },
+          { label: "소", value: siteS },
+          { label: "중", value: siteM },
+          { label: "대", value: siteL },
+          { label: "카라반", value: siteC },
         ];
 
         return (

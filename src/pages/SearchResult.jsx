@@ -1,10 +1,14 @@
+import ProductList from "../components/ProductList";
 import SearchBar from "../components/Searchbar";
+import useSearchStore from "../store/useSearchStore";
 
 const SearchResult = () => {
-    return (
-        <>
-            <SearchBar />
-        </>
-    );
+  const { searchResult } = useSearchStore();
+  return (
+    <>
+      <SearchBar />
+      <ProductList stock={true} campsiteData={searchResult} />
+    </>
+  );
 };
 export default SearchResult;

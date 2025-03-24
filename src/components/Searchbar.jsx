@@ -8,6 +8,10 @@ import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
+// import { collection, getDocs, query, where } from "firebase/firestore";
+// import { firebaseDB } from "../firebaseConfig";
+import ProductList from "./ProductList";
+import { fBService } from "../util/fbService";
 
 const SearchBar = () => {
   const locationModal = useRef(null); // 위치 모달 관리
@@ -23,6 +27,8 @@ const SearchBar = () => {
     setStartDate,
     setEndDate,
     setSite,
+    setSearchResult,
+    searchResult,
   } = useSearchStore();
 
   // 모달 열기
@@ -60,20 +66,73 @@ const SearchBar = () => {
     },
   ];
 
+  // 검색
+  const fetchSearch = async () => {
+    try {
+      // 1. 캠핑 예약 가능한 사이트 개수 불러오기
+      const siteArr = await fBService.getSearchARSV(
+        searchValue.location,
+        searchValue.startDate
+      );
+      console.log(siteArr);
+      console.log(
+        siteArr.flatMap((content) =>
+          content.data.content.map((item) => item.contentId)
+        )
+      );
+      // flatMap을 사용안하면 배열이 중첩된 상태 그대로 출력된다.
+      // console.log(
+      //   snapShot.docs.map((doc) => doc.data()).map((item) => item.content)
+      // );
+
+      // 2. 캠핑 사이트 정보 불러오기
+      let campArr = [];
+      const contentIdArray = siteArr.flatMap((content) =>
+        content.data.content.map((item) => item.contentId)
+      );
+      console.log(contentIdArray);
+      for (let id of contentIdArray) {
+        const filteredCampData = await fBService.getSearchCampSite(id);
+        const filteredCampData2 = filteredCampData[0];
+        campArr.push(filteredCampData2);
+      }
+
+      console.log(
+        siteArr.flatMap((site) => site.data.content.map((item) => item))
+      );
+      console.log(campArr.map((camp) => camp.data));
+
+      // // 3. 캠핑 예약 가능한 사이트 개수 & 캠핑 사이트 정보 매칭하기
+      const matched = siteArr.flatMap((site) =>
+        site.data.content.map((item) => {
+          const campInfo = campArr.find(
+            (camp) => camp.data.contentId === item.contentId
+          );
+          return { data: { ...item, ...campInfo.data } };
+        })
+      );
+
+      setSearchResult(matched);
+    } catch (error) {
+      console.error("검색 오류", error);
+    }
+  };
+  console.log(searchResult);
+
   return (
     <>
       {/* 검색 바 */}
       <div className="search__bar">
-        {searchBarButtons.map((button, index) => (
+        {searchBarButtons.map((sButton, index) => (
           <Button
             key={index}
-            className={`btn-searchbar-${button.name}`}
+            className={`btn-searchbar-${sButton.name}`}
             color="secondary"
             iconPosition="left"
-            icon={button.icon}
-            onClick={button.onClick}
+            icon={sButton.icon}
+            onClick={sButton.onClick}
           >
-            {button.onValue ? <>{button.onValue}</> : <>{button.label}</>}
+            {sButton.onValue ? <>{sButton.onValue}</> : <>{sButton.label}</>}
           </Button>
         ))}
         {searchValue.location &&
@@ -85,6 +144,7 @@ const SearchBar = () => {
               color={"primary"}
               icon={<img src={right_arr} />}
               iconPosition="right"
+              onClick={fetchSearch}
             >
               검색
             </Button>
