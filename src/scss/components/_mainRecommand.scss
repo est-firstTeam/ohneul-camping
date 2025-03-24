@@ -1,0 +1,71 @@
+@use "../abstracts" as *;
+
+.main__rcmd {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(2, minmax(45rem, 55rem));
+  margin: 10rem;
+}
+
+.main__rcmd-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rcmd-left__img-area {
+  img {
+    width: 100%;
+    height: 35rem;
+    border-radius: 25% 25% 25% 25% / 50% 50% 50% 50%;
+  }
+}
+
+.main__rcmd-right {
+  margin-left: 5rem;
+  font-size: 4rem;
+
+  h3 {
+    font-size: 2.5rem;
+    color: $secondary;
+  }
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+  }
+}
+
+.main__rcmd-paragraph {
+  font-size: 1.3rem;
+  line-height: 2rem;
+  color: $gray3;
+}
+
+.rcmd__camp-info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1rem 0rem;
+  }
+}
+
+.camp-info-text {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  color: $black1;
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 2rem;
+    aspect-ratio: 1;
+    top: 0;
+    left: 0;
+    margin-right: 1rem;
+    @include background("ico_rightArrow2.svg", center center, null, inherit);
+  }
+}

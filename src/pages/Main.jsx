@@ -5,6 +5,9 @@ import { fBService } from "../util/fbService";
 import Searchbar from "../components/Searchbar.jsx";
 import MainIntro from "../components/MainIntro.jsx";
 import MainRecommand from "../components/MainRecommand.jsx";
+import MainMostRSV from "../components/MainMostRSV.jsx";
+import ProductListExam from "./ProductListExam.jsx";
+import MainAllCampsite from "../components/MainAllCampsite.jsx";
 
 const Main = () => {
   useEffect(() => {
@@ -24,6 +27,7 @@ const Main = () => {
         <Searchbar />
       </div>
       <MainRecommand />
+      <MainAllCampsite />
     </>
   );
 };
