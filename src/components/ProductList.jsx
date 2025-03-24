@@ -10,14 +10,14 @@ import useCampsiteData from "../hooks/useCampsiteData";
 // Available_RSV 컬렉션
 // siteS, siteM, siteL, siteC, ... (선택 날짜에 따라 변경되는 값)
 
-const ProductList = ({ stock }) => {
-  const { campsiteData, loading } = useCampsiteData();
+const ProductList = ({ stock, limit }) => {
+  const { campsiteData } = useCampsiteData();
 
-  if (loading) return <p>Loading...</p>;
+  const displayedData = campsiteData.slice(0, limit || 1);
 
   return (
     <div className="product-list">
-      {campsiteData.map((camp) => {
+      {displayedData.map((camp) => {
         const { siteMg1Co, siteMg2Co, siteMg3Co, caravSiteCo } = camp.data;
         // 재고 옵션
         // 현재 넣어둔 데이터는 임시(Campsite 컬렉션 데이터)
