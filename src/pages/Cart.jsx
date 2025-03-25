@@ -52,6 +52,12 @@ const Cart = () => {
     }));
   };
 
+  const handleDeleteItem = (id) => {
+    const newCarts = carts.filter((prev) => prev.id !== id);
+    console.log("new:", newCarts);
+    // TODO: 이 데이터를 새로 insert
+  };
+
   return (
     <section className="cart">
       <h2 className="cart__title"></h2>
@@ -87,6 +93,7 @@ const Cart = () => {
                 selected4={cartItem.rsvSiteC}
                 sumPrice={cartItem.rsvTotalPrice}
                 handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
+                handleDeleteItem={() => handleDeleteItem(cartItem.id)}
                 isCart
               />
             );
