@@ -15,9 +15,7 @@ const Cart = () => {
     queryKey: [`/cart/${userId}`],
     queryFn: () => fBService.getCartItems(userId),
   });
-
-  console.log("cart!!!: %o", carts);
-
+  // TODO: 해당하는 데이터 분리하기
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
     setTitle("나의 장바구니");
@@ -26,14 +24,13 @@ const Cart = () => {
   // 체크박스 데이터
   const initialCheckedItems = {};
   const [checkedItems, setCheckedItems] = useState(initialCheckedItems);
-
   const allChecked = Object.values(checkedItems).every(Boolean);
 
   useEffect(() => {
     const newCheckedState = {};
 
-    if (carts && carts[0] && carts[0].data.carts) {
-      carts[0].data.carts.forEach((item) => {
+    if (carts) {
+      carts.forEach((item) => {
         newCheckedState[item.id] = true;
       });
       setCheckedItems(newCheckedState);
@@ -42,7 +39,7 @@ const Cart = () => {
 
   const handleSelectAll = () => {
     const newCheckedState = {};
-    carts[0].data.carts.forEach((item) => {
+    carts.forEach((item) => {
       newCheckedState[item.id] = !allChecked;
     });
     setCheckedItems(newCheckedState);
@@ -55,17 +52,10 @@ const Cart = () => {
     }));
   };
 
-  const hasCartItems =
-    carts &&
-    carts[0] &&
-    carts[0].data &&
-    carts[0].data.carts &&
-    carts[0].data.carts.length > 0;
-
   return (
     <section className="cart">
       <h2 className="cart__title"></h2>
-      {hasCartItems && (
+      {carts && (
         <Checkbox
           checked={allChecked}
           onChange={handleSelectAll}
@@ -73,11 +63,11 @@ const Cart = () => {
         />
       )}
 
-      {!hasCartItems ? (
+      {!carts ? (
         <div>장바구니가 비어 있습니다.</div>
       ) : (
         <div className={"cart__list"}>
-          {carts[0].data.carts.map((cartItem, index) => {
+          {carts.map((cartItem, index) => {
             return (
               <ProductListCart
                 id={cartItem.id}
@@ -108,8 +98,15 @@ const Cart = () => {
         <section>
           <span>옵션</span>
           <span>예약일자: {}</span>
+          {carts &&
+            carts.map((cart) => {
+              if (checkedItems[cart.id]) {
+                return cart.toString();
+              }
+            })}
         </section>
       </article>
+      {/* <Modal /> */}
     </section>
   );
 };
