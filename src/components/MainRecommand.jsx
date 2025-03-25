@@ -8,16 +8,10 @@ const MainRecommand = () => {
     queryKey: ["pickOneCampsite"],
     queryFn: async () => fBService.getAllCampsites(),
     select: (data) => {
-      const temp = data[Math.floor(Math.random() * 30)].data;
+      const temp = data[Math.floor(Math.random() * data.length)].data;
       const returnObj = { ...temp };
       return returnObj;
     },
-    // select: (data) => {
-    //   const test = data.map((x) => {
-    //     return x["id"];
-    //   });
-    //   return test;
-    // },
   });
 
   // const insertDB = async () => {
