@@ -37,6 +37,14 @@ const ProductListCart = ({
       [facltNm]: !prev[facltNm],
     }));
   };
+  // 0은 보이지 않게 함
+  const availableSites = [
+    selected1 !== 0 && `소 ${selected1}자리`,
+    selected2 !== 0 && `중 ${selected2}자리`,
+    selected3 !== 0 && `대 ${selected3}자리`,
+    selected4 !== 0 && `카라반 ${selected4}자리`,
+  ];
+  const sitesSort = availableSites.filter(Boolean).join(", ");
 
   return (
     <div className="product product--w26">
@@ -61,8 +69,8 @@ const ProductListCart = ({
         )}
         <ItemDetails type="text" color="gray">
           {startDate} ~ {endDate} ({day}박)
-          <br />소 {selected1}자리, 중 {selected2}자리, 대 {selected3}자리,
-          카라반 {selected4}자리
+          <br />
+          {sitesSort}
         </ItemDetails>
         <ItemDetails type="price" size="reserved">
           {commaNumber(sumPrice)}
