@@ -7,10 +7,16 @@ import Gnb from "./Gnb";
 import { menus } from "../constants/headerMenus";
 
 const Header = () => {
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const { isLoggedIn, resetUser } = useUserStore();
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
+
+  const handleLogout = () => {
+    resetUser();
+    useUserStore.persist.clearStorage();
+    navigate("/");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +51,7 @@ const Header = () => {
         >
           {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
         </button>
+        {isLoggedIn && <button onClick={handleLogout}>로그아웃</button>}
       </div>
     </header>
   );
