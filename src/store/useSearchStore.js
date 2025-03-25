@@ -35,9 +35,6 @@ const useSearchStore = create((set) => ({
     endDate: null,
   },
 
-  // 검색 결과 배열
-  searchResult: [],
-
   // 취소
   setCancel: (key) => {
     set((state) => ({
@@ -84,13 +81,6 @@ const useSearchStore = create((set) => ({
         ...state.searchValue,
         site,
       },
-    }));
-  },
-
-  // 검색
-  setSearchResult: (data) => {
-    set(() => ({
-      searchResult: data,
     }));
   },
 }));
