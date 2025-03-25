@@ -12,3 +12,8 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.cart__agreement {
+  display: flex;
+  gap: 0.8rem;
+}
