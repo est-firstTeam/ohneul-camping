@@ -32,13 +32,38 @@ class FBService {
     }
   };
 
-  getSearchCampSite = async () => {
+  // getSearchCampSite = async () => {
+  //   try {
+  //     const q = query(
+  //       collection(firebaseDB, CollectionName.Campsite),
+  //       where("doNm", "==", "전라남도")
+  //     );
+  //     return firebaseAPI.getQueryDocs(q);
+  //   } catch (e) {
+  //     throw new Error("search Campsite Error: %o", e);
+  //   }
+  // };
+
+  getSearchARSV = async (location, startDate) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.Available_RSV),
+        where("address", "==", location),
+        where("date", "==", startDate)
+      );
+      return firebaseAPI.getQueryDocs(q);
+    } catch (e) {
+      throw new Error("search AvailableRSV Error: %o", e);
+    }
+  };
+
+  getSearchCampSite = async (contentId) => {
     try {
       const q = query(
         collection(firebaseDB, CollectionName.Campsite),
-        where("doNm", "==", "전라남도")
+        where("contentId", "==", contentId)
       );
-      return firebaseAPI.getQueryDocs(q);
+      return firebaseAPI.getListQueryDocs(q);
     } catch (e) {
       throw new Error("search Campsite Error: %o", e);
     }

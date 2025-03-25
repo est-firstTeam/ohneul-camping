@@ -1,8 +1,10 @@
 import ProductList from "../components/ProductList";
 import ProductListCart from "../components/ProductListCart";
+import useCampsiteData from "../hooks/useCampsiteData";
 
 const ProductListExam = (props) => {
   // 데이터 연결 후 props 사용하는 게 없어지면 props를 삭제해도 됨
+
   return (
     <>
       {/* 상품 리스트 : 메인 */}
