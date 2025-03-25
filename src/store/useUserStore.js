@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 
 export const useUserStore = create(
   persist(
+    // local storage에 저장됨
     (set) => ({
       id: "",
       name: "",

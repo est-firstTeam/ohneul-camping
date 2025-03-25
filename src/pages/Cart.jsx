@@ -6,100 +6,107 @@ import { useState } from "react";
 import { fBService } from "../util/fbService";
 import ProductListCart from "../components/ProductListCart";
 import { monthDateFormat } from "../util/util";
+import { useUserStore } from "../store/useUserStore";
+import { getDaysBetweenDates } from "../util/util";
 
 const Cart = () => {
-  // TODO: 현재 유저의 토큰으로 조회해야 함
-  // const auth = getAuth();
-  // const user = auth.currentUser;
-
+  const userId = useUserStore((state) => state.id);
   const { data: carts } = useQuery({
-    queryKey: [`/cart/id`], //TODO: userId
-    queryFn: () => fBService.getCartItems("KvsuGtPyBORD2OHATEwpvthlQKt1"),
+    queryKey: [`/cart/${userId}`],
+    queryFn: () => fBService.getCartItems(userId),
   });
-  console.log(carts);
-
-  const initialCheckedItems = {};
-  const [checkedItems, setCheckedItems] = useState(initialCheckedItems);
-
-  const allChecked = Object.values(checkedItems).every(Boolean);
-
-  const handleSelectAll = () => {
-    const newCheckedState = {};
-    carts.forEach((item) => {
-      newCheckedState[item] = !allChecked;
-    });
-    setCheckedItems(newCheckedState);
-  };
-  function getDaysBetweenDates(startDate, endDate) {
-    // 문자열을 Date 객체로 변환
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    // 시간, 분, 초, 밀리초를 0으로 설정하여 날짜만 고려
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
-
-    // 밀리초 단위로 차이 계산
-    const diffTime = Math.abs(end - start);
-
-    // 밀리초를 일 단위로 변환 (1일 = 24시간 * 60분 * 60초 * 1000밀리초)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays);
-    return diffDays;
-  }
-
-  // TODO : 체크박스 연동
-  useEffect(() => {
-    console.log("checked?: %o", checkedItems);
-  }, [checkedItems]);
-
+  // TODO: 해당하는 데이터 분리하기
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
     setTitle("나의 장바구니");
   }, []);
-  const hasCartItems =
-    carts &&
-    carts[0] &&
-    carts[0].data &&
-    carts[0].data.carts &&
-    carts[0].data.carts.length > 0;
+
+  // 체크박스 데이터
+  const initialCheckedItems = {};
+  const [checkedItems, setCheckedItems] = useState(initialCheckedItems);
+  const allChecked = Object.values(checkedItems).every(Boolean);
+
+  useEffect(() => {
+    const newCheckedState = {};
+
+    if (carts) {
+      carts.forEach((item) => {
+        newCheckedState[item.id] = true;
+      });
+      setCheckedItems(newCheckedState);
+    }
+  }, [carts]);
+
+  const handleSelectAll = () => {
+    const newCheckedState = {};
+    carts.forEach((item) => {
+      newCheckedState[item.id] = !allChecked;
+    });
+    setCheckedItems(newCheckedState);
+  };
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <section className="cart">
       <h2 className="cart__title"></h2>
-      {hasCartItems && (
+      {carts && (
         <Checkbox
           checked={allChecked}
-          onClick={handleSelectAll}
+          onChange={handleSelectAll}
           label="전체 선택"
         />
       )}
 
-      {!hasCartItems ? (
+      {!carts ? (
         <div>장바구니가 비어 있습니다.</div>
       ) : (
-        carts[0].data.carts.map((cartItem) => {
-          return (
-            <ProductListCart
-              key={cartItem.id}
-              firstImageUrl={cartItem.firstImageUrl}
-              startDate={monthDateFormat(cartItem.rsvStartDate)}
-              endDate={monthDateFormat(cartItem.rsvEndDate)}
-              day={getDaysBetweenDates(
-                cartItem.rsvStartDate,
-                cartItem.rsvEndDate
-              )}
-              facltNm={cartItem.facltNm}
-              selected1={cartItem.rsvSiteS}
-              selected2={cartItem.rsvSiteM}
-              selected3={cartItem.rsvSiteL}
-              selected4={cartItem.rsvSiteC}
-              sumPrice={cartItem.rsvTotalPrice}
-              isCart
-            />
-          );
-        })
+        <div className={"cart__list"}>
+          {carts.map((cartItem, index) => {
+            return (
+              <ProductListCart
+                id={cartItem.id}
+                key={index}
+                firstImageUrl={cartItem.firstImageUrl}
+                checked={checkedItems[cartItem.id] || false}
+                startDate={monthDateFormat(cartItem.rsvStartDate)}
+                endDate={monthDateFormat(cartItem.rsvEndDate)}
+                day={getDaysBetweenDates(
+                  cartItem.rsvStartDate,
+                  cartItem.rsvEndDate
+                )}
+                facltNm={cartItem.facltNm}
+                selected1={cartItem.rsvSiteS}
+                selected2={cartItem.rsvSiteM}
+                selected3={cartItem.rsvSiteL}
+                selected4={cartItem.rsvSiteC}
+                sumPrice={cartItem.rsvTotalPrice}
+                handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
+                isCart
+              />
+            );
+          })}
+        </div>
       )}
+      <article>
+        <h3>결제 금액</h3>
+        <section>
+          <span>옵션</span>
+          <span>예약일자: {}</span>
+          {carts &&
+            carts.map((cart) => {
+              if (checkedItems[cart.id]) {
+                return cart.toString();
+              }
+            })}
+        </section>
+      </article>
+      {/* <Modal /> */}
     </section>
   );
 };
