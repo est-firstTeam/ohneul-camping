@@ -68,6 +68,20 @@ class FBService {
       throw new Error("search Campsite Error: %o", e);
     }
   };
+
+  getSearchAllARSV = async (startDate) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.Available_RSV),
+        // where("address", "in", locations),
+        where("date", "==", startDate)
+      );
+      return firebaseAPI.getQueryDocs(q);
+    } catch (e) {
+      console.error(e);
+      throw new Error("search All AvailableRSV Error: %o", e);
+    }
+  };
 }
 
 export const fBService = new FBService();

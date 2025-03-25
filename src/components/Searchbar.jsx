@@ -3,18 +3,20 @@ import mapico from "../images/ico-map.svg";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import Button from "./Button";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
 import { fBService } from "../util/fbService";
+import { useQuery } from "@tanstack/react-query";
 
 const SearchBar = () => {
   const locationModal = useRef(null); // 위치 모달 관리
   const dateModal = useRef(null); // 날짜 및 일정 모달 관리
   const siteModal = useRef(null); // 캠프 사이트 모달 관리
-  const [siteEx, setSiteEx] = useState(""); // 사이트 선택
+  // const [siteEx, setSiteEx] = useState(""); // 사이트 선택
+  const [enabled, setEnabled] = useState(false);
 
   const {
     locations,
@@ -59,62 +61,120 @@ const SearchBar = () => {
       label: "사이트 형태",
       icon: <img src={siteico} width={"20px"} height={"20px"} />,
       onClick: () => openModal(siteModal),
-      onValue: siteEx,
+      // onValue: siteEx,
+      onValue: searchValue.site,
     },
   ];
 
-  // 검색
-  const fetchSearch = async () => {
-    try {
-      // 1. 캠핑 예약 가능한 사이트 개수 불러오기
-      setSite(siteEx);
-      const siteArr = await fBService.getSearchARSV(
-        searchValue.location,
-        searchValue.startDate
-      );
-      console.log(siteArr);
-      console.log(
-        siteArr.flatMap((content) =>
-          content.data.content.map((item) => item.contentId)
-        )
-      );
-      // flatMap을 사용안하면 배열이 중첩된 상태 그대로 출력된다.
-      // console.log(
-      //   snapShot.docs.map((doc) => doc.data()).map((item) => item.content)
-      // );
+  // const test = () => {};
 
-      // 2. 캠핑 사이트 정보 불러오기
-      let campArr = [];
-      const contentIdArray = siteArr.flatMap((content) =>
-        content.data.content.map((item) => item.contentId)
-      );
-      console.log(contentIdArray);
-      for (let id of contentIdArray) {
-        const filteredCampData = await fBService.getSearchCampSite(id);
-        const filteredCampData2 = filteredCampData[0];
-        campArr.push(filteredCampData2);
-      }
+  // const handleClick = useCallback(() => {
+  //   setEnabled(false);
+  // }, [setEnabled]);
 
-      console.log(
-        siteArr.flatMap((site) => site.data.content.map((item) => item))
-      );
-      console.log(campArr.map((camp) => camp.data));
+  const { data: siteArr, refetch } = useQuery({
+    queryKey: ["siteArr"],
+    queryFn: () =>
+      fBService.getSearchARSV(searchValue.location, searchValue.startDate),
+    enabled: enabled,
+    select: (siteArr) => {
+      return siteArr[0].data.content.filter((item) => {
+        if (searchValue.site === "소(1~3인)") {
+          return item.siteS !== null;
+        }
+        if (searchValue.site === "중(4~6인)") {
+          return item.siteM !== null;
+        }
+        if (searchValue.site === "대(7~10인)") {
+          return item.siteL !== null;
+        }
+        if (searchValue.site === "카라반(1~4인)") {
+          return item.siteC !== null;
+        }
+        return false;
+      });
+    },
+  });
 
-      // // 3. 캠핑 예약 가능한 사이트 개수 & 캠핑 사이트 정보 매칭하기
-      const matched = siteArr.flatMap((site) =>
-        site.data.content.map((item) => {
-          const campInfo = campArr.find(
-            (camp) => camp.data.contentId === item.contentId
-          );
-          return { data: { ...item, ...campInfo.data } };
-        })
-      );
+  // console.log(enabled);
+  console.log(siteArr);
 
-      setSearchResult(matched);
-    } catch (error) {
-      console.error("검색 오류", error);
+  useEffect(() => {
+    if (searchValue) {
+      refetch();
+      setSearchResult(siteArr);
     }
-  };
+  }, [searchValue, refetch]);
+
+  // 검색
+  // const fetchSearch = async () => {
+  //   try {
+  //     // 캠핑 예약 가능한 사이트 개수 불러오기
+  //     // setSite(siteEx);
+  //     // if (searchValue.location !== "전체") {
+  //     // const siteArr = await fBService.getSearchARSV(
+  //     //   searchValue.location,
+  //     //   searchValue.startDate
+  //     // );
+  //     // 지역별로 검색하기
+  //     // console.log(siteArr);
+  //     // // 검색 결과 있을 때
+  //     // if (siteArr[0]) {
+  //     //   console.log(siteArr[0].data.content);
+  //     //   // 소/중/대/카라반 사이트 별 검색 필터링
+  //     //   const filteredData = siteArr[0].data.content.filter((item) => {
+  //     //     if (searchValue.site === "소(1~3인)") {
+  //     //       return item.siteS !== null;
+  //     //     } else if (searchValue.site === "중(4~6인)") {
+  //     //       return item.siteM !== null;
+  //     //     } else if (searchValue.site === "대(7~10인)") {
+  //     //       return item.siteL !== null;
+  //     //     } else if (searchValue.site === "카라반(1~4인)") {
+  //     //       return item.siteC !== null;
+  //     //     } else {
+  //     //       setSearchResult([]);
+  //     //     }
+  //     //   });
+  //     //   console.log(filteredData);
+  //     //   setSearchResult(filteredData);
+  //     // }
+  //     // // 검색 결과 없을 때
+  //     // else {
+  //     //   setSearchResult([]);
+  //     // }
+  //     // }
+  //     // else if (searchValue.location === "전체") {
+  //     //   const siteArr = await fBService.getSearchAllARSV(searchValue.startDate);
+  //     //   console.log(siteArr);
+  //     //   // 검색 결과 있을 때
+  //     //   if (siteArr[0]) {
+  //     //     console.log(siteArr[0].data.content);
+  //     //     // 소/중/대/카라반 사이트 별 검색 필터링
+  //     //     const filteredData = siteArr[0].data.content.filter((item) => {
+  //     //       if (searchValue.site === "소(1~3인)") {
+  //     //         return item.siteS !== null;
+  //     //       } else if (searchValue.site === "중(4~6인)") {
+  //     //         return item.siteM !== null;
+  //     //       } else if (searchValue.site === "대(7~10인)") {
+  //     //         return item.siteL !== null;
+  //     //       } else if (searchValue.site === "카라반(1~4인)") {
+  //     //         return item.siteC !== null;
+  //     //       } else {
+  //     //         setSearchResult([]);
+  //     //       }
+  //     //     });
+  //     //     console.log(filteredData);
+  //     //     setSearchResult(filteredData);
+  //     //   }
+  //     //   // 검색 결과 없을 때
+  //     //   else {
+  //     //     setSearchResult([]);
+  //     //   }
+  //     // }
+  //   } catch (error) {
+  //     console.error("검색 오류", error);
+  //   }
+  // };
 
   return (
     <>
@@ -135,13 +195,18 @@ const SearchBar = () => {
         {searchValue.location &&
         searchValue.startDate &&
         searchValue.endDate &&
-        siteEx ? (
+        searchValue.site ? (
           <>
             <Button
               color={"primary"}
               icon={<img src={right_arr} />}
               iconPosition="right"
-              onClick={fetchSearch}
+              onClick={() => {
+                setEnabled(true);
+                setTimeout(() => {
+                  setEnabled(false);
+                }, 1000);
+              }}
             >
               검색
             </Button>
@@ -205,8 +270,8 @@ const SearchBar = () => {
                 key={index}
                 chipValue={site}
                 groupName="캠핑 사이트"
-                // onClick={(e) => setSite(e.target.value)}
-                onClick={(e) => setSiteEx(e.target.value)}
+                onClick={(e) => setSite(e.target.value)}
+                // onClick={(e) => setSiteEx(e.target.value)}
               />
             ))}
           </div>
