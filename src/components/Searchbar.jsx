@@ -3,20 +3,18 @@ import mapico from "../images/ico-map.svg";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import Button from "./Button";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
-// import { collection, getDocs, query, where } from "firebase/firestore";
-// import { firebaseDB } from "../firebaseConfig";
-import ProductList from "./ProductList";
 import { fBService } from "../util/fbService";
 
 const SearchBar = () => {
   const locationModal = useRef(null); // 위치 모달 관리
   const dateModal = useRef(null); // 날짜 및 일정 모달 관리
   const siteModal = useRef(null); // 캠프 사이트 모달 관리
+  const [siteEx, setSiteEx] = useState(""); // 사이트 선택
 
   const {
     locations,
@@ -28,7 +26,6 @@ const SearchBar = () => {
     setEndDate,
     setSite,
     setSearchResult,
-    searchResult,
   } = useSearchStore();
 
   // 모달 열기
@@ -62,7 +59,7 @@ const SearchBar = () => {
       label: "사이트 형태",
       icon: <img src={siteico} width={"20px"} height={"20px"} />,
       onClick: () => openModal(siteModal),
-      onValue: searchValue.site,
+      onValue: siteEx,
     },
   ];
 
@@ -70,6 +67,7 @@ const SearchBar = () => {
   const fetchSearch = async () => {
     try {
       // 1. 캠핑 예약 가능한 사이트 개수 불러오기
+      setSite(siteEx);
       const siteArr = await fBService.getSearchARSV(
         searchValue.location,
         searchValue.startDate
@@ -117,7 +115,6 @@ const SearchBar = () => {
       console.error("검색 오류", error);
     }
   };
-  console.log(searchResult);
 
   return (
     <>
@@ -126,7 +123,7 @@ const SearchBar = () => {
         {searchBarButtons.map((sButton, index) => (
           <Button
             key={index}
-            className={`btn-searchbar-${sButton.name}`}
+            className={`btn-searchbar`}
             color="secondary"
             iconPosition="left"
             icon={sButton.icon}
@@ -136,9 +133,9 @@ const SearchBar = () => {
           </Button>
         ))}
         {searchValue.location &&
-        searchValue.site &&
         searchValue.startDate &&
-        searchValue.endDate ? (
+        searchValue.endDate &&
+        siteEx ? (
           <>
             <Button
               color={"primary"}
@@ -180,6 +177,7 @@ const SearchBar = () => {
                 chipValue={location}
                 groupName="캠핑 사이트"
                 onClick={(e) => setLocation(e.target.value)}
+                chipText={location}
               />
             ))}
           </div>
@@ -207,7 +205,8 @@ const SearchBar = () => {
                 key={index}
                 chipValue={site}
                 groupName="캠핑 사이트"
-                onClick={(e) => setSite(e.target.value)}
+                // onClick={(e) => setSite(e.target.value)}
+                onClick={(e) => setSiteEx(e.target.value)}
               />
             ))}
           </div>

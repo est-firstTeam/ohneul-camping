@@ -1,6 +1,7 @@
 import ItemDetails from "./ItemDetails";
 import React from "react";
 import noImage from "./../images/no_image.png";
+import useSearchStore from "../store/useSearchStore";
 // import useCampsiteData from "../hooks/useCampsiteData";
 
 // Campsite 컬렉션
@@ -15,6 +16,7 @@ const ProductList = ({ stock, campsiteData }) => {
 
   // if (loading) return <p>Loading...</p>;
 
+  const { searchValue } = useSearchStore();
   return (
     <div className="product-list">
       {campsiteData.map((camp) => {
@@ -71,13 +73,17 @@ const ProductList = ({ stock, campsiteData }) => {
                   <ul>
                     {stockData.map((stockItem, index) => (
                       <React.Fragment key={index}>
-                        <ItemDetails type="text" color="black">
-                          {stockItem.label} {stockItem.value}자리
-                        </ItemDetails>
-                        {index !== stockData.length - 1 && (
-                          <ItemDetails type="text" color="black">
-                            /
-                          </ItemDetails>
+                        {stockItem.value !== 0 && (
+                          <>
+                            <ItemDetails type="text" color="black">
+                              {stockItem.label} {stockItem.value}자리
+                            </ItemDetails>
+                            {index !== stockData.length - 1 && (
+                              <ItemDetails type="text" color="black">
+                                /
+                              </ItemDetails>
+                            )}
+                          </>
                         )}
                       </React.Fragment>
                     ))}
@@ -90,7 +96,18 @@ const ProductList = ({ stock, campsiteData }) => {
               {/* ㄴ재고 무관하게! */}
               {/* ㄴ만약 전일 매진이면/ 모든 재고가 0이라면 → 품절표시? */}
               <ItemDetails type="price" size="default">
-                {camp.data.price}9,999
+                {searchValue.site === "소(1~3인)" && (
+                  <>{camp.data.siteMg1CoPrice}</>
+                )}
+                {searchValue.site === "중(4~6인)" && (
+                  <>{camp.data.siteMg2CoPrice}</>
+                )}
+                {searchValue.site === "대(7~10인)" && (
+                  <>{camp.data.siteMg3CoPrice}</>
+                )}
+                {searchValue.site === "카라반(1~4인)" && (
+                  <>{camp.data.caravSiteCoPrice}</>
+                )}
               </ItemDetails>
               <ItemDetails type="unit" size="default">
                 원 ~

@@ -1,0 +1,38 @@
+.select-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.option-list {
+  width: 11rem;
+  position: absolute;
+  top: 4rem;
+  z-index: 100;
+  border-radius: 1.875rem;
+  border: 1px solid rgba(245, 123, 32, 0.3);
+  background: #fff;
+  text-align: center;
+  color: #6c6c6c;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.12rem;
+  padding: 1rem;
+}
+
+.option-item {
+  padding-bottom: 0.69rem;
+  border-bottom: 1px solid rgba(245, 123, 32, 0.3);
+  cursor: pointer;
+
+  &:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}

@@ -1,0 +1,26 @@
+.wrapper-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.75rem;
+}
+
+.search-header {
+  display: flex;
+  gap: 83.5rem;
+  align-items: center;
+
+  .header-count {
+    color: #6c6c6c;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .header-select {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}

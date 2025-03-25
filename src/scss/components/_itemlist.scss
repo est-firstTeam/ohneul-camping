@@ -111,10 +111,16 @@
 
 // 리스트 : 플렉스 배열
 .product-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3.2rem 2.8rem;
-  flex: 1 1 0;
-  box-sizing: border-box;
-  margin-inline: auto;
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 3.2rem 2.8rem;
+  // flex: 1 1 0;
+  // box-sizing: border-box;
+  // margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  justify-content: center;
+  gap: 2rem;
+  row-gap: 5rem;
 }
