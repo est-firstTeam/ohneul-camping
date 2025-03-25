@@ -3,16 +3,18 @@ import mapico from "../images/ico-map.svg";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import Button from "./Button";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
+import { fBService } from "../util/fbService";
 
 const SearchBar = () => {
   const locationModal = useRef(null); // 위치 모달 관리
   const dateModal = useRef(null); // 날짜 및 일정 모달 관리
   const siteModal = useRef(null); // 캠프 사이트 모달 관리
+  const [siteEx, setSiteEx] = useState(""); // 사이트 선택
 
   const {
     locations,
@@ -23,6 +25,7 @@ const SearchBar = () => {
     setStartDate,
     setEndDate,
     setSite,
+    setSearchResult,
   } = useSearchStore();
 
   // 모달 열기
@@ -56,35 +59,89 @@ const SearchBar = () => {
       label: "사이트 형태",
       icon: <img src={siteico} width={"20px"} height={"20px"} />,
       onClick: () => openModal(siteModal),
-      onValue: searchValue.site,
+      onValue: siteEx,
     },
   ];
+
+  // 검색
+  const fetchSearch = async () => {
+    try {
+      // 1. 캠핑 예약 가능한 사이트 개수 불러오기
+      setSite(siteEx);
+      const siteArr = await fBService.getSearchARSV(
+        searchValue.location,
+        searchValue.startDate
+      );
+      console.log(siteArr);
+      console.log(
+        siteArr.flatMap((content) =>
+          content.data.content.map((item) => item.contentId)
+        )
+      );
+      // flatMap을 사용안하면 배열이 중첩된 상태 그대로 출력된다.
+      // console.log(
+      //   snapShot.docs.map((doc) => doc.data()).map((item) => item.content)
+      // );
+
+      // 2. 캠핑 사이트 정보 불러오기
+      let campArr = [];
+      const contentIdArray = siteArr.flatMap((content) =>
+        content.data.content.map((item) => item.contentId)
+      );
+      console.log(contentIdArray);
+      for (let id of contentIdArray) {
+        const filteredCampData = await fBService.getSearchCampSite(id);
+        const filteredCampData2 = filteredCampData[0];
+        campArr.push(filteredCampData2);
+      }
+
+      console.log(
+        siteArr.flatMap((site) => site.data.content.map((item) => item))
+      );
+      console.log(campArr.map((camp) => camp.data));
+
+      // // 3. 캠핑 예약 가능한 사이트 개수 & 캠핑 사이트 정보 매칭하기
+      const matched = siteArr.flatMap((site) =>
+        site.data.content.map((item) => {
+          const campInfo = campArr.find(
+            (camp) => camp.data.contentId === item.contentId
+          );
+          return { data: { ...item, ...campInfo.data } };
+        })
+      );
+
+      setSearchResult(matched);
+    } catch (error) {
+      console.error("검색 오류", error);
+    }
+  };
 
   return (
     <>
       {/* 검색 바 */}
       <div className="search__bar">
-        {searchBarButtons.map((button, index) => (
+        {searchBarButtons.map((sButton, index) => (
           <Button
             key={index}
-            className={`btn-searchbar-${button.name}`}
+            className={`btn-searchbar`}
             color="secondary"
             iconPosition="left"
-            icon={button.icon}
-            onClick={button.onClick}
+            icon={sButton.icon}
+            onClick={sButton.onClick}
           >
-            {button.onValue ? <>{button.onValue}</> : <>{button.label}</>}
+            {sButton.onValue ? <>{sButton.onValue}</> : <>{sButton.label}</>}
           </Button>
         ))}
         {searchValue.location &&
-        searchValue.site &&
         searchValue.startDate &&
-        searchValue.endDate ? (
+        searchValue.endDate &&
+        siteEx ? (
           <>
             <Button
               color={"primary"}
               icon={<img src={right_arr} />}
               iconPosition="right"
+              onClick={fetchSearch}
             >
               검색
             </Button>
@@ -120,6 +177,7 @@ const SearchBar = () => {
                 chipValue={location}
                 groupName="캠핑 사이트"
                 onClick={(e) => setLocation(e.target.value)}
+                chipText={location}
               />
             ))}
           </div>
@@ -147,7 +205,8 @@ const SearchBar = () => {
                 key={index}
                 chipValue={site}
                 groupName="캠핑 사이트"
-                onClick={(e) => setSite(e.target.value)}
+                // onClick={(e) => setSite(e.target.value)}
+                onClick={(e) => setSiteEx(e.target.value)}
               />
             ))}
           </div>

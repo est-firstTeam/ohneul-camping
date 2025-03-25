@@ -33,6 +33,41 @@ class FirebaseAPI {
       return { id: doc.id, data: doc.data() };
     });
   };
+
+  getListQueryDocs = async (queryContent) => {
+    const querySnapshot = await getDocs(queryContent);
+    return querySnapshot.docs.map((doc) => {
+      const {
+        contentId,
+        firstImageUrl,
+        facltNm,
+        doNm,
+        addr1,
+        sigunguNm,
+        induty,
+        siteMg1CoPrice,
+        siteMg2CoPrice,
+        siteMg3CoPrice,
+        caravSiteCoPrice,
+      } = doc.data();
+      return {
+        id: doc.id,
+        data: {
+          contentId,
+          firstImageUrl,
+          facltNm,
+          doNm,
+          addr1,
+          sigunguNm,
+          induty,
+          siteMg1CoPrice,
+          siteMg2CoPrice,
+          siteMg3CoPrice,
+          caravSiteCoPrice,
+        },
+      };
+    });
+  };
 }
 
 export const firebaseAPI = new FirebaseAPI();
