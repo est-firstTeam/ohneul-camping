@@ -2,13 +2,90 @@
 
 .main__intro {
   display: grid;
-  height: 50vh;
   grid-template-columns: repeat(2, 1fr);
-
-  @include background("img_homeBg.png", center center, null, contain);
+  @include background("img_homeBg.png", center center, null, cover);
 }
 
-.main__intro-left {
+.main__intro-left-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 45rem;
+  margin-right: 10rem;
+  justify-self: end;
+}
+.main__intro-right-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(30rem, 32rem));
+}
+
+.intro-left__text-area {
+  margin: 2rem 0rem;
+  font-size: 4rem;
+  h3 {
+    font-size: 2.5rem;
+    color: $secondary;
+  }
+  h2 {
+    margin: 1rem 0rem;
+    strong {
+      color: $secondary;
+    }
+  }
+}
+
+.main__intro-paragraph {
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
+  color: $gray3;
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 2rem;
+    aspect-ratio: 1;
+    top: 0;
+    left: 0;
+    margin-right: 1rem;
+    @include background("ico_rightArrow2.svg", center center, null, inherit);
+  }
+}
+
+.intro__img-wrapper__left,
+.intro__img-wrapper__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 3rem;
+  img {
+    width: 100%;
+  }
+}
+
+.intro__img-wrapper__left img:nth-child(1) {
+  margin-bottom: 2rem;
+}
+
+.searchbar-wrapper {
+  margin: 5rem 0rem;
+  display: flex;
+  justify-content: center;
+}
+
+.rsv-most-header,
+.all-campsite__header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 4rem;
+
+  h3 {
+    font-size: 2.5rem;
+    color: $secondary;
+  }
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 8rem;
+  }
 }

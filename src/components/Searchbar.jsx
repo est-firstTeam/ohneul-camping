@@ -3,7 +3,7 @@ import mapico from "../images/ico-map.svg";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import Button from "./Button";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
@@ -43,11 +43,18 @@ const SearchBar = () => {
       icon: <img src={mapico} width={"20px"} height={"20px"} />,
       onClick: () => openModal(locationModal),
       onValue: searchValue.location,
+      onClick: () => openModal(locationModal),
+      onValue: searchValue.location,
     },
     {
       name: "date",
       label: "날짜 및 일정",
       icon: <img src={calico} width={"20px"} height={"20px"} />,
+      onClick: () => openModal(dateModal),
+      onValue:
+        searchValue.startDate && searchValue.endDate
+          ? `${searchValue.startDate} ~ ${searchValue.endDate}`
+          : null,
       onClick: () => openModal(dateModal),
       onValue:
         searchValue.startDate && searchValue.endDate
@@ -165,6 +172,10 @@ const SearchBar = () => {
         modalRef={locationModal}
         handleCancel={() => setCancel("location")}
       >
+      <Modal
+        modalRef={locationModal}
+        handleCancel={() => setCancel("location")}
+      >
         <div className="modal__location">
           <div className="modal__header">
             <img src={mapico} />
@@ -193,9 +204,14 @@ const SearchBar = () => {
           setCancel("startDate");
           setCancel("endDate");
         }}
+        handleCancel={() => {
+          setCancel("startDate");
+          setCancel("endDate");
+        }}
       />
 
       {/* 캠핑 모달 창 */}
+      <Modal modalRef={siteModal} handleCancel={() => setCancel("site")}>
       <Modal modalRef={siteModal} handleCancel={() => setCancel("site")}>
         <div className="modal__site">
           <h2 className="site__title">캠핑 사이트</h2>
