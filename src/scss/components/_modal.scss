@@ -1,15 +1,39 @@
 .modal__overlay {
-    border: #fff;
-    background: #fff;
-    border-radius: 1rem;
+  border: #fff;
+  background: #fff;
+  border-radius: 1rem;
 
-    &::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-    }
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
 }
 
 .btn__container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.cart__modal {
+  display: flex;
+  flex-direction: column;
+  margin: 1.6rem;
+  line-height: 1.5rem;
+}
+
+.cart__modal-title {
+  font-size: 2.8rem;
+  font-family: "BMDOHYEON";
+  margin-block: 1.6rem;
+}
+
+.cart__modal-content-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-block: 0.8rem;
+}
+
+.cart__modal-list {
+  display: flex;
+  flex-direction: column;
 }

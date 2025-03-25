@@ -3,7 +3,7 @@ import ItemDetails from "./ItemDetails";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
 import { commaNumber } from "../util/util";
-
+import closeIcon from "/src/images/ico_close.svg";
 //TODO
 // - data 연결
 
@@ -24,6 +24,7 @@ const ProductListCart = ({
   isCart, // 예약 확인 (true)
   checked,
   handleCheckboxChange,
+  handleDeleteItem,
 }) => {
   // 0은 보이지 않게 함
   const availableSites = [
@@ -73,6 +74,10 @@ const ProductListCart = ({
           예약 취소
         </Button>
       )}
+      {/* 장바구니에서 제거버튼 */}
+      <button className="btn-close" onClick={handleDeleteItem}>
+        <img src={closeIcon} width={"8px"} height={"8px"} />
+      </button>
     </div>
   );
 };
