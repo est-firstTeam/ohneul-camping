@@ -10,13 +10,14 @@ import { useUserStore } from "../store/useUserStore";
 import { getDaysBetweenDates } from "../util/util";
 import { useRef } from "react";
 import Modal from "../components/Modal";
+import { selectors } from "../util/selectors";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
-  const { data: carts } = useQuery({
+  const { data: carts, isLoading } = useQuery({
     queryKey: [`/cart/${userId}`],
-    queryFn: () => fBService.getCartItems(userId),
-    // TODO: select: () => ???  파일분리
+    queryFn: () => fBService.fetchCartItems(userId),
+    select: (data) => selectors.getUserCartItems(data),
   });
 
   const { setTitle } = myPageTitleStore();
@@ -70,7 +71,10 @@ const Cart = () => {
     console.log("new:", newCarts);
     // TODO: 이 데이터를 새로 insert
   };
-
+  console.log("this:", carts);
+  if (isLoading) {
+    return <div>loading</div>;
+  }
   return (
     <section className="cart">
       <h2 className="cart__title"></h2>

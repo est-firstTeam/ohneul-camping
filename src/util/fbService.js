@@ -12,21 +12,13 @@ class FBService {
     }
   };
 
-  getCartItems = async (userId) => {
+  fetchCartItems = async (userId) => {
     try {
       const q = query(
         collection(firebaseDB, CollectionName.User),
         where("id", "==", userId)
       );
-      const users = await firebaseAPI.getQueryDocs(q);
-      const hasCartItems =
-        users &&
-        users[0] &&
-        users[0].data &&
-        users[0].data.carts &&
-        users[0].data.carts.length > 0;
-      console.log(hasCartItems ? users[0].data.carts : []);
-      return hasCartItems ? users[0].data.carts : [];
+      return await firebaseAPI.getQueryDocs(q);
     } catch (e) {
       throw new Error("get all Reservation Error: %o", e);
     }
