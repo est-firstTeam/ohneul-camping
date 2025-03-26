@@ -16,6 +16,10 @@
 //   row-gap: 5rem;
 // }
 
+.rsv-most__test {
+  display: relative;
+}
+
 .rsv-most__list-wrapper {
   display: flex;
   justify-content: center;
@@ -34,4 +38,8 @@
   margin-top: 2rem;
   align-self: center;
   justify-self: center;
+}
+
+.rsv-most__list-center {
+  display: flex;
 }

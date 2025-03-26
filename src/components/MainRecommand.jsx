@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import { Link } from "react-router-dom";
 
 const MainRecommand = () => {
-  const { data, isLoading } = useQuery({
+  const { data, status, error, isLoading } = useQuery({
     queryKey: ["pickOneCampsite"],
     queryFn: async () => fBService.getAllCampsites(),
     select: (data) => {
@@ -15,19 +15,10 @@ const MainRecommand = () => {
     },
   });
 
-  // const insertDB = async () => {
-  //   try {
-  //     for (const element of data) {
-  //       const cityRef = doc(firebaseDB, "Campsite", element);
-  //       setDoc(cityRef, { rsvComplete: 0 }, { merge: true });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  return isLoading ? (
-    <div>Loading</div>
+  return status === "pending" ? (
+    <p>Loading...</p>
+  ) : status === "error" ? (
+    <p>Error: {error.message}</p>
   ) : (
     <section title="캠핑장추천" className="main__rcmd">
       <div className="main__rcmd-left">
@@ -55,7 +46,7 @@ const MainRecommand = () => {
               샤워실 갯수 : {data.toiletCo || "0"}
             </span>
             <span className="camp-info-text">
-              화장실 갯수 :{data.swrmCo || "0"}
+              화장실 갯수 : {data.swrmCo || "0"}
             </span>
             <span className="camp-info-text">
               개수대 갯수 : {data.wtrplCo || "0"}
