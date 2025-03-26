@@ -2,6 +2,8 @@ import ItemDetails from "./ItemDetails";
 import React from "react";
 import noImage from "./../images/no_image.png";
 import useSearchStore from "../store/useSearchStore";
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useEffect, useState } from "react";
 // import useCampsiteData from "../hooks/useCampsiteData";
 
 // Campsite 컬렉션
@@ -19,9 +21,35 @@ const ProductList = ({ campSiteData }) => {
   // const displayedData = campsiteData.slice(0, limit || 1);
 
   const { searchValue } = useSearchStore();
+
+  const { scrollYProgress } = useScroll();
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+
+  const loadItems = () => {
+    // if (loading) {
+    var newItems = campSiteData.slice(
+      0,
+      Math.min(items.length + 3, campSiteData.length)
+    );
+    setItems(newItems);
+    // }
+  };
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > 0.95) setLoading(true);
+  });
+
+  useEffect(() => {
+    loadItems();
+    setLoading(false);
+  }, [campSiteData, loading]);
+
+  console.log(loading);
+
   return (
     <div className="product-list">
-      {campSiteData.map((camp) => {
+      {items.map((camp) => {
         const { siteS, siteM, siteL, siteC } = camp;
 
         // 재고 옵션
@@ -84,7 +112,6 @@ const ProductList = ({ campSiteData }) => {
                     <React.Fragment>
                       <>
                         <ItemDetails type="text" color="black">
-                          {/* {stockItem.label} {stockItem.value}자리 */}
                           {sitesSort}
                         </ItemDetails>
                       </>

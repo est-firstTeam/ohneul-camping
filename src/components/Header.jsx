@@ -45,7 +45,6 @@ const Header = () => {
         <button
           className="header__auth-btn"
           onClick={() => {
-            // TODO:로그인 안되어있으면 로그인 모달 오픈
             isLoggedIn ? navigate("/my") : navigate("/Login");
           }}
         >

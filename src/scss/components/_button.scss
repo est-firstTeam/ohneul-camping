@@ -66,12 +66,104 @@
   color: $btn-black;
 }
 
-.btn-searchbar {
-  gap: 1rem;
+.searchbutton {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  align-items: center;
+  text-align: left;
+  gap: 0.5rem;
+
+  &--small {
+    font-size: small;
+  }
+
+  &--midium {
+    font-size: medium;
+  }
+
+  &--large {
+    font-size: large;
+  }
+
+  // 버튼 색상
+  &--primary {
+    color: $white;
+    background-color: $primary;
+  }
+
+  &--secondary {
+    color: $primary;
+    background-color: $white;
+    border: 1px solid $primary;
+  }
+
+  &--white {
+    color: $btn-black;
+    background-color: $white;
+    border: 1px solid $btn-black;
+  }
+
+  &--text {
+    color: $btn-black;
+    font-weight: $font-weight-semibold;
+    background-color: transparent;
+    border: none;
+  }
+
+  &--icon-only {
+    padding: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:disabled {
+    color: $btn-gray;
+    background-color: $btn-white;
+  }
+}
+
+.searchbutton-location {
+  width: 20rem;
   color: $btn-black;
 }
 
-.btn-top {
+.searchbutton-date {
+  width: 30rem;
+  color: $btn-black;
+}
+
+.searchbutton-site {
+  width: 20rem;
+  color: $btn-black;
+}
+
+// .btn-searchbar {
+//   gap: 1rem;
+//   color: $btn-black;
+// }
+
+// .btn-searchbar-location {
+//   width: 15rem;
+//   color: $btn-black;
+// }
+
+// .btn-searchbar-date {
+//   width: 30rem;
+//   color: $btn-black;
+// }
+
+// .btn-searchbar-site {
+//   width: 15rem;
+//   color: $btn-black;
+// }
+
+.top-btn {
   position: fixed;
   bottom: 4rem;
   right: 2rem;
@@ -119,7 +211,7 @@
 }
 
 .btn-selectbox {
-  width: 13rem;
+  width: 15rem;
   height: 3.25rem;
   border-radius: 1.875rem;
   border: 1px solid rgba(245, 123, 32, 0.3);

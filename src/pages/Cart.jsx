@@ -11,6 +11,7 @@ import { getDaysBetweenDates } from "../util/util";
 import { useRef } from "react";
 import Modal from "../components/Modal";
 import { selectors } from "../util/selectors";
+import LoadingSpinner from "../components/Loading";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
@@ -34,7 +35,7 @@ const Cart = () => {
 
   // 환불규정 체크
   const [isAgree, setIsAgree] = useState(false);
-  console.log(isAgree);
+
   // 체크박스 데이터
   const initialCheckedItems = {};
   const [checkedItems, setCheckedItems] = useState(initialCheckedItems);
@@ -71,9 +72,9 @@ const Cart = () => {
     console.log("new:", newCarts);
     // TODO: 이 데이터를 새로 insert
   };
-  console.log("this:", carts);
+
   if (isLoading) {
-    return <div>loading</div>;
+    return <LoadingSpinner />;
   }
   return (
     <section className="cart">

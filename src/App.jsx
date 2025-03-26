@@ -41,8 +41,12 @@ function App() {
           ],
         },
         {
-          path: "searchResult",
+          path: "searchResult/:location/:startdate/:enddate/:site",
           element: <SearchResult />,
+        },
+        {
+          path: "searchResult/:id",
+          element: <DetailPage />,
         },
         {
           path: "createAccount",
@@ -57,10 +61,10 @@ function App() {
           path: "/productListExam",
           element: <ProductListExam />,
         },
-        {
-          path: "detail",
-          element: <DetailPage />,
-        },
+        // {
+        //   path: "detail",
+        //   element: <DetailPage />,
+        // },
       ],
     },
   ]);

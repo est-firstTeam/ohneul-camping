@@ -3,6 +3,7 @@ import { fBService } from "../util/fbService";
 import ProductMain from "./ProductCard";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion"; // eslint-disable-line no-unused-vars
 import { useEffect, useState } from "react";
+import useSectionRefStore from "../store/useSectionRefStore";
 
 export default function MainAllCampsite() {
   const { data, status, error } = useQuery({
@@ -19,6 +20,10 @@ export default function MainAllCampsite() {
       var newItems = data.slice(0, Math.min(items.length + 3, data.length));
       setItems(newItems);
     }
+    if (loading) {
+      var newItems = data.slice(0, Math.min(items.length + 3, data.length));
+      setItems(newItems);
+    }
   };
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -27,9 +32,11 @@ export default function MainAllCampsite() {
 
   useEffect(() => {
     if (status === "success") {
+    if (status === "success") {
       loadItems();
       setLoading(false);
     }
+  }, [status, loading]);
   }, [status, loading]);
 
   return status === "pending" ? (
@@ -38,7 +45,7 @@ export default function MainAllCampsite() {
     <p>Error: {error.message}</p>
   ) : (
     <section className="all-campsite" title="예약이 가장 많은 캠핑장">
-      <div className="all-campsite__header">
+      <div className="all-campsite__header" ref={reservation}>
         <h3>오늘 어디 갈래?</h3>
         <h2>모든 캠핑장 정보</h2>
       </div>

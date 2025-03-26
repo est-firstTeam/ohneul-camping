@@ -4,7 +4,7 @@ import icoarrowdown from "../images/ico-arrowdown.svg";
 
 const SelectBox = () => {
   const [showOption, setShowOption] = useState(false);
-  const [value, setValue] = useState("추천순");
+  const [value, setValue] = useState("재고 많은 순");
 
   const handleChangeOption = (e) => {
     const { innerText } = e.target;
@@ -28,31 +28,24 @@ const SelectBox = () => {
           <ul className="option-list">
             <li
               className="option-item"
-              value="추천순"
+              value="재고 많은 순"
               onClick={handleChangeOption}
             >
-              추천순
+              재고 많은 순
             </li>
             <li
               className="option-item"
-              value="최신 등록순"
+              value="야영장 가나다 순"
               onClick={handleChangeOption}
             >
-              최신 등록순
+              야영장 가나다 순
             </li>
             <li
               className="option-item"
-              value="낮은 가격순"
+              value="지역 가나다 순"
               onClick={handleChangeOption}
             >
-              낮은 가격순
-            </li>
-            <li
-              className="option-item"
-              value="높은 가격순"
-              onClick={handleChangeOption}
-            >
-              높은 가격순
+              지역 가나다 순
             </li>
           </ul>
         )}

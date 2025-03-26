@@ -43,7 +43,13 @@ const DateModal = ({ modalRef, setStartDate, setEndDate, handleCancel }) => {
   };
 
   return (
-    <Modal modalRef={modalRef} handleCancel={handleCancel}>
+    <Modal
+      modalRef={modalRef}
+      handleCancel={handleCancel}
+      text={"완료"}
+      cancelBtn
+      confirmBtn
+    >
       <div className="modal__date">
         <DateRange
           editableDateInputs={true}

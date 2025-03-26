@@ -3,7 +3,7 @@ import Button from "./Button";
 
 const TopBtn = () => {
   const scrollToTop = () => {
-    document.body.scrollTo({
+    document.documentElement.scrollTo({
       top: 0,
       behavior: "smooth",
     });
@@ -13,7 +13,7 @@ const TopBtn = () => {
       color={"transparent"}
       icon={<img src={topIcon} width={"50px"} alt="Scroll to top" />}
       onClick={scrollToTop}
-      className={"btn-top"}
+      className={"top-btn"}
       isIconOnly
     />
   );
