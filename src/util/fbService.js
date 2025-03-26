@@ -68,6 +68,41 @@ class FBService {
       throw new Error("search Campsite Error: %o", e);
     }
   };
+
+  getSearchAllARSV = async (startDate) => {
+    try {
+      const location = [
+        "서울시",
+        "인천시",
+        "경기도",
+        "강원도",
+        "대전시",
+        "세종시",
+        "대구시",
+        "부산시",
+        "울산시",
+        "전주시",
+        "광주시",
+        "충청남도",
+        "충청북도",
+        "전라남도",
+        "전라북도",
+        "경상남도",
+        "경상북도",
+        "제주도",
+      ];
+
+      const q = query(
+        collection(firebaseDB, CollectionName.Available_RSV),
+        where("date", "==", startDate),
+        where("address", "in", location)
+      );
+      return firebaseAPI.getQueryAllSearchDocs(q);
+    } catch (e) {
+      console.error(e);
+      throw new Error("search All AvailableRSV Error: %o", e);
+    }
+  };
 }
 
 export const fBService = new FBService();
