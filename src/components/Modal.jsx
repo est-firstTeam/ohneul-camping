@@ -11,6 +11,7 @@ const Modal = ({
   text,
   cancelBtn,
   confirmBtn,
+  buttonType = "submit",
 }) => {
   return (
     <dialog ref={modalRef} className="modal__overlay">
@@ -32,7 +33,7 @@ const Modal = ({
               color={"primary"}
               padding={"1rem 2rem"}
               size={"medium"}
-              type={"submit"}
+              type={buttonType}
               onClick={handleConfirm}
             >
               {text}
