@@ -6,6 +6,7 @@ import { monthDateFormat, getDaysBetweenDates } from "../util/util";
 import { reservationService } from "../util/reservationService";
 import ProductListCart from "../components/ProductListCart";
 import Modal from "../components/Modal";
+import { Link } from "react-router-dom";
 
 const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
   const { setTitle } = myPageTitleStore();
@@ -71,7 +72,6 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
 
         // 새로고침 없이 상태 즉시 반영
         refetch();
-        setModalStep("complete");
       } catch (error) {
         console.error("예약 취소 오류:", error);
       }
@@ -95,26 +95,33 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
               : "예약 취소";
 
             return (
-              <ProductListCart
-                key={reservation.id}
-                firstImageUrl={reservation.data.firstImageUrl}
-                startDate={monthDateFormat(reservation.data.rsvStartDate)}
-                endDate={monthDateFormat(reservation.data.rsvEndDate)}
-                day={getDaysBetweenDates(
-                  reservation.data.rsvStartDate,
-                  reservation.data.rsvEndDate
-                )}
-                facltNm={reservation.data.facltNm}
-                selected1={reservation.data.rsvSiteS}
-                selected2={reservation.data.rsvSiteM}
-                selected3={reservation.data.rsvSiteL}
-                selected4={reservation.data.rsvSiteC}
-                sumPrice={reservation.data.rsvTotalPrice}
-                isRSV
-                isDisabled={isDisabled}
-                buttonText={buttonText}
-                onCancelClick={() => handleCancelClick(reservation.id)}
-              />
+              <Link to={`/searchResult/${reservation.data.campSiteId}`}>
+                <ProductListCart
+                  key={reservation.id}
+                  firstImageUrl={reservation.data.firstImageUrl}
+                  startDate={monthDateFormat(reservation.data.rsvStartDate)}
+                  endDate={monthDateFormat(reservation.data.rsvEndDate)}
+                  day={getDaysBetweenDates(
+                    reservation.data.rsvStartDate,
+                    reservation.data.rsvEndDate
+                  )}
+                  facltNm={reservation.data.facltNm}
+                  selected1={reservation.data.rsvSiteS}
+                  selected2={reservation.data.rsvSiteM}
+                  selected3={reservation.data.rsvSiteL}
+                  selected4={reservation.data.rsvSiteC}
+                  sumPrice={reservation.data.rsvTotalPrice}
+                  isRSV
+                  isDisabled={isDisabled}
+                  buttonText={buttonText}
+                  // onCancelClick={() => handleCancelClick(reservation.id)}
+                  onCancelClick={(event) => {
+                    event.stopPropagation(); // 버튼 클릭 시 Link로 넘어가지 않게 방지
+                    event.preventDefault(); // Link 이동 막기
+                    handleCancelClick(reservation.id);
+                  }}
+                />
+              </Link>
             );
           })
         ) : (
@@ -130,6 +137,7 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
           text={"확인"}
           cancelBtn={modalStep === "confirm"}
           confirmBtn={true}
+          buttonType="button"
         >
           <div className="modal__rsvcancel">
             {modalStep === "confirm" ? (
