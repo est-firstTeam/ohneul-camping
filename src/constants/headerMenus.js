@@ -6,11 +6,11 @@ export const menus = [
     path: "/",
     iconPath: null,
   },
-  // TODO: 모든 캠핑장 정보로 스크롤
   {
     title: "예약",
-    path: "/",
+    path: null,
     iconPath: null,
+    sectionId: "reservation",
   },
   {
     title: null,
@@ -19,7 +19,8 @@ export const menus = [
   },
   {
     title: null,
-    path: "/",
+    path: null,
     iconPath: search,
+    sectionId: "search",
   },
 ];
