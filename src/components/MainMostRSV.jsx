@@ -2,12 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import ProductList from "./ProductList";
 import { fBService } from "../util/fbService";
 import { AnimatePresence, MotionConfig } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import ProductMain from "./ProductCard";
 import Button from "./Button";
 
 export default function MainMostRSV() {
+  const containerRef = useRef(null);
+  const itemsRef = useRef([]);
   const offset = 3;
   const [sliderIdx, setSliderIdx] = useState(0);
   const [back, setBack] = useState(false);
@@ -25,12 +27,10 @@ export default function MainMostRSV() {
     setBack(false);
     const maxIdx = Math.floor(data.length / offset);
     setSliderIdx((prev) => (prev === maxIdx ? maxIdx : prev + 1));
-    console.log("sliderIdx ->", sliderIdx);
   };
   const prevBtn = () => {
     setBack(true);
     setSliderIdx((prev) => (prev === 0 ? 0 : prev - 1));
-    console.log("sliderIdx ->", sliderIdx);
   };
 
   const sliderVariants = {
@@ -69,13 +69,18 @@ export default function MainMostRSV() {
       </div>
       <div>
         <AnimatePresence mode="popLayout" custom={back} initial={false}>
-          <motion.ul className="rsv-most__list-wrapper" key={sliderIdx}>
+          <motion.ul
+            className="rsv-most__list-wrapper"
+            ref={containerRef}
+            // key={sliderIdx}
+          >
             {data
               .slice(offset * sliderIdx, offset * sliderIdx + offset)
               .map((campObj, idx) => {
                 return (
                   <motion.li
                     key={idx}
+                    ref={itemsRef}
                     custom={back}
                     variants={sliderVariants}
                     initial="entry"
@@ -89,7 +94,6 @@ export default function MainMostRSV() {
                 );
               })}
           </motion.ul>
-          {/* <div>{visible}</div> */}
         </AnimatePresence>
       </div>
       <div className="rsv-most__buttons">

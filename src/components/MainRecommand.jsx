@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Button from "../components/Button";
 
 const MainRecommand = () => {
-  const { data, isLoading } = useQuery({
+  const { data, status, error, isLoading } = useQuery({
     queryKey: ["pickOneCampsite"],
     queryFn: async () => fBService.getAllCampsites(),
     select: (data) => {
@@ -14,19 +14,10 @@ const MainRecommand = () => {
     },
   });
 
-  // const insertDB = async () => {
-  //   try {
-  //     for (const element of data) {
-  //       const cityRef = doc(firebaseDB, "Campsite", element);
-  //       setDoc(cityRef, { rsvComplete: 0 }, { merge: true });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  return isLoading ? (
-    <div>Loading</div>
+  return status === "pending" ? (
+    <p>Loading...</p>
+  ) : status === "error" ? (
+    <p>Error: {error.message}</p>
   ) : (
     <section title="캠핑장추천" className="main__rcmd">
       <div className="main__rcmd-left">

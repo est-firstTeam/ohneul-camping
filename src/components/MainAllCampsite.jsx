@@ -23,11 +23,11 @@ export default function MainAllCampsite() {
   });
 
   useEffect(() => {
-    if (loading) {
+    if (status === "success") {
       loadItems();
       setLoading(false);
     }
-  }, [loading]);
+  }, [status, loading]);
 
   return status === "pending" ? (
     <p>Loading...</p>
