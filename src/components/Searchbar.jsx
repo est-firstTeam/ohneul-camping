@@ -3,20 +3,22 @@ import mapico from "../images/ico-map.svg";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import Button from "./Button";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
 import { fBService } from "../util/fbService";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { selectors } from "../util/selectors";
 
 const SearchBar = () => {
+  const navigate = useNavigate();
   const locationModal = useRef(null); // 위치 모달 관리
   const dateModal = useRef(null); // 날짜 및 일정 모달 관리
   const siteModal = useRef(null); // 캠프 사이트 모달 관리
-  // const [siteEx, setSiteEx] = useState(""); // 사이트 선택
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(false); // 검색 버튼 상태 관리
 
   const {
     locations,
@@ -61,120 +63,38 @@ const SearchBar = () => {
       label: "사이트 형태",
       icon: <img src={siteico} width={"20px"} height={"20px"} />,
       onClick: () => openModal(siteModal),
-      // onValue: siteEx,
       onValue: searchValue.site,
     },
   ];
 
-  // const test = () => {};
-
-  // const handleClick = useCallback(() => {
-  //   setEnabled(false);
-  // }, [setEnabled]);
-
+  // 검색시 데이터 불러오기(tanstack 쿼리 사용)
   const { data: siteArr, refetch } = useQuery({
-    queryKey: ["siteArr"],
-    queryFn: () =>
-      fBService.getSearchARSV(searchValue.location, searchValue.startDate),
-    enabled: enabled,
-    select: (siteArr) => {
-      return siteArr[0].data.content.filter((item) => {
-        if (searchValue.site === "소(1~3인)") {
-          return item.siteS !== null;
-        }
-        if (searchValue.site === "중(4~6인)") {
-          return item.siteM !== null;
-        }
-        if (searchValue.site === "대(7~10인)") {
-          return item.siteL !== null;
-        }
-        if (searchValue.site === "카라반(1~4인)") {
-          return item.siteC !== null;
-        }
-        return false;
-      });
+    queryKey: ["search", searchValue],
+    queryFn: () => {
+      if (searchValue.location === "전체") {
+        return fBService.getSearchAllARSV(searchValue.startDate);
+      } else if (searchValue.location !== "전체") {
+        return fBService.getSearchARSV(
+          searchValue.location,
+          searchValue.startDate
+        );
+      }
     },
+    enabled: enabled,
+    select: (data) => selectors.getSearchLocationStartDate(data, searchValue),
   });
 
-  // console.log(enabled);
   console.log(siteArr);
 
-  useEffect(() => {
-    if (searchValue) {
-      refetch();
-      setSearchResult(siteArr);
-    }
-  }, [searchValue, refetch]);
-
-  // 검색
-  // const fetchSearch = async () => {
-  //   try {
-  //     // 캠핑 예약 가능한 사이트 개수 불러오기
-  //     // setSite(siteEx);
-  //     // if (searchValue.location !== "전체") {
-  //     // const siteArr = await fBService.getSearchARSV(
-  //     //   searchValue.location,
-  //     //   searchValue.startDate
-  //     // );
-  //     // 지역별로 검색하기
-  //     // console.log(siteArr);
-  //     // // 검색 결과 있을 때
-  //     // if (siteArr[0]) {
-  //     //   console.log(siteArr[0].data.content);
-  //     //   // 소/중/대/카라반 사이트 별 검색 필터링
-  //     //   const filteredData = siteArr[0].data.content.filter((item) => {
-  //     //     if (searchValue.site === "소(1~3인)") {
-  //     //       return item.siteS !== null;
-  //     //     } else if (searchValue.site === "중(4~6인)") {
-  //     //       return item.siteM !== null;
-  //     //     } else if (searchValue.site === "대(7~10인)") {
-  //     //       return item.siteL !== null;
-  //     //     } else if (searchValue.site === "카라반(1~4인)") {
-  //     //       return item.siteC !== null;
-  //     //     } else {
-  //     //       setSearchResult([]);
-  //     //     }
-  //     //   });
-  //     //   console.log(filteredData);
-  //     //   setSearchResult(filteredData);
-  //     // }
-  //     // // 검색 결과 없을 때
-  //     // else {
-  //     //   setSearchResult([]);
-  //     // }
-  //     // }
-  //     // else if (searchValue.location === "전체") {
-  //     //   const siteArr = await fBService.getSearchAllARSV(searchValue.startDate);
-  //     //   console.log(siteArr);
-  //     //   // 검색 결과 있을 때
-  //     //   if (siteArr[0]) {
-  //     //     console.log(siteArr[0].data.content);
-  //     //     // 소/중/대/카라반 사이트 별 검색 필터링
-  //     //     const filteredData = siteArr[0].data.content.filter((item) => {
-  //     //       if (searchValue.site === "소(1~3인)") {
-  //     //         return item.siteS !== null;
-  //     //       } else if (searchValue.site === "중(4~6인)") {
-  //     //         return item.siteM !== null;
-  //     //       } else if (searchValue.site === "대(7~10인)") {
-  //     //         return item.siteL !== null;
-  //     //       } else if (searchValue.site === "카라반(1~4인)") {
-  //     //         return item.siteC !== null;
-  //     //       } else {
-  //     //         setSearchResult([]);
-  //     //       }
-  //     //     });
-  //     //     console.log(filteredData);
-  //     //     setSearchResult(filteredData);
-  //     //   }
-  //     //   // 검색 결과 없을 때
-  //     //   else {
-  //     //     setSearchResult([]);
-  //     //   }
-  //     // }
-  //   } catch (error) {
-  //     console.error("검색 오류", error);
-  //   }
-  // };
+  // 검색 활용
+  const handleSearch = async () => {
+    setEnabled(true); // 쿼리 활성화
+    const result = await refetch(); // refetch로 데이터 강제로 재요청
+    console.log(result);
+    setSearchResult(result.data || []);
+    navigate("/searchResult");
+    setEnabled(false);
+  };
 
   return (
     <>
@@ -201,12 +121,7 @@ const SearchBar = () => {
               color={"primary"}
               icon={<img src={right_arr} />}
               iconPosition="right"
-              onClick={() => {
-                setEnabled(true);
-                setTimeout(() => {
-                  setEnabled(false);
-                }, 1000);
-              }}
+              onClick={handleSearch}
             >
               검색
             </Button>

@@ -30,8 +30,32 @@ class FirebaseAPI {
 
     const querySnapshot = await getDocs(queryContent);
     return querySnapshot.docs.map((doc) => {
+      console.log({ id: doc.id, data: doc.data() });
       return { id: doc.id, data: doc.data() };
     });
+  };
+
+  getQueryAllSearchDocs = async (queryContent) => {
+    const querySnapshot = await getDocs(queryContent);
+
+    const mergedContent = querySnapshot.docs.reduce((acc, doc) => {
+      const data = doc.data();
+      return acc.concat(data.content);
+    }, []);
+
+    console.log([
+      {
+        id: new Date().toISOString(),
+        data: { content: mergedContent },
+      },
+    ]);
+
+    return [
+      {
+        id: new Date().toISOString(),
+        data: { content: mergedContent },
+      },
+    ];
   };
 
   getListQueryDocs = async (queryContent) => {

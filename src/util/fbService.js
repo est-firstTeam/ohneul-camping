@@ -12,21 +12,21 @@ class FBService {
     }
   };
 
-  getCartItems = async (userId) => {
+  getAllCampsites = async () => {
+    try {
+      return firebaseAPI.getAllDocs(CollectionName.Campsite);
+    } catch (e) {
+      throw new Error("get all Reservation Error: %o", e);
+    }
+  };
+
+  fetchCartItems = async (userId) => {
     try {
       const q = query(
         collection(firebaseDB, CollectionName.User),
         where("id", "==", userId)
       );
-      const users = await firebaseAPI.getQueryDocs(q);
-      const hasCartItems =
-        users &&
-        users[0] &&
-        users[0].data &&
-        users[0].data.carts &&
-        users[0].data.carts.length > 0;
-      console.log(hasCartItems ? users[0].data.carts : []);
-      return hasCartItems ? users[0].data.carts : [];
+      return await firebaseAPI.getQueryDocs(q);
     } catch (e) {
       throw new Error("get all Reservation Error: %o", e);
     }
@@ -71,12 +71,33 @@ class FBService {
 
   getSearchAllARSV = async (startDate) => {
     try {
+      const location = [
+        "서울시",
+        "인천시",
+        "경기도",
+        "강원도",
+        "대전시",
+        "세종시",
+        "대구시",
+        "부산시",
+        "울산시",
+        "전주시",
+        "광주시",
+        "충청남도",
+        "충청북도",
+        "전라남도",
+        "전라북도",
+        "경상남도",
+        "경상북도",
+        "제주도",
+      ];
+
       const q = query(
         collection(firebaseDB, CollectionName.Available_RSV),
-        // where("address", "in", locations),
-        where("date", "==", startDate)
+        where("date", "==", startDate),
+        where("address", "in", location)
       );
-      return firebaseAPI.getQueryDocs(q);
+      return firebaseAPI.getQueryAllSearchDocs(q);
     } catch (e) {
       console.error(e);
       throw new Error("search All AvailableRSV Error: %o", e);

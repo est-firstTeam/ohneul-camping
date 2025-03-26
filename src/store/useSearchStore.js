@@ -27,7 +27,7 @@ const useSearchStore = create((set) => ({
   // 사이트 모달 초기값
   sites: ["소(1~3인)", "중(4~6인)", "대(7~10인)", "카라반(1~4인)"],
 
-  // 검색 결과 초기값
+  // 검색 결과 초기값`
   searchValue: {
     location: null,
     site: null,
@@ -35,7 +35,7 @@ const useSearchStore = create((set) => ({
     endDate: null,
   },
 
-  // 검색 결과 배열
+  // 검색 결과
   searchResult: [],
 
   // 취소

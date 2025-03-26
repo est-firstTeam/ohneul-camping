@@ -24,6 +24,16 @@ export const useUserStore = create(
       },
       setUserLoggedIn: (loginFlag) => set(() => ({ isLoggedIn: loginFlag })),
       setCarts: (cart) => set((state) => ({ carts: [...state.carts, cart] })),
+      resetUser: () => {
+        set(() => ({
+          id: "",
+          name: "",
+          email: "",
+          profileImg: "",
+          isLoggedIn: false,
+          carts: [],
+        }));
+      },
     }),
     {
       name: "storage-user",
