@@ -2,7 +2,7 @@ import React from "react";
 import noImageURL from "./../images/no_image.png";
 import ItemDetails from "./ItemDetails";
 
-export default function ProductMain({ camp }) {
+export default function ProductCard({ camp }) {
   return (
     <div key={camp.id} className="product product--w35">
       <img

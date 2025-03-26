@@ -5,7 +5,6 @@ import MainIntro from "../components/MainIntro.jsx";
 import MainRecommand from "../components/MainRecommand.jsx";
 import MainMostRSV from "../components/MainMostRSV.jsx";
 import MainAllCampsite from "../components/MainAllCampsite.jsx";
-import Test from "../components/Test.jsx";
 
 const Main = () => {
   return (
@@ -17,7 +16,6 @@ const Main = () => {
       </div>
       <MainRecommand />
       <MainMostRSV />
-      {/* <Test /> */}
       <MainAllCampsite />
     </>
   );

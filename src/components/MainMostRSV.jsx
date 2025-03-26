@@ -12,6 +12,8 @@ export default function MainMostRSV() {
   const itemsRef = useRef([]);
   const offset = 3;
   const [sliderIdx, setSliderIdx] = useState(0);
+  const canScrollPrev = sliderIdx > 0;
+  const canScrollNext = sliderIdx < 9;
   const [back, setBack] = useState(false);
   const { data, error, status } = useQuery({
     queryKey: ["sortCampsiteByRsvComplete"],
@@ -25,7 +27,8 @@ export default function MainMostRSV() {
   });
   const nextBtn = () => {
     setBack(false);
-    const maxIdx = Math.floor(data.length / offset);
+    // const maxIdx = Math.floor(data.length / offset);
+    const maxIdx = data.length;
     setSliderIdx((prev) => (prev === maxIdx ? maxIdx : prev + 1));
   };
   const prevBtn = () => {
@@ -34,11 +37,14 @@ export default function MainMostRSV() {
   };
 
   const sliderVariants = {
-    entry: (back) => ({
-      opacity: 0,
-      scale: 1,
-      x: back ? -window.outerWidth - 50 : window.outerWidth + 50,
-    }),
+    entry: (back) => {
+      console.log("Entry!");
+      return {
+        opacity: 0,
+        scale: 1,
+        x: back ? window.outerWidth + 50 : -window.outerWidth - 50,
+      };
+    },
     center: {
       opacity: 1,
       scale: 1,
@@ -47,14 +53,15 @@ export default function MainMostRSV() {
         duration: 0.3,
       },
     },
-    exit: (back) => ({
-      opacity: 0,
-      scale: 1,
-      x: back ? window.outerWidth + 50 : -window.outerWidth - 50,
-      transition: {
-        duration: 0.3,
-      },
-    }),
+    exit: (back) => {
+      console.log("Exit!");
+
+      return {
+        opacity: 0,
+        scale: 1,
+        x: back ? -window.outerWidth - 50 : window.outerWidth + 50,
+      };
+    },
   };
 
   return status === "pending" ? (
@@ -68,37 +75,42 @@ export default function MainMostRSV() {
         <h2>예약이 가장 많은 캠핑장</h2>
       </div>
       <div>
-        <AnimatePresence mode="popLayout" custom={back} initial={false}>
-          <motion.ul
-            className="rsv-most__list-wrapper"
-            ref={containerRef}
-            // key={sliderIdx}
-          >
+        <motion.ul
+          className="rsv-most__list-wrapper"
+          ref={containerRef}
+          // key={sliderIdx}
+        >
+          <AnimatePresence mode="popLayout" custom={back} initial={false}>
             {data
-              .slice(offset * sliderIdx, offset * sliderIdx + offset)
+              .slice(sliderIdx, sliderIdx + offset)
+              // .slice(offset * sliderIdx, offset * sliderIdx + offset)
               .map((campObj, idx) => {
                 return (
                   <motion.li
                     key={idx}
-                    ref={itemsRef}
+                    ref={(el) => (itemsRef.current[idx] = el)}
                     custom={back}
                     variants={sliderVariants}
                     initial="entry"
                     animate="center"
                     exit="exit"
                     whileHover={{ scale: 1.1, duration: 0.2 }}
-                    transition={{ type: "tween", duration: 0.2 }}
+                    // transition={{ type: "spring", duration: 0.2 }}
                   >
                     <ProductMain camp={campObj} />
                   </motion.li>
                 );
               })}
-          </motion.ul>
-        </AnimatePresence>
+          </AnimatePresence>
+        </motion.ul>
       </div>
       <div className="rsv-most__buttons">
-        <Button onClick={prevBtn}>← Prev</Button>
-        <Button onClick={nextBtn}>Next →</Button>
+        <Button onClick={prevBtn} disabled={!canScrollPrev}>
+          ← Prev
+        </Button>
+        <Button onClick={nextBtn} disabled={!canScrollNext}>
+          Next →
+        </Button>
       </div>
     </section>
   );

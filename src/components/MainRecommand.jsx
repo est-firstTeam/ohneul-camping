@@ -45,7 +45,7 @@ const MainRecommand = () => {
               샤워실 갯수 : {data.toiletCo || "0"}
             </span>
             <span className="camp-info-text">
-              화장실 갯수 :{data.swrmCo || "0"}
+              화장실 갯수 : {data.swrmCo || "0"}
             </span>
             <span className="camp-info-text">
               개수대 갯수 : {data.wtrplCo || "0"}
