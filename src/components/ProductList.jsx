@@ -2,6 +2,7 @@ import ItemDetails from "./ItemDetails";
 import React from "react";
 import noImage from "./../images/no_image.png";
 import useSearchStore from "../store/useSearchStore";
+import { Link } from "react-router-dom";
 // import useCampsiteData from "../hooks/useCampsiteData";
 
 // Campsite 컬렉션

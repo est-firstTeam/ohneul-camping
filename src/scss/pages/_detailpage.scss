@@ -14,7 +14,7 @@
     margin-left: 3rem;
 
     &--title {
-      font-size: 3rem;
+      font-size: 3.2rem;
       color: $black1;
       margin-bottom: 1rem;
     }
@@ -27,12 +27,12 @@
 
     &--location {
       font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.7rem;
     }
 
     &--campstyle {
       font-size: 1.5rem;
-      font-weight: 300;
+      font-weight: 400;
       margin-bottom: 1rem;
 
       &::before {
@@ -40,12 +40,15 @@
         display: inline-block;
         height: 1.5rem;
         width: 3rem;
+        margin-right: 0.3rem;
         @include background("ico-camping.svg", center center, null, contain);
       }
     }
 
     &--option {
       &-text {
+        margin-bottom: 1rem;
+        padding-left: 0.5rem;
         font-size: 1.2rem;
         color: $secondary;
       }
@@ -71,16 +74,14 @@
 
   &--optionbox {
     width: 90%;
-    height: 15rem;
+    height: 21rem;
     background-color: $box-primary;
     border-radius: 1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
 
     &-option {
-      display: inline-block;
-      font-size: 1rem;
-      margin: 1.4rem;
+      margin: 1.2rem;
       padding: 0.2rem 0.5rem;
       border: 0.5px solid $gray3;
       border-radius: 1rem;
@@ -88,14 +89,36 @@
     }
 
     &-date {
+      margin-top: 1.5rem;
+      // padding-top: 2rem;
       display: inline-block;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
     }
 
     &-size {
       margin: 1rem;
-      font-size: 1.2rem;
-      line-height: 2rem;
+      font-size: 1.4rem;
+      line-height: 2.5rem;
+    }
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.5rem;
+      padding: 0.6rem 4.2rem;
+
+      .site-name {
+        font-weight: 500;
+      }
+
+      .site-count {
+        text-align: center;
+      }
+
+      .site-price {
+        flex: 1;
+        text-align: right;
+        font-weight: 600;
+      }
     }
   }
 }
@@ -117,8 +140,8 @@
     }
 
     &--content {
-      font-size: 1.5rem;
-      line-height: 2.5rem;
+      font-size: 1.6rem;
+      line-height: 3rem;
       width: 90%;
       word-break: keep-all; // 띄어쓰기 되어있는 부분 줄바꿈
     }

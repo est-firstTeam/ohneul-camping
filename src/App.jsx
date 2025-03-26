@@ -45,6 +45,10 @@ function App() {
           element: <SearchResult />,
         },
         {
+          path: "searchResult/:id",
+          element: <DetailPage />,
+        },
+        {
           path: "createAccount",
           element: <CreateAccount />,
         },
@@ -57,10 +61,10 @@ function App() {
           path: "/productListExam",
           element: <ProductListExam />,
         },
-        {
-          path: "detail",
-          element: <DetailPage />,
-        },
+        // {
+        //   path: "detail",
+        //   element: <DetailPage />,
+        // },
       ],
     },
   ]);

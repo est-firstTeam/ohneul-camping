@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { fBService } from "../util/fbService";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 const MainRecommand = () => {
   const { data, isLoading } = useQuery({
@@ -63,9 +64,11 @@ const MainRecommand = () => {
           <span className="camp-info-text">
             {data.lineIntro || "한줄평이 없습니다."}
           </span>
-          <Button width="14rem" margin="5rem 0rem 0rem 0rem">
-            옵션 더보기 →
-          </Button>
+          <Link to={`/searchResult/${data.contentId}`}>
+            <Button width="14rem" margin="5rem 0rem 0rem 0rem">
+              옵션 더보기 →
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
