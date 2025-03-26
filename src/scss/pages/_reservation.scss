@@ -1,0 +1,30 @@
+@use "../abstracts" as *;
+
+.reservation {
+  .reservation__title {
+    @include a11y-hidden;
+  }
+
+  .modal__rsvcancel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: #fff;
+
+    .modal__title {
+      color: $semi-black;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .modal__content {
+      margin: 2rem 0;
+
+      line-height: 2.4rem;
+      font-size: 1.6rem;
+    }
+  }
+}
