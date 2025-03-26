@@ -30,7 +30,7 @@ const Gnb = (props) => {
   const scrollToSection = (ref) => {
     ref?.current?.scrollIntoView({
       behavior: "smooth",
-      block: "start",
+      block: "center",
     });
   };
 
