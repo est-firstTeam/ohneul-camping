@@ -103,6 +103,25 @@ class FBService {
       throw new Error("search All AvailableRSV Error: %o", e);
     }
   };
+
+  // User 컬렉션: name
+  getUserNameById = async (userId) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.User),
+        where("id", "==", userId)
+      );
+      const users = await firebaseAPI.getQueryDocs(q);
+
+      if (users.length > 0) {
+        return users[0].data.name;
+      }
+      return null;
+    } catch (e) {
+      console.error("get User Name By Id Error: %o", e);
+      return null;
+    }
+  };
 }
 
 export const fBService = new FBService();

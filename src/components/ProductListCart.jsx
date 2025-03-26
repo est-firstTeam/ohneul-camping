@@ -25,6 +25,9 @@ const ProductListCart = ({
   checked,
   handleCheckboxChange,
   handleDeleteItem,
+  isDisabled, // 버튼 비활성화 상태
+  buttonText,
+  onCancelClick,
 }) => {
   // 0은 보이지 않게 함
   const availableSites = [
@@ -65,19 +68,27 @@ const ProductListCart = ({
           {commaNumber(sumPrice)}
         </ItemDetails>
         <ItemDetails type="unit" size="reserved">
-          원 {!isCart && "~"}
+          원 {!isCart}
         </ItemDetails>
       </div>
       {/* 예약 확인에서 true */}
       {isRSV && (
-        <Button color={"primary"} size={"midium"} margin={"1rem"}>
-          예약 취소
+        <Button
+          color={"primary"}
+          size={"midium"}
+          margin={"1rem"}
+          disabled={isDisabled}
+          onClick={onCancelClick}
+        >
+          {buttonText}
         </Button>
       )}
-      {/* 장바구니에서 제거버튼 */}
-      <button className="btn-close" onClick={handleDeleteItem}>
-        <img src={closeIcon} width={"8px"} height={"8px"} />
-      </button>
+      {/* 장바구니에서만 제거 버튼 표시 */}
+      {handleDeleteItem && (
+        <button className="btn-close" onClick={handleDeleteItem}>
+          <img src={closeIcon} width={"8px"} height={"8px"} />
+        </button>
+      )}
     </div>
   );
 };
