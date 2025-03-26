@@ -12,6 +12,7 @@ import { fBService } from "../util/fbService";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { selectors } from "../util/selectors";
+import SearchBarButton from "./SearchBarButton";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -92,25 +93,29 @@ const SearchBar = () => {
     const result = await refetch(); // refetch로 데이터 강제로 재요청
     console.log(result);
     setSearchResult(result.data || []);
-    navigate("/searchResult");
+    navigate(
+      `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
+    );
     setEnabled(false);
   };
+
+  console.log(enabled);
 
   return (
     <>
       {/* 검색 바 */}
       <div className="search__bar">
         {searchBarButtons.map((sButton, index) => (
-          <Button
+          <SearchBarButton
             key={index}
-            className={`btn-searchbar`}
+            className={`searchbutton-${sButton.name}`}
             color="secondary"
             iconPosition="left"
             icon={sButton.icon}
             onClick={sButton.onClick}
           >
             {sButton.onValue ? <>{sButton.onValue}</> : <>{sButton.label}</>}
-          </Button>
+          </SearchBarButton>
         ))}
         {searchValue.location &&
         searchValue.startDate &&
@@ -144,6 +149,9 @@ const SearchBar = () => {
       <Modal
         modalRef={locationModal}
         handleCancel={() => setCancel("location")}
+        text={"완료"}
+        cancelBtn
+        confirmBtn
       >
         <div className="modal__location">
           <div className="modal__header">
@@ -176,7 +184,13 @@ const SearchBar = () => {
       />
 
       {/* 캠핑 모달 창 */}
-      <Modal modalRef={siteModal} handleCancel={() => setCancel("site")}>
+      <Modal
+        modalRef={siteModal}
+        handleCancel={() => setCancel("site")}
+        text={"완료"}
+        cancelBtn
+        confirmBtn
+      >
         <div className="modal__site">
           <h2 className="site__title">캠핑 사이트</h2>
           <div className="site__container">
