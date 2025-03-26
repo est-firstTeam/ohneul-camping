@@ -6,6 +6,7 @@ import useSearchStore from "../store/useSearchStore";
 
 const SearchResult = () => {
   const { searchResult } = useSearchStore();
+
   return (
     <div className="wrapper-search">
       <SearchBar />
@@ -18,13 +19,15 @@ const SearchResult = () => {
       </div>
       {searchResult.length !== 0 ? (
         <>
-          <ProductList stock={true} campsiteData={searchResult} />
+          <ProductList campSiteData={searchResult} />
         </>
       ) : (
         <>
           <NoResult text={"검색 결과가 없습니다."} />
         </>
       )}
+      {/* <ProductSearchList campSiteData={searchResult} /> */}
+      {/* <ProductList stock={true} campSiteData={searchResult} /> */}
     </div>
   );
 };
