@@ -17,8 +17,10 @@ export default function MainAllCampsite() {
   const [items, setItems] = useState([]);
 
   const loadItems = () => {
-    var newItems = data.slice(0, Math.min(items.length + 3, data.length));
-    setItems(newItems);
+    if (loading) {
+      var newItems = data.slice(0, Math.min(items.length + 3, data.length));
+      setItems(newItems);
+    }
   };
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -26,11 +28,11 @@ export default function MainAllCampsite() {
   });
 
   useEffect(() => {
-    if (loading) {
+    if (status === "success") {
       loadItems();
       setLoading(false);
     }
-  }, [loading]);
+  }, [status, loading]);
 
   return status === "pending" ? (
     <p>Loading...</p>

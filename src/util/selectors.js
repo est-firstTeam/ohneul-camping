@@ -11,7 +11,6 @@ class Selectors {
   };
 
   getSearchLocationStartDate = (siteArr, searchValue) => {
-    console.log(siteArr);
     return siteArr[0].data.content.filter((item) => {
       if (searchValue.site === "소(1~3인)") {
         return item.siteS !== null;
