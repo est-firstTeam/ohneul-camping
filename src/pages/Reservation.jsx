@@ -96,7 +96,10 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
               : "예약 취소";
 
             return (
-              <Link to={`/searchResult/${reservation.data.campSiteId}`}>
+              <Link
+                to={`/searchResult/${reservation.data.campSiteId}`}
+                key={reservation.id}
+              >
                 <ProductListCart
                   key={reservation.id}
                   firstImageUrl={reservation.data.firstImageUrl}
