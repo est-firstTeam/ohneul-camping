@@ -73,7 +73,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<div>"..loading"</div>}>
+      <Suspense fallback={<div></div>}>
         <RouterProvider router={router} />
       </Suspense>
     </QueryClientProvider>
