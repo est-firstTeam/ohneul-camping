@@ -6,24 +6,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-// .rsv-most__list-wrapper {
-//   display: grid;
-//   grid-template-columns: repeat(3, 1fr);
-//   justify-content: center;
-//   gap: 2rem;
-//   row-gap: 5rem;
-// }
-
-.rsv-most__test {
-  display: relative;
+  h2 {
+    font-size: 2.5rem;
+    color: $secondary;
+  }
+  h3 {
+    margin-top: 2rem;
+    font-size: 4rem;
+    margin-bottom: 6rem;
+  }
 }
 
 .rsv-most__list-wrapper {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   li {
     &:hover {
       cursor: pointer;
@@ -38,8 +34,4 @@
   margin-top: 2rem;
   align-self: center;
   justify-self: center;
-}
-
-.rsv-most__list-center {
-  display: flex;
 }

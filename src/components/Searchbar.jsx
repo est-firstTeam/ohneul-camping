@@ -93,10 +93,10 @@ const SearchBar = () => {
     const result = await refetch(); // refetch로 데이터 강제로 재요청
     console.log(result);
     setSearchResult(result.data || []);
+    setEnabled(false);
     navigate(
       `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
     );
-    setEnabled(false);
   };
 
   console.log(enabled);
