@@ -72,6 +72,7 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
 
         // 새로고침 없이 상태 즉시 반영
         refetch();
+        setModalStep("completed");
       } catch (error) {
         console.error("예약 취소 오류:", error);
       }
@@ -137,7 +138,7 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
           text={"확인"}
           cancelBtn={modalStep === "confirm"}
           confirmBtn={true}
-          buttonType="button"
+          buttonType={"button"}
         >
           <div className="modal__rsvcancel">
             {modalStep === "confirm" ? (
@@ -148,25 +149,6 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
                   <br />
                   예약 취소를 원하실 경우 '확인' 버튼을 클릭해 주세요.
                 </div>
-                {/* <form method="dialog" className="btn__container">
-                  <Button
-                    color={"secondary"}
-                    padding={"1rem 2rem"}
-                    type={"button"}
-                    onClick={handleCancel}
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    color={"primary"}
-                    padding={"1rem 2rem"}
-                    size={"medium"}
-                    type={"button"}
-                    onClick={handleConfirmModal}
-                  >
-                    확인
-                  </Button>
-                </form> */}
               </>
             ) : (
               <>
@@ -174,17 +156,6 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
                 <div className="modal__content">
                   예약 현황 목록에서 확인하실 수 있습니다.
                 </div>
-                {/* <form method="dialog" className="btn__container">
-                  <Button
-                    color={"primary"}
-                    padding={"1rem 2rem"}
-                    size={"medium"}
-                    type={"button"}
-                    onClick={handleCancel}
-                  >
-                    확인
-                  </Button>
-                </form> */}
               </>
             )}
           </div>
