@@ -40,7 +40,6 @@ export default function MainMostRSV() {
 
   const sliderVariants = {
     entry: (back) => {
-      console.log("Entry!");
       return {
         opacity: 0,
         x: back ? -370 : 370,
@@ -55,7 +54,6 @@ export default function MainMostRSV() {
       },
     },
     exit: (back) => {
-      console.log("Exit!");
       return {
         opacity: 0,
         x: back ? 370 : -370,

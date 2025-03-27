@@ -4,12 +4,14 @@ import ProductMain from "./ProductCard";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion"; // eslint-disable-line no-unused-vars
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useSectionRefStore from "../store/useSectionRefStore";
 
 export default function MainAllCampsite() {
   const { data, status, error } = useQuery({
     queryKey: ["campsites"],
     queryFn: async () => fBService.getAllCampsites(),
   });
+  const { reservation } = useSectionRefStore();
   const navi = useNavigate();
   const { scrollYProgress } = useScroll();
   const [loading, setLoading] = useState(false);
