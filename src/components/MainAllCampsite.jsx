@@ -43,7 +43,7 @@ export default function MainAllCampsite() {
     <section className="all-campsite">
       <h2>오늘 어디 갈래?</h2>
       <h3>모든 캠핑장 정보</h3>
-      <div>
+      <div ref={reservation}>
         <ul className="all-campsite__wrapper">
           {items.map((campObj) => {
             return (

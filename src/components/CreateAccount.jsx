@@ -104,6 +104,12 @@ const CreateAccount = () => {
             displayName: data.user.displayName,
           });
 
+          setUser({
+            Id: data.user.uid,
+            Name: data.user.displayName,
+            Email: data.user.email,
+          });
+
           navi("/");
         })
         .catch((err) => {

@@ -49,7 +49,11 @@ const Login = () => {
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, googleProvider)
         .then((data) => {
-          console.log("Google Login Data -> ", data);
+          setUser({
+            id: data.user.uid,
+            name: data.user.displayName,
+            email: data.user.email,
+          });
           navi("/");
         })
         .catch((err) => {
