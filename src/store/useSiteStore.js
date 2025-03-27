@@ -5,8 +5,14 @@ import { firebaseDB } from "../firebaseConfig";
 const useSiteStore = create((set) => ({
   siteCounts: [0, 0, 0, 0],
   rsvTotalPrice: 0,
-  setSiteCounts: (newCounts) => set({ siteCounts: newCounts }),
+
+  setSiteCounts: (newCounts) =>
+    set({ siteCounts: Array.isArray(newCounts) ? newCounts : [0, 0, 0, 0] }),
+
   setRsvTotalPrice: (price) => set({ rsvTotalPrice: price }),
+
+  resetSiteCounts: () => set({ siteCounts: [0, 0, 0, 0] }),
+
   updateTotalPriceInFirestore: async (price) => {
     try {
       const userRef = doc(firebaseDB, "User", "KvsuGtPyBORD2OHATEwpvthlQKt1");

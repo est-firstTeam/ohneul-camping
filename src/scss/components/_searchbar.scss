@@ -1,3 +1,5 @@
+@use "../abstracts/" as *;
+
 // 검색바
 .search__bar {
   border-radius: 6.25rem;
@@ -72,6 +74,7 @@
   }
 }
 
+// 상세 페이지 사이트 모달
 .detail__modal-site {
   display: flex;
   flex-direction: column;
@@ -79,14 +82,40 @@
   flex-shrink: 0;
   border-radius: 1rem;
   padding: 1rem;
-  background: #fff;
+  background: $white;
   width: 43rem;
 
   &--title {
-    color: #212529;
+    color: $semi-black;
     font-size: 2rem;
     font-weight: bold;
     line-height: 2rem;
+  }
+
+  &--soldout {
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 8rem 0;
+  }
+
+  &--error {
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 8rem 0;
+  }
+
+  &--text {
+    font-size: 1.8rem;
+  }
+
+  &--remaining {
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+
+    &.sold-out {
+      color: $red; // 남은 자리가 0이면 빨간색으로 표시
+    }
   }
 
   &--container {
@@ -102,14 +131,12 @@
     padding: 1.7rem 2.9rem;
   }
 
-  &--counter {
-    text-align: center;
-    font-size: 2.4rem;
-    padding: 0 2.1rem;
+  &--counterDiv.disabled {
+    opacity: 0.3;
   }
 
-  &--leftBtn:disabled {
-    opacity: 0.3;
-    //   cursor: not-allowed;
+  &--counter {
+    font-size: 2.4rem;
+    margin: 3rem;
   }
 }
