@@ -3,15 +3,12 @@ import mapico from "../images/ico-map.svg";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import Button from "./Button";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Modal from "./Modal";
 import DateModal from "./DateModal";
 import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
-import { fBService } from "../util/fbService";
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { selectors } from "../util/selectors";
 import SearchBarButton from "./SearchBarButton";
 
 const SearchBar = () => {
@@ -19,7 +16,6 @@ const SearchBar = () => {
   const locationModal = useRef(null); // 위치 모달 관리
   const dateModal = useRef(null); // 날짜 및 일정 모달 관리
   const siteModal = useRef(null); // 캠프 사이트 모달 관리
-  const [enabled, setEnabled] = useState(false); // 검색 버튼 상태 관리
 
   const {
     locations,
@@ -30,7 +26,6 @@ const SearchBar = () => {
     setStartDate,
     setEndDate,
     setSite,
-    setSearchResult,
   } = useSearchStore();
 
   // 모달 열기
@@ -68,38 +63,12 @@ const SearchBar = () => {
     },
   ];
 
-  // 검색시 데이터 불러오기(tanstack 쿼리 사용)
-  const { data: siteArr, refetch } = useQuery({
-    queryKey: ["search", searchValue],
-    queryFn: () => {
-      if (searchValue.location === "전체") {
-        return fBService.getSearchAllARSV(searchValue.startDate);
-      } else if (searchValue.location !== "전체") {
-        return fBService.getSearchARSV(
-          searchValue.location,
-          searchValue.startDate
-        );
-      }
-    },
-    enabled: enabled,
-    select: (data) => selectors.getSearchLocationStartDate(data, searchValue),
-  });
-
-  console.log(siteArr);
-
-  // 검색 활용
-  const handleSearch = async () => {
-    setEnabled(true); // 쿼리 활성화
-    const result = await refetch(); // refetch로 데이터 강제로 재요청
-    console.log(result);
-    setSearchResult(result.data || []);
-    navigate(
-      `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
-    );
-    setEnabled(false);
-  };
-
-  console.log(enabled);
+  // // 검색 활용
+  // const handleSearch = async () => {
+  //   navigate(
+  //     `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
+  //   );
+  // };
 
   return (
     <>
@@ -126,7 +95,11 @@ const SearchBar = () => {
               color={"primary"}
               icon={<img src={right_arr} />}
               iconPosition="right"
-              onClick={handleSearch}
+              onClick={() => {
+                navigate(
+                  `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
+                );
+              }}
             >
               검색
             </Button>
@@ -200,7 +173,6 @@ const SearchBar = () => {
                 chipValue={site}
                 groupName="캠핑 사이트"
                 onClick={(e) => setSite(e.target.value)}
-                // onClick={(e) => setSiteEx(e.target.value)}
               />
             ))}
           </div>
