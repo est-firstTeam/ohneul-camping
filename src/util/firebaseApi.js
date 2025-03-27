@@ -30,7 +30,6 @@ class FirebaseAPI {
 
     const querySnapshot = await getDocs(queryContent);
     return querySnapshot.docs.map((doc) => {
-      console.log({ id: doc.id, data: doc.data() });
       return { id: doc.id, data: doc.data() };
     });
   };
@@ -42,14 +41,6 @@ class FirebaseAPI {
       const data = doc.data();
       return acc.concat(data.content);
     }, []);
-
-    console.log([
-      {
-        id: new Date().toISOString(),
-        data: { content: mergedContent },
-      },
-    ]);
-
     return [
       {
         id: new Date().toISOString(),

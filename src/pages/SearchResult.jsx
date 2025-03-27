@@ -5,12 +5,11 @@ import SearchBar from "../components/Searchbar";
 import SelectBox from "../components/SelectBox";
 import useSearchStore from "../store/useSearchStore";
 import { fBService } from "../util/fbService";
-import { selectors } from "../util/selectors";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { selectors } from "../util/selectors";
 
 const SearchResult = () => {
-  const navigate = useNavigate();
   const { location, startdate, enddate, site } = useParams();
   const {
     setLocation,
@@ -18,38 +17,27 @@ const SearchResult = () => {
     setEndDate,
     setSite,
     searchResult,
-    searchValue,
     setSearchResult,
   } = useSearchStore();
 
-  const { data: siteArr, refetch } = useQuery({
-    queryKey: ["search", searchValue],
+  // 검색 쿼리
+  const { data: searchData } = useQuery({
+    queryKey: ["search", location, startdate, site], // querykey에 변경값을 작성해야 변경이 된다
     queryFn: () => {
-      if (searchValue.location === "전체") {
-        return fBService.getSearchAllARSV(searchValue.startDate);
-      } else if (searchValue.location !== "전체") {
-        return fBService.getSearchARSV(
-          searchValue.location,
-          searchValue.startDate
-        );
+      if (location === "전체") {
+        return fBService.getSearchAllARSV(startdate);
       }
+      return fBService.getSearchARSV(location, startdate);
     },
-    select: (data) => selectors.getSearchLocationStartDate(data, searchValue),
+    select: (data) => selectors.getSearchLocationStartDate(data, site), // useParams의 site로 지정해서 select를 하면 params부분만 필터(기존에는 searchValue.site로 지정해서 사이트 변경시 자동으로 필터링 되었음)
   });
 
-  console.log(siteArr);
-
+  // URL 파라미터가 변경
   useEffect(() => {
-    const handleSearch = async () => {
-      setLocation(location);
-      setStartDate(startdate);
-      setEndDate(enddate);
-      setSite(site);
-      const result = await refetch(); // refetch로 데이터 강제로 재요청
-      setSearchResult(result.data || []);
-      navigate(`/searchResult/${location}/${startdate}/${enddate}/${site}`);
-    };
-    handleSearch();
+    setLocation(location);
+    setStartDate(startdate);
+    setEndDate(enddate);
+    setSite(site);
   }, [
     location,
     startdate,
@@ -59,11 +47,14 @@ const SearchResult = () => {
     setStartDate,
     setEndDate,
     setSite,
-    refetch,
-    setSearchResult,
-    searchResult,
-    navigate,
   ]);
+
+  // 검색 결과가 변경
+  useEffect(() => {
+    if (searchData) {
+      setSearchResult(searchData);
+    }
+  }, [searchData, setSearchResult]);
 
   return (
     <div className="wrapper-search">
@@ -76,15 +67,12 @@ const SearchResult = () => {
         </div>
       </div>
       {searchResult.length !== 0 ? (
-        <>
-          <ProductList campSiteData={searchResult} />
-        </>
+        <ProductList campSiteData={searchResult} />
       ) : (
-        <>
-          <NoResult text={"검색 결과가 없습니다."} />
-        </>
+        <NoResult text={"검색 결과가 없습니다."} />
       )}
     </div>
   );
 };
+
 export default SearchResult;

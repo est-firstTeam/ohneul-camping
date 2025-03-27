@@ -1,9 +1,9 @@
 import ItemDetails from "./ItemDetails";
 import React from "react";
 import noImage from "./../images/no_image.png";
-import useSearchStore from "../store/useSearchStore";
-import { useMotionValueEvent, useScroll } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+// import { useMotionValueEvent, useScroll } from "framer-motion";
+// import { useEffect, useState } from "react";
 // import useCampsiteData from "../hooks/useCampsiteData";
 
 // Campsite 컬렉션
@@ -20,36 +20,39 @@ const ProductList = ({ campSiteData }) => {
 
   // const displayedData = campsiteData.slice(0, limit || 1);
 
-  const { searchValue } = useSearchStore();
+  const { site } = useParams();
+  // const { searchValue } = useSearchStore();
 
-  const { scrollYProgress } = useScroll();
-  const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState([]);
+  // const { scrollYProgress } = useScroll();
+  // const [loading, setLoading] = useState(false);
+  // const [items, setItems] = useState([]);
 
-  const loadItems = () => {
-    // if (loading) {
-    var newItems = campSiteData.slice(
-      0,
-      Math.min(items.length + 3, campSiteData.length)
-    );
-    setItems(newItems);
-    // }
-  };
+  // const loadItems = () => {
+  //   // if (loading) {
+  //   var newItems = campSiteData.slice(
+  //     0,
+  //     Math.min(items.length + 3, campSiteData.length)
+  //   );
+  //   setItems(newItems);
+  //   // }
+  // };
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest > 0.95) setLoading(true);
-  });
+  // useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  //   if (latest > 0.95) setLoading(true);
+  // });
 
-  useEffect(() => {
-    loadItems();
-    setLoading(false);
-  }, [campSiteData, loading]);
+  // useEffect(() => {
+  //   loadItems();
+  //   setLoading(false);
+  // }, [campSiteData, loading]);
 
-  console.log(loading);
+  // console.log(loading);
+
+  // console.log(campSiteData);
 
   return (
     <div className="product-list">
-      {items.map((camp) => {
+      {campSiteData.map((camp) => {
         const { siteS, siteM, siteL, siteC } = camp;
 
         // 재고 옵션
@@ -125,10 +128,10 @@ const ProductList = ({ campSiteData }) => {
               {/* ㄴ재고 무관하게! */}
               {/* ㄴ만약 전일 매진이면/ 모든 재고가 0이라면 → 품절표시? */}
               <ItemDetails type="price" size="default">
-                {searchValue.site === "소(1~3인)" && <>{camp.siteSPrice}</>}
-                {searchValue.site === "중(4~6인)" && <>{camp.siteMPrice}</>}
-                {searchValue.site === "대(7~10인)" && <>{camp.siteLPrice}</>}
-                {searchValue.site === "카라반(1~4인)" && <>{camp.siteCPrice}</>}
+                {site === "소(1~3인)" && <>{camp.siteSPrice}</>}
+                {site === "중(4~6인)" && <>{camp.siteMPrice}</>}
+                {site === "대(7~10인)" && <>{camp.siteLPrice}</>}
+                {site === "카라반(1~4인)" && <>{camp.siteCPrice}</>}
               </ItemDetails>
               <ItemDetails type="unit" size="default">
                 원 ~
