@@ -3,6 +3,7 @@ import { fBService } from "../util/fbService";
 import ProductMain from "./ProductCard";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion"; // eslint-disable-line no-unused-vars
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useSectionRefStore from "../store/useSectionRefStore";
 
 export default function MainAllCampsite() {
@@ -11,7 +12,7 @@ export default function MainAllCampsite() {
     queryFn: async () => fBService.getAllCampsites(),
   });
   const { reservation } = useSectionRefStore();
-
+  const navi = useNavigate();
   const { scrollYProgress } = useScroll();
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -39,11 +40,9 @@ export default function MainAllCampsite() {
   ) : status === "error" ? (
     <p>Error: {error.message}</p>
   ) : (
-    <section className="all-campsite" title="예약이 가장 많은 캠핑장">
-      <div className="all-campsite__header" ref={reservation}>
-        <h3>오늘 어디 갈래?</h3>
-        <h2>모든 캠핑장 정보</h2>
-      </div>
+    <section className="all-campsite">
+      <h2>오늘 어디 갈래?</h2>
+      <h3>모든 캠핑장 정보</h3>
       <div>
         <ul className="all-campsite__wrapper">
           {items.map((campObj) => {
@@ -53,10 +52,16 @@ export default function MainAllCampsite() {
                 key={campObj.id}
                 initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: -30 }}
-                transition={{ duration: 0.5, type: "spring", delay: 0 }}
-                whileHover={{ scale: 1.1, delay: 0 }}
+                transition={{ type: "tween", delay: 0.1 }}
+                whileHover={{
+                  scale: 1.05,
+                  cursor: "pointer",
+                  transition: {
+                    duration: 0.2,
+                  },
+                }}
                 onClick={() => {
-                  console.log("clicked!!");
+                  navi(`/searchResult/${campObj.id}`);
                 }}
               >
                 <ProductMain camp={campObj} />

@@ -14,9 +14,9 @@ const Main = () => {
     <>
       <TopBtn />
       <MainIntro />
-      <div className="searchbar-wrapper" ref={search}>
+      <article className="searchbar-wrapper" ref={search}>
         <Searchbar />
-      </div>
+      </article>
       <MainRecommand />
       <MainMostRSV />
       <MainAllCampsite />

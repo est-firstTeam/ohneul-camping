@@ -2,18 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import ProductList from "./ProductList";
 import { fBService } from "../util/fbService";
 import { AnimatePresence, MotionConfig } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import ProductMain from "./ProductCard";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
+
+const SLIDER_MAX_IDX = 9;
+const OFFSET = 3;
 
 export default function MainMostRSV() {
-  const containerRef = useRef(null);
-  const itemsRef = useRef([]);
-  const offset = 3;
+  const navi = useNavigate();
   const [sliderIdx, setSliderIdx] = useState(0);
   const canScrollPrev = sliderIdx > 0;
-  const canScrollNext = sliderIdx < 9;
+  const canScrollNext = sliderIdx < SLIDER_MAX_IDX;
   const [back, setBack] = useState(false);
   const { data, error, status } = useQuery({
     queryKey: ["sortCampsiteByRsvComplete"],
@@ -38,11 +40,9 @@ export default function MainMostRSV() {
 
   const sliderVariants = {
     entry: (back) => {
-      console.log("Entry!");
       return {
         opacity: 0,
-        scale: 1,
-        x: back ? window.outerWidth + 50 : -window.outerWidth - 50,
+        x: back ? -370 : 370,
       };
     },
     center: {
@@ -54,12 +54,12 @@ export default function MainMostRSV() {
       },
     },
     exit: (back) => {
-      console.log("Exit!");
-
       return {
         opacity: 0,
-        scale: 1,
-        x: back ? -window.outerWidth - 50 : window.outerWidth + 50,
+        x: back ? 370 : -370,
+        transition: {
+          type: "tween",
+        },
       };
     },
   };
@@ -69,41 +69,32 @@ export default function MainMostRSV() {
   ) : status === "error" ? (
     <p>Error: {error.message}</p>
   ) : (
-    <section className="rsv-most" title="예약이 가장 많은 캠핑장">
-      <div className="rsv-most-header">
-        <h3>오늘의 픽텐트!</h3>
-        <h2>예약이 가장 많은 캠핑장</h2>
-      </div>
-      <div>
+    <section className="rsv-most">
+      <h2>오늘의 픽텐트!</h2>
+      <h3>예약이 가장 많은 캠핑장</h3>
+      <AnimatePresence mode="popLayout" custom={back} initial={false}>
         <motion.ul
           className="rsv-most__list-wrapper"
-          ref={containerRef}
-          // key={sliderIdx}
+          key={sliderIdx}
+          custom={back}
+          variants={sliderVariants}
+          initial="entry"
+          animate="center"
+          exit="exit"
         >
-          <AnimatePresence mode="popLayout" custom={back} initial={false}>
-            {data
-              .slice(sliderIdx, sliderIdx + offset)
-              // .slice(offset * sliderIdx, offset * sliderIdx + offset)
-              .map((campObj, idx) => {
-                return (
-                  <motion.li
-                    key={idx}
-                    ref={(el) => (itemsRef.current[idx] = el)}
-                    custom={back}
-                    variants={sliderVariants}
-                    initial="entry"
-                    animate="center"
-                    exit="exit"
-                    whileHover={{ scale: 1.1, duration: 0.2 }}
-                    // transition={{ type: "spring", duration: 0.2 }}
-                  >
-                    <ProductMain camp={campObj} />
-                  </motion.li>
-                );
-              })}
-          </AnimatePresence>
+          {data.slice(sliderIdx, sliderIdx + OFFSET).map((campObj, idx) => {
+            return (
+              <motion.li
+                onClick={() => navi(`/searchResult/${campObj.id}`)}
+                key={idx}
+                whileHover={{ scale: 1.05, duration: 0.2 }}
+              >
+                <ProductMain camp={campObj} />
+              </motion.li>
+            );
+          })}
         </motion.ul>
-      </div>
+      </AnimatePresence>
       <div className="rsv-most__buttons">
         <Button onClick={prevBtn} disabled={!canScrollPrev}>
           ← Prev
