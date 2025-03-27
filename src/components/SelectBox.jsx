@@ -1,14 +1,15 @@
 import { useState } from "react";
 import Button from "./Button";
 import icoarrowdown from "../images/ico-arrowdown.svg";
+import useSearchStore from "../store/useSearchStore";
 
 const SelectBox = () => {
   const [showOption, setShowOption] = useState(false);
-  const [value, setValue] = useState("재고 많은 순");
+  const { filterValue, setFilterValue } = useSearchStore();
 
   const handleChangeOption = (e) => {
     const { innerText } = e.target;
-    setValue(innerText);
+    setFilterValue(innerText);
     setShowOption((prev) => !prev);
   };
 
@@ -22,7 +23,7 @@ const SelectBox = () => {
           icon={<img src={icoarrowdown} />}
           iconPosition="right"
         >
-          {value}
+          {filterValue}
         </Button>
         {showOption && (
           <ul className="option-list">

@@ -1,65 +1,235 @@
 import { useEffect, useRef, useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useParams } from "react-router-dom";
 import Button from "../components/Button";
 import calico from "../images/ico-calendar.svg";
 import siteico from "../images/ico-vector.svg";
 import addCart from "../images/ico-addCart.svg";
 import Topbtn from "../components/Topbtn";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { firebaseDB } from "../firebaseConfig";
 import DateModal from "../components/DateModal";
-import { useParams } from "react-router-dom";
 import DTsiteModal from "../components/DTsiteModal";
 import useSiteStore from "../store/useSiteStore";
 import DetailOptionBox from "../components/DetailOptionBox";
 import { firebaseAPI } from "../util/firebaseApi";
 import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
+import { firebaseDB } from "../firebaseConfig";
+import { getDaysBetweenDates } from "../util/util.js";
 
 const DetailPage = () => {
   const { id } = useParams();
-  const [campData, setCampData] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const dateModal = useRef(null);
   const siteModal = useRef(null);
   const { siteCounts } = useSiteStore();
+  const resetSiteCounts = useSiteStore((state) => state.resetSiteCounts);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [availableSites, setAvailableSites] = useState(null);
+  const [minAvailable, setMinAvailable] = useState(null);
+
+  const { data: campData } = useQuery({
+    queryKey: ["campData", id],
+    queryFn: async () => {
+      const allDocs = await firebaseAPI.getAllDocs("Available_RSV");
+      for (const doc of allDocs) {
+        const contentArray = doc.data.content || [];
+        const matchedContent = contentArray.find(
+          (item) => item.contentId === id
+        );
+        if (matchedContent) return matchedContent;
+      }
+      throw new Error("해당 contentId에 대한 데이터 없음");
+    },
+    enabled: !!id,
+  });
+
+  const mutation = useMutation({
+    mutationFn: async ({ startDate, endDate, siteCounts, totalPrice }) => {
+      const userId = "6oh1GaHoK0ggGiv9kiHqxiIPipz1"; // 유저 ID(추후 변경)
+      const userRef = doc(firebaseDB, "User", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const carts = userData.carts || [];
+
+        carts.push({
+          campSiteId: campData.contentId,
+          firstImageUrl: campData.firstImageUrl,
+          rsvStartDate: startDate,
+          rsvEndDate: endDate,
+          rsvSiteS: siteCounts[0] || 0,
+          rsvSiteM: siteCounts[1] || 0,
+          rsvSiteL: siteCounts[2] || 0,
+          rsvSiteC: siteCounts[3] || 0,
+          facltNm: campData.facltNm,
+          rsvTotalPrice: totalPrice,
+          doNm: campData.doNm,
+        });
+
+        await updateDoc(userRef, { carts });
+      }
+    },
+  });
 
   useEffect(() => {
-    const fetchCampData = async () => {
-      try {
-        // contentId로 캠핑장 데이터 가져오기
-        const allDocs = await firebaseAPI.getAllDocs("Available_RSV");
+    return () => {
+      resetSiteCounts(); // 페이지 이동 시 site 개수 초기화
+    };
+  }, []);
 
-        let foundContent = null;
-        for (const doc of allDocs) {
-          const contentArray = doc.data.content || [];
+  useEffect(() => {
+    resetSiteCounts(); // startDate 값이 변경되면 site 개수 초기화
+  }, [startDate]);
 
-          const matchedContent = contentArray.find(
-            (item) => item.contentId === id
-          );
+  const nightCount = getDaysBetweenDates(startDate, endDate);
+  const totalPrice = siteCounts.reduce((sum, count, index) => {
+    let pricePerSite =
+      [
+        campData?.siteSPrice,
+        campData?.siteMPrice,
+        campData?.siteLPrice,
+        campData?.siteCPrice,
+      ][index] || 0;
+    return sum + count * pricePerSite * nightCount;
+  }, 0);
 
-          if (matchedContent) {
-            foundContent = matchedContent;
-            break;
-          }
-        }
+  const fetchSiteCountsEachDate = async (
+    location,
+    startDate,
+    endDate,
+    contentId
+  ) => {
+    if (!location || !startDate || !endDate || !contentId) return {};
 
-        if (foundContent) {
-          setCampData(foundContent);
-        } else {
-          console.log("해당 contentId에 대한 데이터 없음");
-        }
-      } catch (error) {
-        console.error("데이터 가져오기 실패:", error);
+    // 날짜 리스트 생성
+    const getDatesInRange = (start, end) => {
+      const dateArray = [];
+      let currentDate = new Date(start);
+      const endDateObj = new Date(end);
+      endDateObj.setDate(endDateObj.getDate() - 1);
+
+      while (currentDate <= endDateObj) {
+        dateArray.push(
+          currentDate
+            .toLocaleDateString("ko-KR", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })
+            .replace(/\. /g, "-")
+            .replace(".", "")
+        );
+        currentDate.setDate(currentDate.getDate() + 1);
       }
+      return dateArray;
     };
 
-    fetchCampData();
-  }, [id]);
+    const dateList = getDatesInRange(startDate, endDate);
+    let datesAvailability = {};
 
-  console.log(campData);
+    // Firebase 문서 조회
+    const docIds = dateList.map((date) => `${location}_${date}`);
+    const docRefs = docIds.map((docId) =>
+      doc(firebaseDB, "Available_RSV", docId)
+    );
+    const docSnapshots = await Promise.all(
+      docRefs.map((docRef) => getDoc(docRef))
+    );
 
-  // 날짜 선택 모달 열기
+    // 데이터 처리
+    docSnapshots.forEach((docSnap, index) => {
+      const date = dateList[index];
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const matchedContent = data?.content?.find(
+          (item) => item.contentId === contentId
+        );
+
+        if (matchedContent) {
+          datesAvailability[date] = {
+            siteS: matchedContent.siteS,
+            siteM: matchedContent.siteM,
+            siteL: matchedContent.siteL,
+            siteC: matchedContent.siteC,
+          };
+        } else {
+          datesAvailability[date] = { siteS: 0, siteM: 0, siteL: 0, siteC: 0 };
+        }
+      } else {
+        datesAvailability[date] = { siteS: 0, siteM: 0, siteL: 0, siteC: 0 };
+      }
+    });
+
+    return datesAvailability;
+  };
+
+  const getMinAvailableSites = (availableSites) => {
+    return Object.keys(availableSites).reduce(
+      (minSites, date) => {
+        const dailyData = availableSites[date];
+
+        // 최소값을 찾기 위해 현재 값과 비교 (null)
+        minSites.siteS =
+          dailyData.siteS === null
+            ? null
+            : Math.min(minSites.siteS, dailyData.siteS);
+        minSites.siteM =
+          dailyData.siteM === null
+            ? null
+            : Math.min(minSites.siteM, dailyData.siteM);
+        minSites.siteL =
+          dailyData.siteL === null
+            ? null
+            : Math.min(minSites.siteL, dailyData.siteL);
+        minSites.siteC =
+          dailyData.siteC === null
+            ? null
+            : Math.min(minSites.siteC, dailyData.siteC);
+        return minSites;
+      },
+      // 비교를 위한 초기값 (min 값을 구하기 위한 initialize)
+      { siteS: 10000, siteM: 10000, siteL: 10000, siteC: 10000 }
+    );
+  };
+
+  // useEffect에서 호출
+  useEffect(() => {
+    if (!campData || !startDate || !endDate) return;
+
+    const fetchData = async () => {
+      const location = campData?.doNm;
+      const contentId = campData?.contentId;
+      const siteCountsByDate = await fetchSiteCountsEachDate(
+        location,
+        startDate,
+        endDate,
+        contentId
+      );
+      setAvailableSites(siteCountsByDate);
+
+      console.log("날짜별 사이트 개수:", siteCountsByDate);
+      const minAvailable = getMinAvailableSites(siteCountsByDate);
+      console.log("최소 값 계산된 결과:", minAvailable);
+
+      // DTsiteModal에 minAvailable 전달
+      setMinAvailable(minAvailable);
+    };
+
+    fetchData();
+  }, [startDate, endDate]);
+
+  console.log("가능 개수", availableSites);
+
+  // console.log("나 시작", startDate);
+  // console.log("나 끝", endDate);
+  // if (startDate && startDate !== endDate) {
+  // const minAvailable = getMinAvailableSites(availableSites);
+  // console.log("나 날짜 중에 최솟값", minAvailable);
+  // }
+
   const openDateModal = () => {
     if (dateModal.current) {
       dateModal.current.showModal();
@@ -71,142 +241,6 @@ const DetailPage = () => {
       siteModal.current.showModal();
     }
   };
-
-  const updateUserCart = async (startDate, endDate, siteCounts, totalPrice) => {
-    const userId = "6oh1GaHoK0ggGiv9kiHqxiIPipz1"; // 고정된 문서 ID(추후 user에 따라 변경)
-    const userRef = doc(firebaseDB, "User", userId);
-
-    try {
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        const carts = userData.carts || [];
-
-        const newCartItem = {
-          campSiteId: campData.contentId,
-          firstImageUrl: campData.firstImageUrl,
-          rsvStartDate: startDate,
-          rsvEndDate: endDate,
-          rsvSiteS: siteCounts[0] || 0,
-          rsvSiteM: siteCounts[1] || 0,
-          rsvSiteL: siteCounts[2] || 0,
-          rsvSiteC: siteCounts[3] || 0,
-          facltNm: campData.facltNm,
-          rsvTotalPrice: totalPrice,
-        };
-
-        carts.push(newCartItem);
-
-        await updateDoc(userRef, { carts });
-
-        console.log("장바구니에 항목 추가 성공");
-      }
-    } catch (error) {
-      console.error("오류 발생", error);
-    }
-  };
-  // ~박 계산 로직
-  const calculateNights = (start, end) => {
-    const startDateObj = new Date(start);
-    const endDateObj = new Date(end);
-    const timeDiff = endDateObj - startDateObj;
-    const nightCount = timeDiff / (1000 * 60 * 60 * 24);
-    return nightCount;
-  };
-  const nightCount = calculateNights(startDate, endDate);
-
-  const totalPrice = siteCounts.reduce((sum, count, index) => {
-    let pricePerSite = 0;
-    if (index === 0) {
-      pricePerSite = campData?.siteSPrice || 0; // 소
-    } else if (index === 1) {
-      pricePerSite = campData?.siteMPrice || 0; // 중
-    } else if (index === 2) {
-      pricePerSite = campData?.siteLPrice || 0; // 대
-    } else if (index === 3) {
-      pricePerSite = campData?.siteCPrice || 0; // 카라반
-    }
-
-    return sum + count * pricePerSite * nightCount;
-  }, 0);
-
-  // console.log("totalPrice:", totalPrice);
-  // console.log("start date: ", startDate); // 2025-04-02
-  // console.log("end date:", endDate); // 2025-04-05
-
-  // const fetchSiteCountsForEachDate = async (location, startDate, endDate) => {
-  //   // startDate와 endDate 사이의 날짜 목록 생성
-  //   console.log("start date2:", startDate);
-  //   console.log("end date:", endDate);
-  //   const getDatesInRange = (start, end) => {
-  //     const dateArray = [];
-  //     let currentDate = new Date(start);
-  //     const endDateObj = new Date(end);
-
-  //     while (currentDate <= endDateObj) {
-  //       dateArray.push(
-  //         currentDate
-  //           .toLocaleDateString("ko-KR", {
-  //             year: "numeric",
-  //             month: "2-digit",
-  //             day: "2-digit",
-  //           })
-  //           .replace(/\. /g, "-")
-  //           .replace(".", "")
-  //       );
-  //       currentDate.setDate(currentDate.getDate() + 1);
-  //     }
-  //     return dateArray;
-  //   };
-
-  //   const dateList = getDatesInRange(startDate, endDate);
-  //   console.log("데이트리스트", dateList);
-  //   let datesAvailability = {};
-
-  //   for (const date of dateList) {
-  //     const docId = `${location}_${date}`;
-  //     const docRef = doc(firebaseDB, "Available_RSV", docId);
-  //     const docSnap = await getDoc(docRef);
-
-  //     if (docSnap.exists()) {
-  //       const data = docSnap.data();
-  //       datesAvailability[date] = {
-  //         siteS: data?.siteS || 0,
-  //         siteM: data?.siteM || 0,
-  //         siteL: data?.siteL || 0,
-  //         siteC: data?.siteC || 0,
-  //       };
-  //       console.log("문서 데이터:", data);
-  //       console.log(
-  //         `siteS: ${data?.siteS}, siteM: ${data?.siteM}, siteL: ${data?.siteL}, siteC: ${data?.siteC}`
-  //       );
-  //     } else {
-  //       console.log(`문서 없음: ${docId}`);
-  //       console.log(`조회할 문서 ID: ${docId}`);
-  //       datesAvailability[date] = { siteS: 0, siteM: 0, siteL: 0, siteC: 0 }; // 문서 없을 경우 0으로 설정
-  //     }
-  //   }
-
-  //   return datesAvailability;
-  // };
-
-  // useEffect(() => {
-  //   if (!campData || !startDate || !endDate) return;
-
-  //   const fetchData = async () => {
-  //     const location = campData?.doNm;
-  //     const siteCountsByDate = await fetchSiteCountsForEachDate(
-  //       location,
-  //       startDate,
-  //       endDate
-  //     );
-  //     console.log("날짜별 사이트 개수:", siteCountsByDate);
-  //   };
-
-  //   fetchData();
-  // }, [campData, startDate, endDate]);
-
   return (
     <section className="detail">
       <div>
@@ -259,7 +293,12 @@ const DetailPage = () => {
                   >
                     자리 선택
                   </Button>
-                  <DTsiteModal modalRef={siteModal} />
+                  <DTsiteModal
+                    modalRef={siteModal}
+                    minAvailable={minAvailable}
+                    startDate={startDate}
+                    endDate={endDate}
+                  />
                   <DetailOptionBox
                     startDate={startDate}
                     endDate={endDate}
@@ -280,15 +319,16 @@ const DetailPage = () => {
                       icon={<img src={addCart} />}
                       padding={"0.6rem 5rem"}
                       iconPosition="right"
-                      onClick={() =>
-                        updateUserCart(
+                      onClick={() => {
+                        mutation.mutate({
                           startDate,
                           endDate,
                           siteCounts,
                           totalPrice,
-                          nightCount
-                        )
-                      }
+                          nightCount,
+                        });
+                        resetSiteCounts(); // 버튼 클릭 시 site 개수 초기화
+                      }}
                     >
                       장바구니 담기
                     </Button>

@@ -1,4 +1,5 @@
 import React from "react";
+import { monthDateFormat } from "../util/util.js";
 
 const DetailOptionBox = ({
   startDate,
@@ -14,7 +15,8 @@ const DetailOptionBox = ({
       <div className="detail__overview--optionbox">
         <span className="detail__overview--optionbox-option">옵션</span>
         <h5 className="detail__overview--optionbox-date">
-          예약 일자 : {startDate} ~ {endDate} ({nightCount}박)
+          예약 일자 : {monthDateFormat(startDate)} ~ {monthDateFormat(endDate)}(
+          {nightCount}박)
         </h5>
         <ul className="detail__overview--optionbox-size">
           {siteCounts.map((count, index) => {
