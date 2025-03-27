@@ -63,13 +63,6 @@ const SearchBar = () => {
     },
   ];
 
-  // // 검색 활용
-  // const handleSearch = async () => {
-  //   navigate(
-  //     `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
-  //   );
-  // };
-
   return (
     <>
       {/* 검색 바 */}
@@ -96,9 +89,12 @@ const SearchBar = () => {
               icon={<img src={right_arr} />}
               iconPosition="right"
               onClick={() => {
-                navigate(
-                  `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
-                );
+                {
+                  navigate(
+                    `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
+                  );
+                  // window.location.reload();
+                }
               }}
             >
               검색
