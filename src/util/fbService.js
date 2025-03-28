@@ -157,7 +157,7 @@ class FBService {
   };
 
   insertUserCart = async (userId, carts) => {
-    await firebaseAPI.insertData(CollectionName.User, userId, carts);
+    await firebaseAPI.updateData(CollectionName.User, userId, carts);
   };
 }
 
