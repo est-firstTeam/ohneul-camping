@@ -20,7 +20,7 @@ const DetailInfo = ({ campData }) => {
         center={{ lat: campData.mapY, lng: campData.mapX }}
         style={{
           width: "40rem",
-          height: "20rem",
+          height: "30rem",
           borderRadius: "3rem",
           marginBottom: "2rem",
         }}
