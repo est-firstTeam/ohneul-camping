@@ -18,7 +18,11 @@ const Cart = () => {
   const userId = useUserStore((state) => state.id);
   const [amountToPay, setAmountToPay] = useState(0);
 
-  const { data: carts, isLoading } = useQuery({
+  const {
+    data: carts,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [`/cart/${userId}`],
     queryFn: async () => {
       const users = await fBService.fetchUser(userId);
@@ -82,10 +86,12 @@ const Cart = () => {
     }));
   };
 
-  const handleDeleteItem = (id) => {
-    const newCarts = carts.filter((prev) => prev.id !== id);
-    console.log("new:", newCarts);
-    // TODO: 이 데이터를 새로 insert
+  const handleDeleteItem = async (id) => {
+    const newCarts = carts.filter((prev) => prev.campSiteId !== id);
+    if (newCarts.length) {
+      await fBService.insertUserCart(userId, newCarts);
+      refetch();
+    }
   };
 
   const payMutation = useMutation({
@@ -153,7 +159,7 @@ const Cart = () => {
                   selected4={cartItem.rsvSiteC}
                   sumPrice={cartItem.rsvTotalPrice}
                   handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
-                  handleDeleteItem={() => handleDeleteItem(cartItem.id)}
+                  handleDeleteItem={() => handleDeleteItem(cartItem.campSiteId)}
                   isCart
                 />
               );
