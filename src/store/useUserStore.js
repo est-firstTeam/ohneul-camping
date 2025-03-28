@@ -17,7 +17,7 @@ export const useUserStore = create(
             id: userInfo.id,
             name: userInfo.name,
             email: userInfo.email,
-            profileImg: "",
+            profileImg: userInfo.profileImg,
             isLoggedIn: true,
           };
         });

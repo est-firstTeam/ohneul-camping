@@ -13,7 +13,7 @@ import {
 import { errorCodes } from "../constants/errorCodes";
 import { doc, getDoc } from "firebase/firestore";
 import { useUserStore } from "../store/useUserStore";
-import Button from "./Button";
+import Button from "../components/Button";
 
 const Login = () => {
   const { register, handleSubmit, formState } = useForm();

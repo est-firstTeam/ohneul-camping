@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
 import { useUserStore } from "../store/useUserStore";
-import Button from "./Button";
+import Button from "../components/Button";
 
 const CreateAccount = () => {
   const navi = useNavigate();
@@ -42,11 +42,16 @@ const CreateAccount = () => {
         data.password
       );
       //마이페이지의 닉네임을 출력하기위해 현재 유저에 닉네임을 설정.
-      await updateProfile(credential.user, { displayName: data.displayName });
+      await updateProfile(credential.user, {
+        displayName: data.displayName,
+        photoURL: data.photoURL,
+      });
+      console.log("credential ", credential.user);
       setUser({
         Id: credential.user.uid,
         Name: credential.user.displayName,
         Email: credential.user.email,
+        profileImg: credential.user.photoURL,
       });
 
       // users DB에 사용자 데이터 넣기.
@@ -71,7 +76,7 @@ const CreateAccount = () => {
       id: uid,
       name: data.displayName,
       email: data.email,
-      profileImg: "",
+      profileImg: data.user.photoURL ?? "",
       carts: [],
     });
   };
@@ -102,12 +107,14 @@ const CreateAccount = () => {
           await saveDataToDB(data.user);
           await updateProfile(data.user, {
             displayName: data.user.displayName,
+            photoURL: data.user.photoURL,
           });
 
           setUser({
             Id: data.user.uid,
             Name: data.user.displayName,
             Email: data.user.email,
+            profileImg: data.user.photoURL,
           });
 
           navi("/");

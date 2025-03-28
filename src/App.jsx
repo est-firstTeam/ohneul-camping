@@ -13,8 +13,8 @@ const SearchResult = lazy(() => import("./pages/SearchResult.jsx"));
 const MyPage = lazy(() => import("./pages/MyPage.jsx"));
 const Reservation = lazy(() => import("./pages/Reservation.jsx"));
 const Cart = lazy(() => import("./pages/Cart.jsx"));
-const CreateAccount = lazy(() => import("./components/CreateAccount.jsx"));
-const Login = lazy(() => import("./components/Login.jsx"));
+const CreateAccount = lazy(() => import("./pages/CreateAccount.jsx"));
+const Login = lazy(() => import("./pages/Login.jsx"));
 const DetailPage = lazy(() => import("./pages/DetailPage.jsx"));
 const ProductListExam = lazy(() => import("./pages/ProductListExam.jsx"));
 
