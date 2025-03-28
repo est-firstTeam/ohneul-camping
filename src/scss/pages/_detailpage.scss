@@ -46,10 +46,13 @@
     .detail__overview-reserv--title {
       font-size: 3rem;
       color: $black1;
+      font-family: $title;
     }
-    .detail__overview-reserv--campstyle {
+
+    .detail__overview-reserv--subtitle {
       font-size: 1.5rem;
       color: $semi-black;
+      font-weight: 300;
 
       &::before {
         content: "";
@@ -57,7 +60,22 @@
         height: 1.5rem;
         width: 3rem;
         margin-right: 0.3rem;
-        @include background("ico-camping.svg", center center, null, contain);
+        @include background("ico-camping.svg", left center, null, contain);
+      }
+    }
+
+    .detail__overview-reserv--campstyle {
+      font-size: 1.5rem;
+      color: $semi-black;
+      font-weight: 300;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        height: 1.5rem;
+        width: 3rem;
+        margin-right: 0.3rem;
+        @include background("ico-camping.svg", left center, null, contain);
       }
     }
 
@@ -68,13 +86,24 @@
 
       .detail__overview-reserv--option-text {
         color: $secondary;
-        font-size: 2rem;
+        font-size: 1.5rem;
+        padding-left: 0.3rem;
       }
 
       .btn-container {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+
+        .btn-date {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          .btn-date-title {
+            color: $secondary;
+            font-size: 1.5rem;
+          }
+        }
       }
 
       .detail__overview-reserv--payment {

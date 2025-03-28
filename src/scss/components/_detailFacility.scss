@@ -9,16 +9,17 @@
   flex-direction: column;
   // border-right: 1px solid $gray4;
   // padding-right: 5rem;
-  gap: 3rem;
+  gap: 5rem;
 
   .detail__add-on-left--container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2.125rem;
 
     .detail__add-on-left--title-amenity {
       font-size: 3rem;
       color: $black;
+      font-family: $title;
     }
 
     .detail__orange-box {
@@ -66,11 +67,12 @@
   .detail__add-on-left--container-intro {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2.125rem;
 
     .detail__add-on-left--title-intro {
       font-size: 3rem;
       color: $black;
+      font-family: $title;
     }
 
     .detail__add-on-left--content {
@@ -95,6 +97,7 @@
   .detail__add-on-right--title {
     font-size: 3rem;
     color: $black;
+    font-family: $title;
   }
 
   .detail__add-on-right--homepage {
