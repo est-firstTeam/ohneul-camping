@@ -245,13 +245,15 @@ const DetailPage = () => {
   return (
     <section className="detail">
       {campData ? (
-        <div className="detail__container">
+        <>
           <div className="detail__overview">
-            <img
-              className="detail__overview-image"
-              src={campData.firstImageUrl}
-              alt="캠핑장 사진"
-            />
+            <div className="detail__overview-image-box">
+              <img
+                className="detail__overview-image"
+                src={campData.firstImageUrl}
+                alt="캠핑장 사진"
+              />
+            </div>
             <div className="detail__overview-reserv">
               <h4 className="detail__overview-reserv--location">
                 {campData.doNm} {campData.sigunguNm}
@@ -341,10 +343,9 @@ const DetailPage = () => {
           </div>
           <div className="detail__add-on">
             <DetailFacility campData={campData} />
-            {/* <div className="col-line"></div> */}
             <DetailInfo campData={campData} />
           </div>
-        </div>
+        </>
       ) : (
         <p>로딩 중...</p>
       )}

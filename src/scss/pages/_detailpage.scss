@@ -1,32 +1,42 @@
 @use "../abstracts/" as *;
 
 .detail {
-  padding: 3rem 0;
-  .detail__container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5rem;
-  }
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5rem;
+  justify-content: center;
+  align-items: center;
+  // margin-inline: 12rem;
 
   .detail__overview {
     display: flex;
-    justify-content: center;
+    // width: 100%;
     gap: 5rem;
-    height: 50rem;
   }
 
-  .detail__overview-image {
-    border-radius: 1rem;
-    width: 60rem;
-    height: 46rem;
+  .detail__overview-image-box {
+    // width: 120rem;
+    display: flex;
+    // width: 60%;
+    // flex: 1;
+    // margin-left: 50rem;
+
+    .detail__overview-image {
+      width: 67rem;
+      height: 50rem;
+      border-radius: 1rem;
+      // object-fit: cover;
+      // width: 100%;
+      // height: 100%;
+    }
   }
 
   .detail__overview-reserv {
     display: flex;
+    // width: 40%;
+    // flex: 1;
     flex-direction: column;
-    width: 50rem;
+    // margin-right: 50rem;
     gap: 1.3rem;
 
     .detail__overview-reserv--location {
@@ -67,67 +77,13 @@
         gap: 1rem;
       }
 
-      // 옵션 상세페이지
-      .detail__overview--optionbox {
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem 3rem;
-        background-color: $box-primary;
-        border-radius: 1.5rem;
-        gap: 2rem;
-
-        .detail__overview--optionheader {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          font-size: 1.6rem;
-
-          .detail__overview--optionbox-option {
-            padding: 0.3rem 0.7rem;
-            border: 0.5px solid $gray3;
-            border-radius: 3rem;
-            background-color: $white;
-            font-size: 1.3rem;
-          }
-        }
-
-        .detail__overview--optionbox-size {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-
-          .detail__overview--optionbox-item {
-            display: flex;
-            justify-content: space-between;
-
-            .site-name {
-              font-size: 1.6rem;
-              color: $black1;
-
-              .site-num {
-                color: $gray3;
-                font-size: 1.2rem;
-              }
-            }
-            .site-count {
-              font-size: 1.6rem;
-              color: $black1;
-            }
-            .site-price {
-              font-size: 1.6rem;
-              color: $black1;
-            }
-          }
-        }
-      }
-
       .detail__overview-reserv--payment {
         display: flex;
         gap: 3rem;
         align-items: center;
         border-top: 1px solid $secondary;
-        margin-top: 2rem;
-        padding: 2rem;
+        justify-content: space-between;
+        padding: 1rem 0;
 
         .detail__overview-reserv--payment-text {
           font-size: 1.3rem;
@@ -140,134 +96,35 @@
       }
     }
   }
+
+  .detail__add-on {
+    display: flex;
+    // width: 100%;
+    gap: 5rem;
+  }
 }
 
-.detail__add-on {
+// 옵션 상세페이지
+.detail__overview--optionbox {
   display: flex;
-  justify-content: center;
-  // align-items: center;
-  gap: 5rem;
+  flex-direction: column;
+  padding: 1.5rem 3rem;
+  background-color: $box-primary;
+  border-radius: 1.5rem;
+  gap: 2rem;
 
-  .detail__add-on-left {
+  .detail__overview--optionheader {
     display: flex;
-    flex-direction: column;
-    border-right: 1px solid $gray4;
-    padding-right: 5rem;
-    gap: 4rem;
-    width: 50rem;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.6rem;
 
-    .detail__add-on-left--container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .detail__add-on-left--title-amenity {
-        font-size: 3rem;
-        color: $black;
-      }
-
-      .detail__orange-box {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem 2rem;
-        border: 1px solid $primary;
-        border-radius: 1rem;
-
-        .detail__orange-box--title {
-          color: $btn-black;
-          font-size: 1.5rem;
-          font-style: normal;
-          font-weight: bold;
-          line-height: 2.125rem;
-        }
-
-        .detail__orange-box--container {
-          display: flex;
-          gap: 4.62rem;
-
-          .detail__orange-box--amenity {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: $secondary;
-            font-size: 1.25rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 2.125rem;
-          }
-        }
-
-        .detail__orange-box--contents {
-          color: $gray2;
-          font-size: 1.25rem;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 2.125rem;
-        }
-      }
-    }
-
-    .detail__add-on-left--container-intro {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .detail__add-on-left--title-intro {
-        font-size: 3rem;
-        color: $black;
-      }
-
-      .detail__add-on-left--content {
-        color: #000;
-        font-size: 1.875rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 2.5rem;
-      }
-    }
-  }
-
-  .detail__add-on-right {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    .detail__add-on-right--title {
-      font-size: 3rem;
-      color: $black;
-    }
-
-    .detail__add-on-right--homepage {
-      color: $black;
-      font-size: 1.875rem;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 2.125rem;
-
-      &::before {
-        content: "";
-        display: inline-block;
-        height: 1.5rem;
-        width: 3rem;
-        @include background("ico-homepage.svg", center center, null, contain);
-      }
-    }
-
-    .detail__add-on-right--addr {
-      color: $black;
-      font-size: 1.875rem;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 2.125rem;
-
-      &::before {
-        content: "";
-        display: inline-block;
-        height: 1.5rem;
-        width: 3rem;
-        @include background("ico-geoAlt.svg", center center, null, contain);
-      }
+    .detail__overview--optionbox-option {
+      padding: 0.3rem 0.7rem;
+      border: 0.5px solid $gray3;
+      border-radius: 3rem;
+      background-color: $white;
+      font-size: 1.3rem;
     }
   }
 }
