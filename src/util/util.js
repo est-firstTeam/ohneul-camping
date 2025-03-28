@@ -4,11 +4,14 @@ export function commaNumber(number) {
 
 // 2025-01-01을 n월n일로 리턴
 export function monthDateFormat(dateString) {
-  const splited = dateString.split("-");
-  const month = splited[1].replace(/^0/, "");
-  const date = splited[2].replace(/^0/, "");
-  const result = `${month}월 ${date}일`;
-  return result;
+  if (dateString) {
+    const splited = dateString.split("-");
+    const month = splited[1].replace(/^0/, "");
+    const date = splited[2].replace(/^0/, "");
+    const result = `${month}월 ${date}일`;
+    return result;
+  }
+  return "-";
 }
 
 // 두 날짜 사이의 일을 계산하여 숫자로 리턴
