@@ -4,9 +4,13 @@ import { query, where, collection } from "firebase/firestore";
 import { firebaseDB } from "../firebaseConfig";
 
 class FBService {
-  getAllReservation = async () => {
+  getAllReservation = async (userId) => {
     try {
-      return firebaseAPI.getAllDocs(CollectionName.Reservation);
+      const q = query(
+        collection(firebaseDB, CollectionName.Reservation),
+        where("userId", "==", userId) // 해당 userId 정보만 가져옴
+      );
+      return await firebaseAPI.getQueryDocs(q);
     } catch (e) {
       throw new Error("get all Reservation Error: %o", e);
     }
