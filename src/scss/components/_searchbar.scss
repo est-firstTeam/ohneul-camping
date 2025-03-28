@@ -140,3 +140,33 @@
     margin: 3rem;
   }
 }
+
+.confirm__modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  padding: 1rem;
+  background: #fff;
+
+  .confirm__modal-imgContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &-icon {
+    margin-top: 3rem;
+  }
+
+  &-info {
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 4rem 3rem;
+  }
+
+  &-buttonContainer {
+    display: inline-flex;
+    gap: 1.2rem;
+  }
+}
