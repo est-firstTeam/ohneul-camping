@@ -1,19 +1,65 @@
 @use "../abstracts/" as *;
 
 .cart {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
   &__title {
     @include a11y-hidden;
   }
 
   &__list {
     display: grid;
-    flex-wrap: wrap;
     gap: 2.8rem;
     grid-template-columns: repeat(4, 1fr);
+    width: min-content;
   }
 }
 
 .cart__agreement {
   display: flex;
   gap: 0.8rem;
+  margin-bottom: 3.2rem;
+  button {
+    font-size: 2rem;
+  }
+}
+
+.cart__expected-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 2.6rem;
+  border: 1px solid $secondary;
+  border-radius: 3rem;
+  padding: 2rem;
+  width: 50%;
+  margin: 10rem auto;
+
+  &-title {
+    margin-block: 1.6rem;
+    font-size: 2.4rem;
+    font-weight: bold;
+  }
+}
+.cart__detail-option-box-total {
+  display: flex;
+  font-size: 2rem;
+  margin-bottom: 2.8rem;
+  justify-content: space-between;
+
+  &-price {
+    font-weight: 600;
+  }
+}
+
+.cart__amount-to-pay {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2.4rem;
+  margin-bottom: 2.8rem;
+
+  &-price {
+    color: $primary;
+    font-weight: bold;
+  }
 }
