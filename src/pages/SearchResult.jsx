@@ -8,6 +8,7 @@ import { fBService } from "../util/fbService";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { selectors } from "../util/selectors";
+import TopBtn from "../components/Topbtn";
 
 const SearchResult = () => {
   const {
@@ -78,6 +79,7 @@ const SearchResult = () => {
       ) : (
         <NoResult text={"검색 결과가 없습니다."} />
       )}
+      <TopBtn />
     </section>
   );
 };
