@@ -1,12 +1,10 @@
 import {
-  browserSessionPersistence,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  setPersistence,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { auth, firebaseDB } from "../firebaseConfig";
+import { auth, fbStorage, firebaseDB } from "../firebaseConfig";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FirebaseError } from "firebase/app";
@@ -15,12 +13,15 @@ import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
 import { useUserStore } from "../store/useUserStore";
 import Button from "../components/Button";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const CreateAccount = () => {
   const navi = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [pwIcons, setPwIcons] = useState([true, true]);
   const [error, setErr] = useState("");
+  const [imgFile, setImgFile] = useState(null);
+  const [imgPath, setImgPath] = useState(null);
   const setUser = useUserStore((state) => state.setUser);
   const {
     register,
@@ -33,31 +34,42 @@ const CreateAccount = () => {
 
   //Submit되면 onValid에서 입력된 input값을 가지고 유저를 생성한다.
   const onValid = async (data) => {
-    console.log("Submit Form data is...", data);
+    data.profileImg = imgFile === null ? "" : imgFile;
+    let avatarURL = null;
     setLoading(true);
+
     try {
+      //계정생성
       const credential = await createUserWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-      //마이페이지의 닉네임을 출력하기위해 현재 유저에 닉네임을 설정.
+
+      //Storage에 유저 이미지 저장. 파일이름 -> userID
+      if (data.profileImg) {
+        const file = data.profileImg[0];
+        const locationRef = ref(fbStorage, `avatars/${credential.user.uid}`);
+        const result = await uploadBytes(locationRef, file);
+        avatarURL = await getDownloadURL(result.ref);
+      }
+
       await updateProfile(credential.user, {
         displayName: data.displayName,
-        photoURL: data.photoURL,
+        photoURL: avatarURL ?? "",
       });
-      console.log("credential ", credential.user);
+      console.log("credential info -> ", credential.user);
+
+      //Zustand Data 세팅
       setUser({
-        Id: credential.user.uid,
-        Name: credential.user.displayName,
-        Email: credential.user.email,
+        id: credential.user.uid,
+        name: credential.user.displayName,
+        email: credential.user.email,
         profileImg: credential.user.photoURL,
       });
 
       // users DB에 사용자 데이터 넣기.
-      saveDataToDB(data);
-      // Session에 로그인 정보 넣기.
-      setPersistence(auth, browserSessionPersistence);
+      saveDataToDB(credential);
 
       navi("/");
     } catch (error) {
@@ -70,24 +82,25 @@ const CreateAccount = () => {
     }
   };
 
-  const saveDataToDB = async (data) => {
-    const uid = auth.currentUser.uid;
-    await setDoc(doc(firebaseDB, "User", uid), {
-      id: uid,
-      name: data.displayName,
-      email: data.email,
-      profileImg: data.user.photoURL ?? "",
-      carts: [],
-    });
-  };
-
   //에러없이 모든게 Ok되면 FormState를 리셋해준다.
   useEffect(() => {
     if (formState.isSubmitSuccessful && error === "") {
-      console.log("SubMit Successful !");
+      console.log("Submit Success !!");
       reset();
     }
   }, [formState, reset, error]);
+
+  const saveDataToDB = async (credential) => {
+    const uid = auth.currentUser.uid;
+    const obj = {
+      id: uid,
+      name: credential.user.displayName,
+      email: credential.user.email,
+      profileImg: credential.user.photoURL,
+      carts: [],
+    };
+    await setDoc(doc(firebaseDB, "User", uid), obj);
+  };
 
   const eyeToggle = (idx) => {
     setPwIcons((prev) => {
@@ -97,42 +110,66 @@ const CreateAccount = () => {
     });
   };
 
-  const googleLogin = async () => {
+  const googleAccount = async () => {
     const googleProvider = new GoogleAuthProvider();
-    // setPersistence -> 로그인을 얼만큼 유지할것인가. Session단위로 유지시키려면
-    // browserSessionPersistence 을 두 번째 인자로 넘겨준다.
-    setPersistence(auth, browserSessionPersistence).then(() => {
-      signInWithPopup(auth, googleProvider)
-        .then(async (data) => {
-          await saveDataToDB(data.user);
-          await updateProfile(data.user, {
-            displayName: data.user.displayName,
-            photoURL: data.user.photoURL,
-          });
-
-          setUser({
-            Id: data.user.uid,
-            Name: data.user.displayName,
-            Email: data.user.email,
-            profileImg: data.user.photoURL,
-          });
-
-          navi("/");
-        })
-        .catch((err) => {
-          console.log("Err!!!", error);
-          console.log(err);
+    signInWithPopup(auth, googleProvider)
+      .then(async (data) => {
+        //사용자 프로필 업데이트
+        await updateProfile(data.user, {
+          displayName: data.user.displayName,
+          photoURL: data.user.photoURL,
         });
-    });
+
+        //FirebaseDB에 데이터 입력
+        await saveDataToDB(data);
+
+        //Zustand에 데이터 입력
+        setUser({
+          id: data.user.uid,
+          name: data.user.displayName,
+          email: data.user.email,
+          profileImg: data.user.photoURL,
+        });
+
+        navi("/");
+      })
+      .catch((err) => {
+        console.log("Err!!!", error);
+        console.log(err);
+      });
+  };
+
+  const avatarURL = (event) => {
+    const { files } = event.target;
+    if (files && files.length === 1) {
+      setImgPath(URL.createObjectURL(files[0]));
+      setImgFile(files);
+    }
   };
 
   return (
-    <section className="account__wrapper">
-      <div className="account">
-        <div className="account__img-wrapper">
-          <img src="../public/Logo.svg" alt="회원가입_로고" />
-        </div>
+    <div className="account__wrapper">
+      {/* h2 회원가입 display:none */}
+      <section className="account">
+        <h2>회원 가입</h2>
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
+          {/* 아바타 파트 */}
+          <label className="account__profile-label" htmlFor="file">
+            <img
+              src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
+            />
+          </label>
+          <input
+            {...register("profileImg")}
+            id="file"
+            type="file"
+            accept="image/*"
+            className="account__input account__profile-input"
+            onChange={avatarURL}
+          />
+          <span className="account__error">
+            {formState.errors?.profileImg?.message}
+          </span>
           {/* 닉네임 파트 */}
           <div>
             <input
@@ -216,7 +253,7 @@ const CreateAccount = () => {
           </div>
           {/* Submit */}
           <div>
-            <Button className="btn account__btn" type="submit">
+            <Button width="25rem" className="btn account__btn" type="submit">
               {isLoading ? "Loading..." : "계정 생성"}
             </Button>
             {/* 파이어베이스 에러 확인용 */}
@@ -225,11 +262,14 @@ const CreateAccount = () => {
             )}
           </div>
         </form>
+      </section>
+      <section className="account__etc">
+        <h2>소셜 회원가입</h2>
         <span className="hr-sect">OR</span>
-        <Button className="btn-google" onClick={googleLogin}></Button>
+        <Button className="btn-google" onClick={googleAccount}></Button>
         {/* <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button> */}
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

@@ -4,9 +4,7 @@ import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  browserSessionPersistence,
   GoogleAuthProvider,
-  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
@@ -22,20 +20,16 @@ const Login = () => {
   const [error, setErr] = useState("");
   const navi = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
-
   const onValid = async (data) => {
     setLoading(true);
     try {
       //로그인 처리
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      //Session 로그인 정보 저장
-      setPersistence(auth, browserSessionPersistence).then(() => {
-        navi("/");
-      });
       //DB에서 유저정보 가져오고 Zustand에 세팅.
       const userQuery = doc(firebaseDB, "User", auth.currentUser.uid);
       const userSnapShot = await getDoc(userQuery);
       await setUser(userSnapShot.data());
+      navi("/");
     } catch (error) {
       if (error instanceof FirebaseError) console.log("code -> ", error.code);
       setErr(errorCodes[error.code]);
@@ -46,25 +40,24 @@ const Login = () => {
 
   const googleLogin = async () => {
     const googleProvider = new GoogleAuthProvider();
-    setPersistence(auth, browserSessionPersistence).then(() => {
-      signInWithPopup(auth, googleProvider)
-        .then((data) => {
-          setUser({
-            id: data.user.uid,
-            name: data.user.displayName,
-            email: data.user.email,
-          });
-          navi("/");
-        })
-        .catch((err) => {
-          if (err instanceof FirebaseError) {
-            console.log("DB ERROR!!!");
-            console.log("code -> ", err.code);
-            setErr(errorCodes[err.code]);
-          }
-          console.log("Err!!!", err);
+    signInWithPopup(auth, googleProvider)
+      .then((data) => {
+        setUser({
+          id: data.user.uid,
+          name: data.user.displayName,
+          email: data.user.email,
+          profileImg: data.user.photoURL,
         });
-    });
+        navi("/");
+      })
+      .catch((err) => {
+        if (err instanceof FirebaseError) {
+          console.log("DB ERROR!!!");
+          console.log("code -> ", err.code);
+          setErr(errorCodes[err.code]);
+        }
+        console.log("Err!!!", err);
+      });
   };
 
   const eyeToggle = () => {
@@ -72,8 +65,11 @@ const Login = () => {
   };
 
   return (
-    <section className="account__wrapper">
-      <div className="account">
+    <article className="account__wrapper">
+      {/* h2 로그인 display:none */}
+      <h2>로그인</h2>
+      <section className="account">
+        <h2>로그인 양식</h2>
         <div className="account__img-wrapper">
           <img src="../public/Logo.svg" alt="회원가입_로고" />
         </div>
@@ -114,7 +110,7 @@ const Login = () => {
           </div>
           {/* submit 버튼 */}
           <div>
-            <Button className="btn account__btn" type="submit">
+            <Button width="25rem" className="btn account__btn" type="submit">
               {isLoading ? "Loading..." : "로그인"}
             </Button>
             {/* 파이어베이스쪽에서 나는 에러메세지 출력 */}
@@ -123,15 +119,17 @@ const Login = () => {
             )}
           </div>
         </form>
-        <div className="account__etc">
-          <span className="hr-sect">OR</span>
-          <Button className="btn-google" onClick={googleLogin}></Button>
-          <Link className="account__link" to="/createAccount">
-            회원가입은 여기를 클릭해주세요
-          </Link>
-        </div>
-      </div>
-    </section>
+      </section>
+
+      <section className="account__etc">
+        <h2>소셜 로그인</h2>
+        <span className="hr-sect">OR</span>
+        <Button className="btn-google" onClick={googleLogin}></Button>
+        <Link className="account__link" to="/createAccount">
+          회원가입은 여기를 클릭해주세요
+        </Link>
+      </section>
+    </article>
   );
 };
 

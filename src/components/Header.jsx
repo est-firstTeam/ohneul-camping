@@ -11,7 +11,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
-
+  const imgPath = useUserStore((state) => state.profileImg);
   const handleLogout = () => {
     resetUser();
     useUserStore.persist.clearStorage();
@@ -48,9 +48,20 @@ const Header = () => {
             isLoggedIn ? navigate("/my") : navigate("/Login");
           }}
         >
-          {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
+          {isLoggedIn ? (
+            <img
+              className="header__img-path"
+              src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
+            />
+          ) : (
+            <span className="gnb__item-text">로그인/회원가입</span>
+          )}
         </button>
-        {isLoggedIn && <button onClick={handleLogout}>로그아웃</button>}
+        {isLoggedIn && (
+          <button onClick={handleLogout}>
+            <span className="gnb__item-text">로그아웃</span>
+          </button>
+        )}
       </div>
     </header>
   );
