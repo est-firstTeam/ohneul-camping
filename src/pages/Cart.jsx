@@ -12,13 +12,19 @@ import { useRef } from "react";
 import Modal from "../components/Modal";
 import { selectors } from "../util/selectors";
 import LoadingSpinner from "../components/Loading";
+import DetailOptionBox from "../components/DetailOptionBox";
+import Button from "../components/Button";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
+  const [amountToPay, setAmountToPay] = useState(0);
+
   const { data: carts, isLoading } = useQuery({
     queryKey: [`/cart/${userId}`],
-    queryFn: () => fBService.fetchCartItems(userId),
-    select: (data) => selectors.getUserCartItems(data),
+    queryFn: async () => {
+      const users = await fBService.fetchUser(userId);
+      return selectors.getUserCartItems(users);
+    },
   });
 
   const { setTitle } = myPageTitleStore();
@@ -43,14 +49,22 @@ const Cart = () => {
 
   useEffect(() => {
     const newCheckedState = {};
-
-    if (carts) {
+    if (Array.isArray(carts) && carts.length > 0) {
       carts.forEach((item) => {
         newCheckedState[item.id] = true;
       });
       setCheckedItems(newCheckedState);
     }
   }, [carts]);
+
+  useEffect(() => {
+    // 총 결제 가격 계산
+    const total = carts.reduce((acc, cart) => {
+      return checkedItems[cart.id] ? acc + cart.rsvTotalPrice : acc;
+    }, 0);
+
+    setAmountToPay(total);
+  }, [checkedItems]);
 
   const handleSelectAll = () => {
     const newCheckedState = {};
@@ -91,50 +105,80 @@ const Cart = () => {
         <div>장바구니가 비어 있습니다.</div>
       ) : (
         <div className={"cart__list"}>
-          {carts.map((cartItem, index) => {
-            return (
-              <ProductListCart
-                id={cartItem.id}
-                key={index}
-                firstImageUrl={cartItem.firstImageUrl}
-                checked={checkedItems[cartItem.id] || false}
-                startDate={monthDateFormat(cartItem.rsvStartDate)}
-                endDate={monthDateFormat(cartItem.rsvEndDate)}
-                day={getDaysBetweenDates(
-                  cartItem.rsvStartDate,
-                  cartItem.rsvEndDate
-                )}
-                facltNm={cartItem.facltNm}
-                selected1={cartItem.rsvSiteS}
-                selected2={cartItem.rsvSiteM}
-                selected3={cartItem.rsvSiteL}
-                selected4={cartItem.rsvSiteC}
-                sumPrice={cartItem.rsvTotalPrice}
-                handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
-                handleDeleteItem={() => handleDeleteItem(cartItem.id)}
-                isCart
-              />
-            );
-          })}
+          {Array.isArray(carts) &&
+            carts.length > 0 &&
+            carts.map((cartItem, index) => {
+              return (
+                <ProductListCart
+                  id={cartItem.id}
+                  key={index}
+                  firstImageUrl={cartItem.firstImageUrl}
+                  checked={checkedItems[cartItem.id] || false}
+                  startDate={monthDateFormat(cartItem.rsvStartDate)}
+                  endDate={monthDateFormat(cartItem.rsvEndDate)}
+                  day={getDaysBetweenDates(
+                    cartItem.rsvStartDate,
+                    cartItem.rsvEndDate
+                  )}
+                  facltNm={cartItem.facltNm}
+                  selected1={cartItem.rsvSiteS}
+                  selected2={cartItem.rsvSiteM}
+                  selected3={cartItem.rsvSiteL}
+                  selected4={cartItem.rsvSiteC}
+                  sumPrice={cartItem.rsvTotalPrice}
+                  handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
+                  handleDeleteItem={() => handleDeleteItem(cartItem.id)}
+                  isCart
+                />
+              );
+            })}
         </div>
       )}
-      <article>
-        <h3>결제 금액</h3>
+      <article className="cart__expected-payment">
+        <h3 className="cart__expected-payment-title">결제 금액</h3>
         <section>
-          <span>옵션</span>
-          <span>예약일자: {}</span>
-          {carts &&
+          {Array.isArray(carts) &&
+            carts.length > 0 &&
             carts.map((cart) => {
               if (checkedItems[cart.id]) {
-                return cart.toString();
+                return (
+                  <div>
+                    <DetailOptionBox
+                      key={cart.id}
+                      startDate={cart.rsvStartDate}
+                      endDate={cart.rsvEndDate}
+                      siteCounts={[
+                        cart.rsvSiteS,
+                        cart.rsvSiteM,
+                        cart.rsvSiteL,
+                        cart.rsvSiteC,
+                      ]}
+                      campData={cart}
+                      nightCount={getDaysBetweenDates(
+                        cart.rsvStartDate,
+                        cart.rsvEndDate
+                      )}
+                    />
+                    <div>
+                      <span>선택 상품 금액</span>
+                      <span>{cart.rsvTotalPrice}원</span>
+                    </div>
+                  </div>
+                );
               }
             })}
+          <hr />
           <div className="cart__agreement">
             <Checkbox id="agree" onChange={() => setIsAgree(!isAgree)} />
             <button onClick={() => openModal(modalRef)}>
-              환불규정 및 약관 보기
+              환불규정 및 약관동의 (보기)
             </button>
           </div>
+          <div>
+            <div>결제 예정 금액</div>
+            <span>{amountToPay} 원</span>
+          </div>
+          <Button disabled={!isAgree}>주문하기</Button>
         </section>
       </article>
 

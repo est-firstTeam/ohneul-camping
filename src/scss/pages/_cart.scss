@@ -17,3 +17,20 @@
   display: flex;
   gap: 0.8rem;
 }
+
+.cart__expected-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 2.6rem;
+  border: 1px solid $secondary;
+  border-radius: 3rem;
+  padding: 2rem;
+  width: 50%;
+  margin: 10rem auto;
+
+  &-title {
+    margin-block: 1.6rem;
+    font-size: 2.4rem;
+    font-weight: bold;
+  }
+}
