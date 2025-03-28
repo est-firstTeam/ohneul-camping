@@ -19,13 +19,6 @@ const ProductList = ({ campSiteData }) => {
     <div className="product-list">
       {campSiteData.map((camp) => {
         const { siteS, siteM, siteL, siteC } = camp;
-        const availableSites = [
-          siteS !== null && `소 ${siteS}자리`,
-          siteM !== null && `중 ${siteM}자리`,
-          siteL !== null && `대 ${siteL}자리`,
-          siteC !== null && `카라반 ${siteC}자리`,
-        ];
-        const sitesSort = availableSites.filter(Boolean).join("/ ");
 
         return (
           <Link to={`/searchResult/${camp.contentId}`}>
@@ -66,12 +59,53 @@ const ProductList = ({ campSiteData }) => {
                 </ItemDetails>
 
                 {/* stock={true} : 남은 자리 표시 */}
-                {sitesSort && (
-                  <>
-                    <ItemDetails type="title" size="small">
-                      남은 자리
-                    </ItemDetails>
-                    <ul>
+                {/* {sitesSort && ( */}
+                <>
+                  <ItemDetails type="title" size="small">
+                    남은 자리
+                  </ItemDetails>
+
+                  <ul className="stock-list">
+                    <React.Fragment>
+                      {siteS !== null && (
+                        <li
+                          className="stock-item"
+                          type="text"
+                          style={{ color: siteS > 10 ? "black" : "red" }}
+                        >
+                          소 {siteS}자리
+                        </li>
+                      )}
+                      {siteM !== null && (
+                        <li
+                          className="stock-item"
+                          type="text"
+                          style={{ color: siteM > 10 ? "black" : "red" }}
+                        >
+                          중 {siteM}자리
+                        </li>
+                      )}
+                      {siteL !== null && (
+                        <li
+                          className="stock-item"
+                          type="text"
+                          style={{ color: siteL > 10 ? "black" : "red" }}
+                        >
+                          대 {siteL}자리
+                        </li>
+                      )}
+                      {siteC !== null && (
+                        <li
+                          className="stock-item"
+                          type="text"
+                          style={{ color: siteC > 10 ? "black" : "red" }}
+                        >
+                          카라반 {siteC}자리
+                        </li>
+                      )}
+                    </React.Fragment>
+                  </ul>
+                  {/* <ul>
                       <React.Fragment>
                         <>
                           <ItemDetails type="text" color="black">
@@ -79,9 +113,9 @@ const ProductList = ({ campSiteData }) => {
                           </ItemDetails>
                         </>
                       </React.Fragment>
-                    </ul>
-                  </>
-                )}
+                    </ul> */}
+                </>
+                {/* )} */}
 
                 {/* 가격 */}
                 {/* 메인에서는 판매하는 소,중,대,카라반 데이터 중 제일 저렴한 값을 보이게 하기 */}
