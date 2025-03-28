@@ -343,7 +343,7 @@ const DetailPage = () => {
                     총 상품 금액
                   </p>
                   <p className="detail__overview-reserv--payment-value">
-                    <b>{totalPrice.toLocaleString()}</b> 원
+                    <strong>{totalPrice.toLocaleString()}</strong> 원
                   </p>
                   {userId ? (
                     <>
