@@ -4,9 +4,13 @@ import { query, where, collection } from "firebase/firestore";
 import { firebaseDB } from "../firebaseConfig";
 
 class FBService {
-  getAllReservation = async () => {
+  getAllReservation = async (userId) => {
     try {
-      return firebaseAPI.getAllDocs(CollectionName.Reservation);
+      const q = query(
+        collection(firebaseDB, CollectionName.Reservation),
+        where("userId", "==", userId) // 해당 userId 정보만 가져옴
+      );
+      return await firebaseAPI.getQueryDocs(q);
     } catch (e) {
       throw new Error("get all Reservation Error: %o", e);
     }
@@ -20,7 +24,7 @@ class FBService {
     }
   };
 
-  fetchCartItems = async (userId) => {
+  fetchUser = async (userId) => {
     try {
       const q = query(
         collection(firebaseDB, CollectionName.User),
@@ -31,18 +35,6 @@ class FBService {
       throw new Error("get all Reservation Error: %o", e);
     }
   };
-
-  // getSearchCampSite = async () => {
-  //   try {
-  //     const q = query(
-  //       collection(firebaseDB, CollectionName.Campsite),
-  //       where("doNm", "==", "전라남도")
-  //     );
-  //     return firebaseAPI.getQueryDocs(q);
-  //   } catch (e) {
-  //     throw new Error("search Campsite Error: %o", e);
-  //   }
-  // };
 
   getSearchARSV = async (location, startDate) => {
     try {
@@ -121,6 +113,55 @@ class FBService {
       console.error("get User Name By Id Error: %o", e);
       return null;
     }
+  };
+
+  getCampsiteData = async (ids) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.Campsite),
+        where("contentId", "==", ids.toString())
+      );
+      const result = await firebaseAPI.getQueryDocs(q);
+      return result;
+    } catch (e) {
+      console.error("get getCampsiteData Error: %o", e);
+      return null;
+    }
+  };
+
+  getUserCartItems = async (users) => {
+    const hasCartItems =
+      users &&
+      users[0] &&
+      users[0].data &&
+      users[0].data.carts &&
+      users[0].data.carts.length > 0;
+
+    if (!hasCartItems) {
+      return [];
+    }
+    const carts = users[0].data.carts;
+    // cart의 campsiteId를 가져와 campsite의 각 사이트 price조회
+    const cartItems = await Promise.all(
+      carts.map(async (cart) => {
+        const campSiteInfo = await fBService.getCampsiteData(cart.campSiteId);
+        const campSiteInfoData = campSiteInfo[0].data;
+
+        const priceInfo = {
+          siteSPrice: campSiteInfoData.siteMg1CoPrice,
+          siteMPrice: campSiteInfoData.siteMg2CoPrice,
+          siteLPrice: campSiteInfoData.siteMg3CoPrice,
+          siteCPrice: campSiteInfoData.caravSiteCoPrice,
+        };
+
+        return { ...cart, ...priceInfo };
+      })
+    );
+    return cartItems ?? [];
+  };
+
+  insertUserCart = async (userId, carts) => {
+    await firebaseAPI.updateData(CollectionName.User, userId, carts);
   };
 }
 

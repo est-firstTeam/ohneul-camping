@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import myPageTitleStore from "../store/mypageTitleStore";
+import { useUserStore } from "../store/useUserStore";
 import { useQuery } from "@tanstack/react-query";
 import { fBService } from "../util/fbService";
 import { firebaseDB } from "../firebaseConfig";
@@ -17,29 +18,29 @@ import {
   runTransaction,
 } from "firebase/firestore";
 
-const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
+const Reservation = () => {
+  const userId = useUserStore((state) => state.id);
   const { setTitle } = myPageTitleStore();
+  console.log(`${userId}`);
 
   // 모달
-  // const { cancelReservation } = useReservation();
   const modalRef = useRef(null);
   const [selectedReservationId, setSelectedReservationId] = useState(null);
   // 취소 하시겠습니까? > '확인' 클릭 시 '취소 완료' 모달로 변경
   const [modalStep, setModalStep] = useState("confirm");
 
-  // // 캠핑장 정보 조회용
-  // const [campingData, setCampingData] = useState(null);
+  // User/name: 레이아웃 상단에 이름 출력 시 사용
+  const { data: userName } = useQuery({
+    queryKey: [`/user/name/${userId}`],
+    queryFn: () => fBService.getUserNameById(userId),
+    enabled: !!userId, // userId가 존재할 때만 실행
+  });
 
   // Reservation/userId: 예약 정보 조회에 사용
   const { data: reservationData, refetch } = useQuery({
     queryKey: [`/reservation/${userId}`],
     queryFn: () => fBService.getAllReservation(userId),
-  });
-
-  // User/name: 레이아웃 상단에 이름 출력 시 사용
-  const { data: userName } = useQuery({
-    queryKey: [`/user/name/${userId}`],
-    queryFn: () => fBService.getUserNameById(userId),
+    enabled: !!userId, // userId가 존재할 때만 실행
   });
 
   useEffect(() => {
@@ -220,7 +221,6 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
                 to={`/searchResult/${reservation.data.campSiteId}`}
               >
                 <ProductListCart
-                  // key={reservation.id}
                   firstImageUrl={reservation.data.firstImageUrl}
                   startDate={monthDateFormat(reservation.data.rsvStartDate)}
                   endDate={monthDateFormat(reservation.data.rsvEndDate)}
@@ -247,7 +247,7 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
             );
           })
         ) : (
-          <div>예약 내역이 없습니다.</div>
+          <div className="reservation__no-item">예약 내역이 없습니다.</div>
         )}
         {/* 예약 취소 모달*/}
         <Modal

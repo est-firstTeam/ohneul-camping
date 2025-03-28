@@ -8,17 +8,19 @@ const DetailOptionBox = ({
   campData,
   nightCount,
 }) => {
+  const isInvalidDate = startDate === endDate;
   return (
     startDate &&
     endDate &&
+    !isInvalidDate &&
     siteCounts.some((count) => count > 0) && (
       <div className="detail__overview--optionbox">
         <div className="detail__overview--optionheader">
           <span className="detail__overview--optionbox-option">옵션</span>
-          <h5 className="detail__overview--optionbox-date">
-            예약 일자 : {monthDateFormat(startDate)} ~{" "}
+          <p className="detail__overview--optionbox-date">
+            <b>예약 일자 </b> {monthDateFormat(startDate)} ~{" "}
             {monthDateFormat(endDate)}({nightCount}박)
-          </h5>
+          </p>
         </div>
 
         <ul className="detail__overview--optionbox-size">

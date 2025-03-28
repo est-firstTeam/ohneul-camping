@@ -66,6 +66,11 @@
         display: inline-block;
         margin-right: 0.4rem;
       }
+
+      &--red {
+        color: red;
+        display: inline-block;
+      }
     }
 
     // 가격
@@ -117,4 +122,23 @@
   justify-content: center;
   gap: 2rem;
   row-gap: 5rem;
+}
+
+.stock-list {
+  display: flex;
+  margin-bottom: 1.2rem;
+}
+
+.stock-item {
+  font-size: 1.6rem;
+  padding-inline: 0.5rem;
+  border-right: 1px solid $gray3;
+
+  &:first-of-type {
+    padding-left: 0;
+  }
+
+  &:last-of-type {
+    border-right: 0;
+  }
 }

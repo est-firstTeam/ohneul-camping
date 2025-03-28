@@ -46,6 +46,8 @@ const DTsiteModal = ({ modalRef, minAvailable, startDate, endDate }) => {
   // site의 모든 값이 null인 경우
   const allNull = availableSites.every((site) => site === null);
 
+  const isInvalidDate = startDate === endDate;
+
   return (
     <Modal
       modalRef={modalRef}
@@ -59,6 +61,10 @@ const DTsiteModal = ({ modalRef, minAvailable, startDate, endDate }) => {
         <div className="detail__modal-site--container">
           {!startDate || !endDate ? (
             <p className="detail__modal-site--error">날짜를 선택하세요.</p>
+          ) : isInvalidDate ? (
+            <p className="detail__modal-site--error">
+              날짜를 다시 선택해주세요.
+            </p>
           ) : allNull ? (
             <p className="detail__modal-site--soldout">
               캠핑장 자리 정보가 없습니다.

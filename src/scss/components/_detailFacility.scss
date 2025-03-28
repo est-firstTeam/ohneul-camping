@@ -1,0 +1,134 @@
+@use "../abstracts/" as *;
+
+.detail__add-on-left {
+  display: flex;
+  width: 67rem;
+  // width: 60%;
+  // flex: 1;
+  // margin-left: 50rem;
+  flex-direction: column;
+  // border-right: 1px solid $gray4;
+  // padding-right: 5rem;
+  gap: 5rem;
+
+  .detail__add-on-left--container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.125rem;
+
+    .detail__add-on-left--title-amenity {
+      font-size: 3rem;
+      color: $black;
+      font-family: $title;
+    }
+
+    .detail__orange-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      border: 1px solid $primary;
+      border-radius: 1rem;
+
+      .detail__orange-box--title {
+        color: $btn-black;
+        font-size: 1.5rem;
+        font-style: normal;
+        font-weight: bold;
+        line-height: 2.125rem;
+      }
+
+      .detail__orange-box--container {
+        display: flex;
+        gap: 4.62rem;
+
+        .detail__orange-box--amenity {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          color: $secondary;
+          font-size: 1.25rem;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 2.125rem;
+        }
+      }
+
+      .detail__orange-box--contents {
+        color: $gray2;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 2.125rem;
+      }
+    }
+  }
+
+  .detail__add-on-left--container-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 2.125rem;
+
+    .detail__add-on-left--title-intro {
+      font-size: 3rem;
+      color: $black;
+      font-family: $title;
+    }
+
+    .detail__add-on-left--content {
+      color: #000;
+      font-size: 1.875rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 2.5rem;
+      word-break: keep-all;
+    }
+  }
+}
+
+.detail__add-on-right {
+  display: flex;
+  // width: 40%;
+  // flex: 1;
+  flex-direction: column;
+  // margin-right: 50rem;
+  gap: 2rem;
+
+  .detail__add-on-right--title {
+    font-size: 3rem;
+    color: $black;
+    font-family: $title;
+  }
+
+  .detail__add-on-right--homepage {
+    color: $black;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.125rem;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      height: 1.5rem;
+      width: 3rem;
+      @include background("ico-homepage.svg", center center, null, contain);
+    }
+  }
+
+  .detail__add-on-right--addr {
+    color: $black;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.125rem;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      height: 1.5rem;
+      width: 3rem;
+      @include background("ico-geoAlt.svg", center center, null, contain);
+    }
+  }
+}

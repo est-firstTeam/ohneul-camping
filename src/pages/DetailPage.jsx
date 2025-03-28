@@ -17,11 +17,16 @@ import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
 import { getDaysBetweenDates } from "../util/util.js";
 import SearchBarButton from "../components/SearchBarButton.jsx";
+import noImage from "./../images/no_image.png";
+import { useUserStore } from "../store/useUserStore.js";
+import { Link } from "react-router-dom";
+import ConfirmModal from "../components/ConfirmModal.jsx";
 
 const DetailPage = () => {
   const { id } = useParams();
   const dateModal = useRef(null);
   const siteModal = useRef(null);
+  const cartModal = useRef(null);
   const { siteCounts } = useSiteStore();
   const resetSiteCounts = useSiteStore((state) => state.resetSiteCounts);
   const [startDate, setStartDate] = useState(null);
@@ -45,9 +50,9 @@ const DetailPage = () => {
     enabled: !!id,
   });
 
+  const userId = useUserStore((state) => state.id);
   const mutation = useMutation({
     mutationFn: async ({ startDate, endDate, siteCounts, totalPrice }) => {
-      const userId = "6oh1GaHoK0ggGiv9kiHqxiIPipz1"; // 유저 ID(추후 변경)
       const userRef = doc(firebaseDB, "User", userId);
       const userSnap = await getDoc(userRef);
 
@@ -242,58 +247,81 @@ const DetailPage = () => {
       siteModal.current.showModal();
     }
   };
+
+  const openConfirmModal = () => {
+    if (cartModal.current) {
+      cartModal.current.showModal();
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (cartModal.current) {
+      cartModal.current.close();
+    }
+  };
   return (
     <section className="detail">
       {campData ? (
-        <div className="detail__container">
+        <>
           <div className="detail__overview">
-            <img
-              className="detail__overview-image"
-              src={campData.firstImageUrl}
-              alt="캠핑장 사진"
-            />
+            <div className="detail__overview-image-box">
+              <img
+                className="detail__overview-image"
+                src={campData.firstImageUrl || noImage}
+                alt="캠핑장 사진"
+              />
+            </div>
             <div className="detail__overview-reserv">
               <h4 className="detail__overview-reserv--location">
                 {campData.doNm} {campData.sigunguNm}
               </h4>
-              {/* <h3 className="detail__overview-reserv--subtitle">
-                {campData.themaEnvrnCl}
-              </h3> */}
+
               <h2 className="detail__overview-reserv--title">
                 {campData.facltNm}
               </h2>
               <h4 className="detail__overview-reserv--campstyle">
                 {campData.induty}
               </h4>
+              <h3 className="detail__overview-reserv--subtitle">
+                {campData.themaEnvrnCl}
+              </h3>
               <div className="detail__overview-reserv--option">
                 {/* <h4 className="detail__overview-reserv--option-text">옵션</h4> */}
                 <div className="btn-container">
-                  <SearchBarButton
-                    className="searchbutton-site"
-                    color="secondary"
-                    iconPosition="left"
-                    // padding={"1rem 15rem 1rem 1rem"}
-                    icon={<img src={calico} width={"20px"} height={"20px"} />}
-                    onClick={openDateModal}
-                  >
-                    날짜 선택
-                  </SearchBarButton>
+                  <div className="btn-date">
+                    <span className="btn-date-title">기간</span>
+                    <SearchBarButton
+                      className="searchbutton-site"
+                      color="secondary"
+                      iconPosition="left"
+                      // padding={"1rem 15rem 1rem 1rem"}
+                      icon={<img src={calico} width={"20px"} height={"20px"} />}
+                      onClick={openDateModal}
+                    >
+                      날짜 선택
+                    </SearchBarButton>
+                  </div>
                   <DateModal
                     modalRef={dateModal}
                     setStartDate={setStartDate}
                     setEndDate={setEndDate}
                   />
-                  <SearchBarButton
-                    className={"searchbutton-site"}
-                    color={"secondary"}
-                    iconPosition="left"
-                    // margin={"1rem 0"}
-                    // padding={"1rem 15rem 1rem 1rem"}
-                    icon={<img src={siteico} width={"20px"} height={"20px"} />}
-                    onClick={openSiteModal}
-                  >
-                    자리 선택
-                  </SearchBarButton>
+                  <div className="btn-date">
+                    <span className="btn-date-title">유형</span>
+                    <SearchBarButton
+                      className={"searchbutton-site"}
+                      color={"secondary"}
+                      iconPosition="left"
+                      // margin={"1rem 0"}
+                      // padding={"1rem 15rem 1rem 1rem"}
+                      icon={
+                        <img src={siteico} width={"20px"} height={"20px"} />
+                      }
+                      onClick={openSiteModal}
+                    >
+                      자리 선택
+                    </SearchBarButton>
+                  </div>
                   <DTsiteModal
                     modalRef={siteModal}
                     minAvailable={minAvailable}
@@ -315,36 +343,61 @@ const DetailPage = () => {
                     총 상품 금액
                   </p>
                   <p className="detail__overview-reserv--payment-value">
-                    {totalPrice.toLocaleString()} 원
+                    <strong>{totalPrice.toLocaleString()}</strong> 원
                   </p>
-                  <Button
-                    className="detail__overview-reserv--addCartBtn"
-                    icon={<img src={addCart} />}
-                    padding={"0.6rem 5rem"}
-                    iconPosition="right"
-                    onClick={() => {
-                      mutation.mutate({
-                        startDate,
-                        endDate,
-                        siteCounts,
-                        totalPrice,
-                        nightCount,
-                      });
-                      resetSiteCounts(); // 버튼 클릭 시 site 개수 초기화
-                    }}
-                  >
-                    장바구니 담기
-                  </Button>
+                  {userId ? (
+                    <>
+                      <Button
+                        className="detail__overview-reserv--addCartBtn"
+                        icon={<img src={addCart} />}
+                        padding={"0.6rem 5rem"}
+                        onClick={() => {
+                          mutation.mutate({
+                            startDate,
+                            endDate,
+                            siteCounts,
+                            totalPrice,
+                          });
+                          openConfirmModal();
+                          resetSiteCounts(); // site 개수 초기화
+                        }}
+                        disabled={
+                          !startDate ||
+                          !endDate ||
+                          siteCounts.every((count) => count === 0) // 날짜 또는 자리 선택 안 되어 있을 때
+                        }
+                      >
+                        장바구니 담기
+                      </Button>
+                      <ConfirmModal
+                        modalRef={cartModal}
+                        handleClose={handleCloseModal}
+                        startDate={startDate}
+                        endDate={endDate}
+                        totalPrice={totalPrice}
+                        campData={campData}
+                      />
+                    </>
+                  ) : (
+                    <Link to="/login">
+                      <Button
+                        className="detail__overview-reserv--addCartBtn"
+                        icon={<img src={addCart} />}
+                        padding={"0.6rem 5rem"}
+                      >
+                        장바구니 담기
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
           </div>
           <div className="detail__add-on">
             <DetailFacility campData={campData} />
-            {/* <div className="col-line"></div> */}
             <DetailInfo campData={campData} />
           </div>
-        </div>
+        </>
       ) : (
         <p>로딩 중...</p>
       )}

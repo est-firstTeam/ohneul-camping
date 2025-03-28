@@ -8,6 +8,7 @@ const CLASS_MAP = {
   text: {
     gray: "detail-list__text detail-list__text--gray",
     black: "detail-list__text detail-list__text--black",
+    red: "detail-list__text detail-list__text--red",
   },
   price: {
     default: "detail-list__price detail-list__price--def",

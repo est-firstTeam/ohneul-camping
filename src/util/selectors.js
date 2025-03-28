@@ -1,17 +1,6 @@
 // import useSearchStore from "../store/useSearchStore";
 
 class Selectors {
-  getUserCartItems = (users) => {
-    const hasCartItems =
-      users &&
-      users[0] &&
-      users[0].data &&
-      users[0].data.carts &&
-      users[0].data.carts.length > 0;
-
-    return hasCartItems ? users[0].data.carts : [];
-  };
-
   getSearchLocationStartDate = (siteArr, searchValue, filterValue) => {
     if (!siteArr[0] || siteArr[0].length === 0) {
       return [];
