@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import myPageTitleStore from "../store/mypageTitleStore";
 import Checkbox from "../components/Checkbox";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fBService } from "../util/fbService";
 import ProductListCart from "../components/ProductListCart";
@@ -88,14 +88,25 @@ const Cart = () => {
     // TODO: 이 데이터를 새로 insert
   };
 
+  const payMutation = useMutation({
+    mutationFn: async ({ notToPayItems }) => {
+      // 유저 장바구니에서 제거
+      await fBService.insertUserCart(userId, notToPayItems);
+      // TODO: available rsv에서 - 1
+      // 예약데이터 생성
+      // rsvComplete + 1
+    },
+  });
+
+  // TODO: 결제할(체크된) 아이템을 한번에 배열에 담는변수 생성 -> 다른 로직에서 사용
   const handleOrder = () => {
-    // TODO: 결제
-    // available rsv에서 -1
-    // 예약데이터 생성
-    // 유저 장바구니에서 제거
+    const toPayItems = carts.filter((cart) => checkedItems[cart.id]); // 결제할 아이템
+    const notToPayItems = carts.filter((cart) => !checkedItems[cart.id]); // 결제하지 않을 아이템들을 장바구니에 새로 set
+
+    payMutation.mutate({ notToPayItems });
   };
 
-  let hasItemToPay;
+  let hasItemToPay; // 결제할 아이템이 있는지 확인하는 변수
   if (carts) {
     hasItemToPay =
       carts.map((cart) => checkedItems[cart.id]).indexOf(true) === -1
@@ -109,14 +120,14 @@ const Cart = () => {
   return (
     <section className="cart">
       <h2 className="cart__title"></h2>
-      {carts && (
+      {carts && carts.length > 0 && (
         <Checkbox
           checked={allChecked}
           onChange={handleSelectAll}
           label="전체 선택"
         />
       )}
-      {!carts ? (
+      {!carts || carts.length === 0 ? (
         <div>장바구니가 비어 있습니다.</div>
       ) : (
         <div className={"cart__list"}>
@@ -204,7 +215,7 @@ const Cart = () => {
               height={"58px"}
               onClick={handleOrder}
             >
-              주문하기
+              예약하기
             </Button>
           </section>
         </article>
@@ -220,6 +231,10 @@ const Cart = () => {
           <span className="cart__modal-title">이용 약관 및 환불규정</span>
           <span className="cart__modal-content-title">내용</span>
           <ul className="cart__modal-list">
+            <li>
+              결제 예정 금액은 예약시 결제되는것이 아닌, 현장결제를 통해
+              지불하실 금액입니다.
+            </li>
             <li>
               본 사이트를 통해 예약한 캠핑장은 예약자 본인만 이용할 수 있습니다.
             </li>
