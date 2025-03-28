@@ -155,6 +155,10 @@ class FBService {
     );
     return cartItems ?? [];
   };
+
+  insertUserCart = async (userId, carts) => {
+    await firebaseAPI.insertData(CollectionName.User, userId, carts);
+  };
 }
 
 export const fBService = new FBService();
