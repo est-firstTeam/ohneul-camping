@@ -8,10 +8,11 @@ import { fBService } from "../util/fbService";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { selectors } from "../util/selectors";
+import TopBtn from "../components/Topbtn";
 
 const SearchResult = () => {
-  const { location, startdate, enddate, site } = useParams();
   const {
+    filterValue,
     setLocation,
     setStartDate,
     setEndDate,
@@ -20,6 +21,9 @@ const SearchResult = () => {
     setSearchResult,
   } = useSearchStore();
 
+  const { location, startdate, enddate, site } = useParams();
+
+  console.log("filterValue", filterValue);
   // 검색 쿼리
   const { data: searchData } = useQuery({
     queryKey: ["search", location, startdate, site], // querykey에 변경값을 작성해야 변경이 된다
@@ -29,10 +33,11 @@ const SearchResult = () => {
       }
       return fBService.getSearchARSV(location, startdate);
     },
-    select: (data) => selectors.getSearchLocationStartDate(data, site), // useParams의 site로 지정해서 select를 하면 params부분만 필터(기존에는 searchValue.site로 지정해서 사이트 변경시 자동으로 필터링 되었음)
+    select: (data) =>
+      selectors.getSearchLocationStartDate(data, site, filterValue), // useParams의 site로 지정해서 select를 하면 params부분만 필터(기존에는 searchValue.site로 지정해서 사이트 변경시 자동으로 필터링 되었음)
   });
 
-  // URL 파라미터가 변경
+  // URL 파라미터가 변경 --> 검색바의 값을 유지하기 위해 사용
   useEffect(() => {
     setLocation(location);
     setStartDate(startdate);
@@ -56,8 +61,11 @@ const SearchResult = () => {
     }
   }, [searchData, setSearchResult]);
 
+  console.log(searchData);
+
   return (
-    <div className="wrapper-search">
+    <section className="wrapper-search">
+      <h2 className="section-title">검색 결과 페이지</h2>
       <SearchBar />
       <div className="search-header">
         <h2 className="header-count">검색 결과 {searchResult.length}건</h2>
@@ -71,7 +79,8 @@ const SearchResult = () => {
       ) : (
         <NoResult text={"검색 결과가 없습니다."} />
       )}
-    </div>
+      <TopBtn />
+    </section>
   );
 };
 

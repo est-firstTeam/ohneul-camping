@@ -38,6 +38,17 @@ const useSearchStore = create((set) => ({
   // 검색 결과
   searchResult: [],
 
+  // selectBox 초기값
+  filterValue: "재고 많은 순",
+
+  // selectBox 값 변경
+  setFilterValue: (newValue) => {
+    set((state) => ({
+      ...state,
+      filterValue: newValue,
+    }));
+  },
+
   // 취소
   setCancel: (key) => {
     set((state) => ({

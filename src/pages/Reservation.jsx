@@ -2,11 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import myPageTitleStore from "../store/mypageTitleStore";
 import { useQuery } from "@tanstack/react-query";
 import { fBService } from "../util/fbService";
+import { firebaseDB } from "../firebaseConfig";
 import { monthDateFormat, getDaysBetweenDates } from "../util/util";
 import { reservationService } from "../util/reservationService";
 import ProductListCart from "../components/ProductListCart";
 import Modal from "../components/Modal";
 import { Link } from "react-router-dom";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+  runTransaction,
+} from "firebase/firestore";
 
 const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
   const { setTitle } = myPageTitleStore();
@@ -17,6 +26,9 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
   const [selectedReservationId, setSelectedReservationId] = useState(null);
   // 취소 하시겠습니까? > '확인' 클릭 시 '취소 완료' 모달로 변경
   const [modalStep, setModalStep] = useState("confirm");
+
+  // // 캠핑장 정보 조회용
+  // const [campingData, setCampingData] = useState(null);
 
   // Reservation/userId: 예약 정보 조회에 사용
   const { data: reservationData, refetch } = useQuery({
@@ -79,6 +91,113 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
     }
   };
 
+  // 중복 업데이트 방지
+  const previousUpdateRef = useRef(null);
+
+  useEffect(() => {
+    if (modalStep === "completed" && selectedReservationId) {
+      const reservation = reservationData.find(
+        (r) => r.id === selectedReservationId
+      );
+
+      if (reservation) {
+        const campSiteId = reservation.data?.campSiteId;
+        const rsvSiteS = reservation.data?.rsvSiteS || 0;
+        const rsvSiteM = reservation.data?.rsvSiteM || 0;
+        const rsvSiteL = reservation.data?.rsvSiteL || 0;
+        const rsvSiteC = reservation.data?.rsvSiteC || 0;
+
+        // 중복 업데이트 방지: 이전과 같은 업데이트 요청인지 확인
+        const updateKey = `${selectedReservationId}-${modalStep}-${campSiteId}`;
+        if (previousUpdateRef.current === updateKey) {
+          console.log("중복 실행 방지: 이미 처리된 업데이트");
+          return;
+        }
+        previousUpdateRef.current = updateKey;
+
+        // 캠핑장 정보 조회
+        const fetchCampsiteData = async () => {
+          const campsiteQuery = query(
+            collection(firebaseDB, "Campsite"),
+            where("contentId", "==", String(campSiteId))
+          );
+          const campsiteSnapshot = await getDocs(campsiteQuery);
+
+          // doNm_날짜 조회를 위한 세팅
+          if (!campsiteSnapshot.empty) {
+            const campsiteData = campsiteSnapshot.docs[0].data();
+            const doNm = campsiteData.doNm;
+            const rsvStartDate = reservation.data.rsvStartDate;
+            const rsvEndDate = reservation.data.rsvEndDate;
+
+            // 기간에 해당하는 날짜 구하기
+            const getDatesInRange = (startDate, endDate) => {
+              const dates = [];
+              let currentDate = new Date(startDate);
+              const end = new Date(endDate);
+
+              while (currentDate <= end) {
+                dates.push(currentDate.toISOString().split("T")[0]); // "YYYY-MM-DD"
+                currentDate.setDate(currentDate.getDate() + 1); // 하루씩 증가
+              }
+
+              return dates;
+            };
+
+            const datesInRange = getDatesInRange(rsvStartDate, rsvEndDate);
+
+            // Available_RSV 문서 조회
+            const updateAvailableRsvData = async () => {
+              for (const date of datesInRange) {
+                const docId = `${doNm}_${date}`;
+                const docRef = doc(firebaseDB, "Available_RSV", docId);
+
+                try {
+                  // 예약 취소 재고 복구
+                  await runTransaction(firebaseDB, async (transaction) => {
+                    const docSnap = await transaction.get(docRef);
+                    if (!docSnap.exists()) return;
+
+                    const availableData = docSnap.data();
+                    const contentArray = availableData.content || [];
+
+                    // site와 rsvSite 매칭해서 연산
+                    const updatedContentArray = contentArray.map((item) => {
+                      if (String(item.contentId) === String(campSiteId)) {
+                        let { siteS, siteM, siteL, siteC } = item;
+
+                        // null 은 연산하지 않음
+                        siteS = siteS !== null ? siteS + (rsvSiteS || 0) : null;
+                        siteM = siteM !== null ? siteM + (rsvSiteM || 0) : null;
+                        siteL = siteL !== null ? siteL + (rsvSiteL || 0) : null;
+                        siteC = siteC !== null ? siteC + (rsvSiteC || 0) : null;
+
+                        return { ...item, siteS, siteM, siteL, siteC };
+                      }
+                      return item;
+                    });
+
+                    transaction.update(docRef, {
+                      content: updatedContentArray,
+                    });
+                  });
+
+                  console.log(`DB 업데이트 완료: ${docId}`);
+                } catch (error) {
+                  console.error(`DB 업데이트 실패: ${error}`);
+                }
+              }
+            };
+            // DB 업데이트
+            updateAvailableRsvData();
+          }
+        };
+        // 데이터 조회
+        fetchCampsiteData();
+      }
+    }
+  }, [modalStep, selectedReservationId, reservationData]);
+
   return (
     <section className="reservation">
       <h2 className="reservation__title ">예약 확인 페이지 입니다.</h2>
@@ -97,11 +216,11 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
 
             return (
               <Link
-                to={`/searchResult/${reservation.data.campSiteId}`}
                 key={reservation.id}
+                to={`/searchResult/${reservation.data.campSiteId}`}
               >
                 <ProductListCart
-                  key={reservation.id}
+                  // key={reservation.id}
                   firstImageUrl={reservation.data.firstImageUrl}
                   startDate={monthDateFormat(reservation.data.rsvStartDate)}
                   endDate={monthDateFormat(reservation.data.rsvEndDate)}
@@ -118,9 +237,8 @@ const Reservation = ({ userId = "KvsuGtPyBORD2OHATEwpvthlQKt1" }) => {
                   isRSV
                   isDisabled={isDisabled}
                   buttonText={buttonText}
-                  // onCancelClick={() => handleCancelClick(reservation.id)}
                   onCancelClick={(event) => {
-                    event.stopPropagation(); // 버튼 클릭 시 Link로 넘어가지 않게 방지
+                    event.stopPropagation(); // 버튼 클릭 시 Link 이벤트 전파 방지
                     event.preventDefault(); // Link 이동 막기
                     handleCancelClick(reservation.id);
                   }}
