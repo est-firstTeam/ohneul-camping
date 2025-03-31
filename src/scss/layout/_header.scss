@@ -5,7 +5,7 @@
   left: 0;
   top: 0;
   right: 0;
-  padding: 3.8rem;
+  padding: 2.8rem;
   background-color: white;
   z-index: 10000;
   justify-content: space-between;
@@ -23,4 +23,20 @@
 .header__inner {
   display: flex;
   align-items: center;
+}
+
+.header__img-path {
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  border: 1px solid $primary;
+  border-radius: 50%;
+  object-fit: cover;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.header__auth-btn {
+  margin-left: 5rem;
 }

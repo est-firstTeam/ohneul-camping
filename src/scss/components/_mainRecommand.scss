@@ -9,12 +9,13 @@
   h2 {
     font-size: 2.5rem;
     color: $secondary;
-    margin-left: 27rem;
+    margin-left: 22.5rem;
   }
 }
 .main__rcmd-wrapper {
   display: grid;
   justify-content: center;
+  gap: 5rem;
   grid-template-columns: repeat(2, minmax(45rem, 55rem));
 }
 
@@ -33,7 +34,6 @@
 }
 
 .main__rcmd-right {
-  margin-left: 5rem;
   font-size: 4rem;
 
   h3 {

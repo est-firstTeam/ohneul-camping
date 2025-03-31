@@ -282,9 +282,14 @@ const DetailPage = () => {
               <h4 className="detail__overview-reserv--campstyle">
                 {campData.induty}
               </h4>
-              <h3 className="detail__overview-reserv--subtitle">
-                {campData.themaEnvrnCl}
-              </h3>
+              {campData.themaEnvrnCl ? (
+                <h3 className="detail__overview-reserv--subtitle">
+                  {campData.themaEnvrnCl}
+                </h3>
+              ) : (
+                <></>
+              )}
+
               <div className="detail__overview-reserv--option">
                 {/* <h4 className="detail__overview-reserv--option-text">옵션</h4> */}
                 <div className="btn-container">
