@@ -5,9 +5,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fBService } from "../util/fbService";
 import ProductListCart from "../components/ProductListCart";
-import { monthDateFormat } from "../util/util";
 import { useUserStore } from "../store/useUserStore";
-import { getDaysBetweenDates } from "../util/util";
+import {
+  getDaysBetweenDates,
+  commaNumber,
+  getDatesInRange,
+  monthDateFormat,
+} from "../util/util";
 import { useRef } from "react";
 import Modal from "../components/Modal";
 import LoadingSpinner from "../components/Loading";
@@ -16,7 +20,6 @@ import Button from "../components/Button";
 import { firebaseDB } from "../firebaseConfig";
 import { doc } from "firebase/firestore";
 import { runTransaction } from "firebase/firestore";
-import { getDatesInRange } from "../util/util";
 import RefundModal from "../components/RefundModal";
 
 const Cart = () => {
@@ -264,10 +267,10 @@ const Cart = () => {
           <section>
             {Array.isArray(carts) &&
               carts.length > 0 &&
-              carts.map((cart) => {
+              carts.map((cart, index) => {
                 if (checkedItems[cart.id]) {
                   return (
-                    <div className="cart__detail-option-box" key={cart.id}>
+                    <div className="cart__detail-option-box" key={index}>
                       <span className="cart__detail-option-facltNm">
                         {cart.facltNm}
                       </span>
@@ -289,7 +292,7 @@ const Cart = () => {
                       <div className="cart__detail-option-box-total">
                         <span>선택 상품 금액</span>
                         <span className="cart__detail-option-box-total-price">
-                          {cart.rsvTotalPrice}원
+                          {commaNumber(cart.rsvTotalPrice)}원
                         </span>
                       </div>
                     </div>
@@ -305,7 +308,7 @@ const Cart = () => {
             <div className="cart__amount-to-pay">
               <div>결제 예정 금액</div>
               <span className="cart__amount-to-pay-price">
-                {amountToPay} 원
+                {commaNumber(amountToPay)} 원
               </span>
             </div>
             <Button
