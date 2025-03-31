@@ -71,8 +71,8 @@ export default function MainMostRSV() {
     <p>Error: {error.message}</p>
   ) : (
     <section className="rsv-most">
-      <h2>오늘의 픽텐트!</h2>
-      <h3>예약이 가장 많은 캠핑장</h3>
+      <p className="section-header__subtitle">오늘의 픽텐트!</p>
+      <h3 className="section-header__title">예약이 가장 많은 캠핑장</h3>
       <AnimatePresence mode="popLayout" custom={back} initial={false}>
         <motion.ul
           className="rsv-most__list-wrapper"

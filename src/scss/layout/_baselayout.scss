@@ -1,7 +1,14 @@
 .baselayout {
   margin-inline: 3.8rem;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-  margin-top: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 12rem;
+  flex: 1;
+  &:has(.main__intro) {
+    margin-top: 0;
+  }
 }

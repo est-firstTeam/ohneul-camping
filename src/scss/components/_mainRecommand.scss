@@ -5,24 +5,40 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 10rem;
-  h2 {
-    font-size: 2.5rem;
-    color: $secondary;
-    margin-left: 22.5rem;
-  }
-}
-.main__rcmd-wrapper {
-  display: grid;
-  justify-content: center;
-  gap: 5rem;
-  grid-template-columns: repeat(2, minmax(45rem, 55rem));
-}
+  margin-bottom: 10rem;
 
-.main__rcmd-left {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  & > p {
+    margin-left: 23.5rem;
+    margin-bottom: 2rem;
+  }
+
+  &-wrapper {
+    display: grid;
+    justify-content: center;
+    gap: 5rem;
+    grid-template-columns: repeat(2, minmax(45rem, 55rem));
+  }
+
+  &-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-right {
+    font-size: 4rem;
+
+    h3 {
+      margin-bottom: 3rem;
+    }
+  }
+
+  &-paragraph {
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+    color: $gray3;
+    margin-bottom: 2rem;
+  }
 }
 
 .rcmd-left__img-area {
@@ -33,25 +49,11 @@
   }
 }
 
-.main__rcmd-right {
-  font-size: 4rem;
-
-  h3 {
-    margin-top: 2rem;
-    margin-bottom: 3rem;
-  }
-}
-
-.main__rcmd-paragraph {
-  font-size: 1.6rem;
-  line-height: 2.6rem;
-  color: $gray3;
-}
-
 .rcmd__camp-info {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+  margin-bottom: 5rem;
+
   div {
     display: flex;
     flex-direction: row;

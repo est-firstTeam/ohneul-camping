@@ -29,9 +29,6 @@ export default function ProductCard({ camp }) {
               </span>
             ))}
         </ItemDetails>
-        {/* <ItemDetails type="price" size="default" color="gray">
-          {camp.data.siteMg1CoPrice} 원~
-        </ItemDetails> */}
       </div>
     </div>
   );
