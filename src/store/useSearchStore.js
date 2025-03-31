@@ -41,6 +41,9 @@ const useSearchStore = create((set) => ({
   // selectBox 초기값
   filterValue: "재고 많은 순",
 
+  //selectBox 값 Array
+  optionArr: ["재고 많은 순", "야영장 가나다 순", "지역 가나다 순"],
+
   // selectBox 값 변경
   setFilterValue: (newValue) => {
     set((state) => ({

@@ -14,7 +14,8 @@
 
 .search-header {
   display: flex;
-  gap: 83.5rem;
+  width: 100%;
+  justify-content: space-around;
   align-items: center;
 
   .header-count {

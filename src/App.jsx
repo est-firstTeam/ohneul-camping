@@ -86,7 +86,7 @@ function App() {
       <Suspense fallback={<div></div>}>
         <RouterProvider router={router} />
       </Suspense>
-      <div style={{ fontSize: "16px" }}>
+      <div style={{ fontSize: "20px" }}>
         <ReactQueryDevtools initialIsOpen={true} />
       </div>
     </QueryClientProvider>

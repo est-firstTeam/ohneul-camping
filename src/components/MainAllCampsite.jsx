@@ -42,8 +42,8 @@ export default function MainAllCampsite() {
     <p>Error: {error.message}</p>
   ) : (
     <section className="all-campsite">
-      <h2>오늘 어디 갈래?</h2>
-      <h3>모든 캠핑장 정보</h3>
+      <p className="section-header__subtitle">오늘 어디 갈래?</p>
+      <h3 className="section-header__title">모든 캠핑장 정보</h3>
       <ul className="all-campsite__wrapper" ref={reservation}>
         {items.map((campObj) => {
           return (

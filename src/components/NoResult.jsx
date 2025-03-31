@@ -2,7 +2,7 @@ const NoResult = ({ text }) => {
   return (
     <>
       <div className="wrapper-noresult">
-        <h2 className="text-noresult">{text}</h2>
+        <p className="text-noresult">{text}</p>
       </div>
     </>
   );

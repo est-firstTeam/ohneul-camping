@@ -3,7 +3,7 @@ import Button from "./Button";
 import icoarrowdown from "../images/ico-arrowdown.svg";
 import useSearchStore from "../store/useSearchStore";
 
-const SelectBox = () => {
+const SelectBox = ({ valueArr }) => {
   const [showOption, setShowOption] = useState(false);
   const { filterValue, setFilterValue } = useSearchStore();
 
@@ -27,27 +27,16 @@ const SelectBox = () => {
         </Button>
         {showOption && (
           <ul className="option-list">
-            <li
-              className="option-item"
-              value="재고 많은 순"
-              onClick={handleChangeOption}
-            >
-              재고 많은 순
-            </li>
-            <li
-              className="option-item"
-              value="야영장 가나다 순"
-              onClick={handleChangeOption}
-            >
-              야영장 가나다 순
-            </li>
-            <li
-              className="option-item"
-              value="지역 가나다 순"
-              onClick={handleChangeOption}
-            >
-              지역 가나다 순
-            </li>
+            {valueArr?.map((arr, index) => (
+              <li
+                key={index}
+                className="option-item"
+                value={arr}
+                onClick={handleChangeOption}
+              >
+                {arr}
+              </li>
+            ))}
           </ul>
         )}
       </div>

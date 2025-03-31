@@ -2,7 +2,8 @@ import ItemDetails from "./ItemDetails";
 import React from "react";
 import noImage from "./../images/no_image.png";
 import { Link, useParams } from "react-router-dom";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion"; // eslint-disable-line no-unused-vars
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
+// import { commaNumber } from "../util/util";
 // import { useMotionValueEvent, useScroll } from "framer-motion";
 
 // Campsite 컬렉션
@@ -19,6 +20,13 @@ const ProductList = ({ campSiteData }) => {
     <div className="product-list">
       {campSiteData.map((camp) => {
         const { siteS, siteM, siteL, siteC } = camp;
+
+        const stockData = [
+          { label: "소", value: siteS },
+          { label: "중", value: siteM },
+          { label: "대", value: siteL },
+          { label: "카라반", value: siteC },
+        ];
 
         return (
           <Link to={`/searchResult/${camp.contentId}`}>
@@ -57,65 +65,28 @@ const ProductList = ({ campSiteData }) => {
                       </React.Fragment>
                     ))}
                 </ItemDetails>
+                <ItemDetails type="title" size="small">
+                  남은 자리
+                </ItemDetails>
 
-                {/* stock={true} : 남은 자리 표시 */}
-                {/* {sitesSort && ( */}
-                <>
-                  <ItemDetails type="title" size="small">
-                    남은 자리
-                  </ItemDetails>
-
-                  <ul className="stock-list">
-                    <React.Fragment>
-                      {siteS !== null && (
+                <ul className="stock-list">
+                  {stockData.map((stock, index) => (
+                    <>
+                      {stock.value !== null && (
                         <li
+                          key={index}
                           className="stock-item"
                           type="text"
-                          style={{ color: siteS > 10 ? "black" : "red" }}
+                          style={{
+                            color: stock.value > 10 ? "black" : "red",
+                          }}
                         >
-                          소 {siteS}자리
+                          {stock.label} {stock.value}자리
                         </li>
                       )}
-                      {siteM !== null && (
-                        <li
-                          className="stock-item"
-                          type="text"
-                          style={{ color: siteM > 10 ? "black" : "red" }}
-                        >
-                          중 {siteM}자리
-                        </li>
-                      )}
-                      {siteL !== null && (
-                        <li
-                          className="stock-item"
-                          type="text"
-                          style={{ color: siteL > 10 ? "black" : "red" }}
-                        >
-                          대 {siteL}자리
-                        </li>
-                      )}
-                      {siteC !== null && (
-                        <li
-                          className="stock-item"
-                          type="text"
-                          style={{ color: siteC > 10 ? "black" : "red" }}
-                        >
-                          카라반 {siteC}자리
-                        </li>
-                      )}
-                    </React.Fragment>
-                  </ul>
-                  {/* <ul>
-                      <React.Fragment>
-                        <>
-                          <ItemDetails type="text" color="black">
-                            {sitesSort}
-                          </ItemDetails>
-                        </>
-                      </React.Fragment>
-                    </ul> */}
-                </>
-                {/* )} */}
+                    </>
+                  ))}
+                </ul>
 
                 {/* 가격 */}
                 {/* 메인에서는 판매하는 소,중,대,카라반 데이터 중 제일 저렴한 값을 보이게 하기 */}
