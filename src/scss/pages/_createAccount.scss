@@ -3,24 +3,45 @@
 .account__wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
   align-items: center;
-  width: 25rem;
-  padding: 50px 0px;
+  margin-top: 20rem;
+  margin-bottom: 5rem;
+  h2 {
+    display: none;
+  }
 }
 
 .account__form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   width: 100%;
 }
 
-.account__img-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0rem;
+.account__profile-input {
+  display: none;
 }
+
+.account__profile-label {
+  display: block;
+  width: 16rem;
+  height: 16rem;
+  color: black;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid $primary;
+    border-radius: 50%;
+    object-fit: cover;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+// "/src/images/ico_profile.svg"
 
 .hr-sect {
   display: flex;
@@ -29,7 +50,7 @@
   align-items: center;
   color: #ff4e01;
   font-size: 12px;
-  margin: 15px 0px;
+  margin-top: 4rem;
 }
 
 .hr-sect::before,

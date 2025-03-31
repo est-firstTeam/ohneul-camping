@@ -68,9 +68,9 @@ const MainIntro = () => {
           whileInView="entry"
           className="intro-left__text-area"
         >
-          <h3>오늘 뭐 해? 캠핑 어때?</h3>
-          <h2>일상 탈출, 자연 속 힐링!</h2>
-          <h2>
+          <h2>오늘 뭐 해? 캠핑 어때?</h2>
+          <h3>일상 탈출, 자연 속 힐링!</h3>
+          <h3>
             <motion.strong
               variants={ohCampVariants}
               initial="initial"
@@ -79,7 +79,7 @@ const MainIntro = () => {
               오캠
             </motion.strong>
             으로 떠나자!
-          </h2>
+          </h3>
         </motion.div>
         <motion.div
           className="intro-left__paragraph-area"

@@ -5,13 +5,14 @@ import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import Gnb from "./Gnb";
 import { menus } from "../constants/headerMenus";
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 const Header = () => {
   const { isLoggedIn, resetUser } = useUserStore();
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
-
+  const imgPath = useUserStore((state) => state.profileImg);
   const handleLogout = () => {
     resetUser();
     useUserStore.persist.clearStorage();
@@ -38,7 +39,14 @@ const Header = () => {
   }, [lastScrollY]); // lastScrollY가 변경될 때마다 useEffect가 실행됩니다.
 
   return (
-    <header className={`header ${showNav ? "" : "header--hide"}`}>
+    <motion.header
+      animate={(showNav) => ({
+        y: showNav ? 0 : -144,
+        transition: { duration: 0.3 },
+      })}
+      custom={showNav}
+      className={`header`}
+    >
       <Logo />
       <div className="header__inner">
         <Gnb menus={menus} />
@@ -48,11 +56,22 @@ const Header = () => {
             isLoggedIn ? navigate("/my") : navigate("/Login");
           }}
         >
-          {isLoggedIn ? "마이페이지" : "로그인/회원가입"}
+          {isLoggedIn ? (
+            <img
+              className="header__img-path"
+              src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
+            />
+          ) : (
+            <span className="gnb__item-text">로그인/회원가입</span>
+          )}
         </button>
-        {isLoggedIn && <button onClick={handleLogout}>로그아웃</button>}
+        {isLoggedIn && (
+          <button onClick={handleLogout}>
+            <span className="gnb__item-text">로그아웃</span>
+          </button>
+        )}
       </div>
-    </header>
+    </motion.header>
   );
 };
 

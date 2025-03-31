@@ -8,7 +8,7 @@ export const useUserStore = create(
       id: "",
       name: "",
       email: "",
-      profileImg: "",
+      profileImg: null,
       isLoggedIn: false,
       carts: [],
       setUser: (userInfo) => {
@@ -17,19 +17,21 @@ export const useUserStore = create(
             id: userInfo.id,
             name: userInfo.name,
             email: userInfo.email,
-            profileImg: "",
+            profileImg: userInfo.profileImg,
             isLoggedIn: true,
           };
         });
       },
-      setUserLoggedIn: (loginFlag) => set(() => ({ isLoggedIn: loginFlag })),
+      setUserLoggedIn: (flag) => set(() => ({ isLoggedIn: flag })),
+      setProfileImgPath: (imgPath) => set(() => ({ profileImg: imgPath })),
+
       setCarts: (cart) => set((state) => ({ carts: [...state.carts, cart] })),
       resetUser: () => {
         set(() => ({
           id: "",
           name: "",
           email: "",
-          profileImg: "",
+          profileImg: null,
           isLoggedIn: false,
           carts: [],
         }));

@@ -1,17 +1,5 @@
 @use "../abstracts" as *;
 
-.account {
-  width: 25rem;
-}
-
-.account__wrapper {
-  width: 100%;
-  height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .account__etc {
   width: 100%;
   display: flex;
@@ -19,8 +7,16 @@
   align-items: center;
 }
 
-.account__form {
-  display: block;
+.account {
+  h2 {
+    display: none;
+  }
+}
+
+.account__img-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0rem;
 }
 
 .btn__google {
@@ -30,6 +26,12 @@
 .account__link {
   font-size: 1.4rem;
   margin-top: 1rem;
+}
+.account__etc {
+  width: 25rem;
+  h2 {
+    display: none;
+  }
 }
 
 .account__icon,
