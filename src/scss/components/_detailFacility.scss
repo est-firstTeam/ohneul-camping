@@ -17,7 +17,7 @@
     gap: 2.125rem;
 
     .detail__add-on-left--title-amenity {
-      font-size: 3rem;
+      font-size: 2.4rem;
       color: $black;
       font-family: $title;
     }
@@ -31,6 +31,7 @@
       border-radius: 1rem;
 
       .detail__orange-box--title {
+        font-family: $title;
         color: $btn-black;
         font-size: 1.5rem;
         font-style: normal;
@@ -51,6 +52,7 @@
           font-style: normal;
           font-weight: 400;
           line-height: 2.125rem;
+          font-family: $title;
         }
       }
 
@@ -60,6 +62,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: 2.125rem;
+        font-family: $title;
       }
     }
   }
@@ -70,7 +73,7 @@
     gap: 2.125rem;
 
     .detail__add-on-left--title-intro {
-      font-size: 3rem;
+      font-size: 2.4rem;
       color: $black;
       font-family: $title;
     }
@@ -95,7 +98,7 @@
   gap: 2rem;
 
   .detail__add-on-right--title {
-    font-size: 3rem;
+    font-size: 2.4rem;
     color: $black;
     font-family: $title;
   }

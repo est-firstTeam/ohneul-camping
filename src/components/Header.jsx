@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import Gnb from "./Gnb";
 import { menus } from "../constants/headerMenus";
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 const Header = () => {
   const { isLoggedIn, resetUser } = useUserStore();
@@ -38,7 +39,14 @@ const Header = () => {
   }, [lastScrollY]); // lastScrollY가 변경될 때마다 useEffect가 실행됩니다.
 
   return (
-    <header className={`header ${showNav ? "" : "header--hide"}`}>
+    <motion.header
+      animate={(showNav) => ({
+        y: showNav ? 0 : -137,
+        transition: { duration: 0.3 },
+      })}
+      custom={showNav}
+      className={`header`}
+    >
       <Logo />
       <div className="header__inner">
         <Gnb menus={menus} />
@@ -63,7 +71,7 @@ const Header = () => {
           </button>
         )}
       </div>
-    </header>
+    </motion.header>
   );
 };
 

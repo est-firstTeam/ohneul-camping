@@ -23,6 +23,8 @@ const DetailFacility = ({ campData }) => {
     ? otherAmenities.map((item) => otherAmenities[item] || item).join(" | ")
     : "정보 없음";
 
+  console.log(campData);
+
   return (
     <div className="detail__add-on-left">
       <div className="detail__add-on-left--container">
@@ -43,15 +45,17 @@ const DetailFacility = ({ campData }) => {
           </div>
           {otherAmenities.length > 0 && (
             <h5 className="detail__orange-box--contents">
-              {transformedFacilities}
+              추가 편의시설: {transformedFacilities}
             </h5>
           )}
         </div>
       </div>
-      {campData.featureNm && (
+      {(campData.featureNm || campData.intro) && (
         <div className="detail__add-on-left--container-intro">
           <h3 className="detail__add-on-left--title-intro">소개</h3>
-          <p className="detail__add-on-left--content">{campData.featureNm}</p>
+          <p className="detail__add-on-left--content">
+            {campData.featureNm || campData.intro}
+          </p>
         </div>
       )}
     </div>
