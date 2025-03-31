@@ -31,3 +31,17 @@ export function getDaysBetweenDates(startDate, endDate) {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;
 }
+
+// 시작날짜와 끝날짜를 받아 날짜 배열을 리턴
+export const getDatesInRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+  const end = new Date(endDate);
+
+  while (currentDate <= end) {
+    dates.push(currentDate.toISOString().split("T")[0]); // "YYYY-MM-DD"
+    currentDate.setDate(currentDate.getDate() + 1); // 하루씩 증가
+  }
+
+  return dates;
+};

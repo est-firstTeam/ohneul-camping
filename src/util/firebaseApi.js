@@ -1,5 +1,11 @@
 import { firebaseDB } from "../firebaseConfig";
-import { getDocs, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  doc,
+  updateDoc,
+  addDoc,
+} from "firebase/firestore";
 class FirebaseAPI {
   getAllDocs = async (collectionName) => {
     /*
@@ -85,11 +91,15 @@ class FirebaseAPI {
 
   updateData = async (collectionName, docName, data) => {
     /*
-    데이터 insert
+    데이터 update
     https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko&_gl=1*4dt7ou*_up*MQ..*_ga*NDQwNDY2NDAyLjE3NDMxMzc0Nzg.*_ga_CW55HF8NVT*MTc0MzEzNzQ3OC4xLjAuMTc0MzEzNzQ3OC4wLjAuMA..#update-data
     */
     const ref = doc(firebaseDB, collectionName, docName);
-    await updateDoc(ref, { carts: data });
+    await updateDoc(ref, data);
+  };
+
+  insertData = async (collectionName, data) => {
+    await addDoc(collection(firebaseDB, collectionName), data);
   };
 }
 
