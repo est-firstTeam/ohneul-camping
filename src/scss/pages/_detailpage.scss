@@ -6,6 +6,7 @@
   gap: 5rem;
   justify-content: center;
   align-items: center;
+  margin-top: 14rem;
   // margin-inline: 12rem;
 
   .detail__overview {
@@ -42,6 +43,7 @@
     .detail__overview-reserv--location {
       color: $secondary;
       font-size: 2rem;
+      font-family: $title;
     }
     .detail__overview-reserv--title {
       font-size: 3rem;
@@ -50,6 +52,8 @@
     }
 
     .detail__overview-reserv--subtitle {
+      display: inline-flex;
+      align-items: center;
       font-size: 1.5rem;
       color: $semi-black;
       font-weight: 300;
@@ -59,12 +63,13 @@
         display: inline-block;
         height: 1.5rem;
         width: 3rem;
-        margin-right: 0.3rem;
-        @include background("ico-camping.svg", left center, null, contain);
+        @include background("ico_rightArrow2.svg", left center, null, contain);
       }
     }
 
     .detail__overview-reserv--campstyle {
+      display: inline-flex;
+      align-items: center;
       font-size: 1.5rem;
       color: $semi-black;
       font-weight: 300;
@@ -74,8 +79,7 @@
         display: inline-block;
         height: 1.5rem;
         width: 3rem;
-        margin-right: 0.3rem;
-        @include background("ico-camping.svg", left center, null, contain);
+        @include background("ico_rightArrow2.svg", left center, null, contain);
       }
     }
 

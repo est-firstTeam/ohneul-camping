@@ -23,9 +23,9 @@ const ConfirmModal = ({ modalRef, handleClose }) => {
         <Button color="secondary" onClick={handleClose} margin={"0 0 0 2rem"}>
           계속 쇼핑하기
         </Button>
-        {/* <Link to={"/my/cart"}> */}
-        <Button>장바구니 보기</Button>
-        {/* </Link> */}
+        <Link to={"/my/cart"}>
+          <Button>장바구니 보기</Button>
+        </Link>
       </div>
     </Modal>
   );
