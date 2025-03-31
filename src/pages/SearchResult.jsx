@@ -13,6 +13,7 @@ import TopBtn from "../components/Topbtn";
 const SearchResult = () => {
   const {
     filterValue,
+    optionArr,
     setLocation,
     setStartDate,
     setEndDate,
@@ -23,7 +24,6 @@ const SearchResult = () => {
 
   const { location, startdate, enddate, site } = useParams();
 
-  console.log("filterValue", filterValue);
   // 검색 쿼리
   const { data: searchData } = useQuery({
     queryKey: ["search", location, startdate, site], // querykey에 변경값을 작성해야 변경이 된다
@@ -36,6 +36,7 @@ const SearchResult = () => {
     },
     select: (data) =>
       selectors.getSearchLocationStartDate(data, site, filterValue), // useParams의 site로 지정해서 select를 하면 params부분만 필터(기존에는 searchValue.site로 지정해서 사이트 변경시 자동으로 필터링 되었음)
+    enabled: !!location && !!startdate && !!site,
   });
 
   // URL 파라미터가 변경 --> 검색바의 값을 유지하기 위해 사용
@@ -62,8 +63,6 @@ const SearchResult = () => {
     }
   }, [searchData, setSearchResult]);
 
-  console.log(searchData);
-
   return (
     <section className="wrapper-search">
       <h2 className="section-title">검색 결과 페이지</h2>
@@ -72,7 +71,7 @@ const SearchResult = () => {
         <h2 className="header-count">검색 결과 {searchResult.length}건</h2>
         <div className="header-select">
           <h2 className="header-count">정렬기준:</h2>
-          <SelectBox />
+          <SelectBox valueArr={optionArr} />
         </div>
       </div>
       {searchResult.length !== 0 ? (
