@@ -268,7 +268,9 @@ const Cart = () => {
                 if (checkedItems[cart.id]) {
                   return (
                     <div className="cart__detail-option-box" key={cart.id}>
-                      <span>{cart.facltNm}</span>
+                      <span className="cart__detail-option-facltNm">
+                        {cart.facltNm}
+                      </span>
                       <DetailOptionBox
                         startDate={cart.rsvStartDate}
                         endDate={cart.rsvEndDate}
@@ -294,7 +296,6 @@ const Cart = () => {
                   );
                 }
               })}
-            <hr />
             <div className="cart__agreement">
               <Checkbox id="agree" onChange={() => setIsAgree(!isAgree)} />
               <button onClick={() => openModal(modalRef)}>

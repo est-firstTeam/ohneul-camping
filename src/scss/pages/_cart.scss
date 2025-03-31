@@ -4,6 +4,7 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  gap: 1.6rem;
   &__title {
     @include a11y-hidden;
   }
@@ -19,7 +20,7 @@
 .cart__agreement {
   display: flex;
   gap: 0.8rem;
-  margin-bottom: 3.2rem;
+  margin-block: 3.2rem;
   button {
     font-size: 2rem;
   }
@@ -31,7 +32,7 @@
   gap: 2.6rem;
   border: 1px solid $secondary;
   border-radius: 3rem;
-  padding: 2rem;
+  padding: 1.4rem 2rem;
   width: 50%;
   margin: 10rem auto;
 
@@ -62,4 +63,18 @@
     color: $primary;
     font-weight: bold;
   }
+}
+
+.cart__detail-option-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  color: $gray2;
+  border-bottom: 1px solid $gray5;
+}
+
+.cart__detail-option-facltNm {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 1.6rem;
 }
