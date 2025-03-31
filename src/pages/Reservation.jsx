@@ -21,6 +21,7 @@ import { getDatesInRange } from "../util/util";
 
 const Reservation = () => {
   const userId = useUserStore((state) => state.id);
+  const userName = useUserStore((state) => state.name); // User/name: 레이아웃 상단에 이름 출력 시 사용
   const { setTitle } = myPageTitleStore();
 
   // 모달
@@ -28,13 +29,6 @@ const Reservation = () => {
   const [selectedReservationId, setSelectedReservationId] = useState(null);
   // 취소 하시겠습니까? > '확인' 클릭 시 '취소 완료' 모달로 변경
   const [modalStep, setModalStep] = useState("confirm");
-
-  // User/name: 레이아웃 상단에 이름 출력 시 사용
-  const { data: userName } = useQuery({
-    queryKey: [`/user/name/${userId}`],
-    queryFn: () => fBService.getUserNameById(userId),
-    enabled: !!userId, // userId가 존재할 때만 실행
-  });
 
   // Reservation/userId: 예약 정보 조회에 사용
   const { data: reservationData, refetch } = useQuery({

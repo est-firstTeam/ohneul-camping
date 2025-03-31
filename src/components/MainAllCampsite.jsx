@@ -50,8 +50,8 @@ export default function MainAllCampsite() {
             <motion.li
               className="all-campsite__item"
               key={campObj.id}
-              initial={{ opacity: 0, y: 0 }}
-              animate={{ opacity: 1, y: -30 }}
+              initial={{ opacity: 0, y: +30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ type: "tween", delay: 0.1 }}
               whileHover={{
                 scale: 1.05,
