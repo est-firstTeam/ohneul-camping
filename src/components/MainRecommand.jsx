@@ -22,7 +22,7 @@ const MainRecommand = () => {
     <p>Error: {error.message}</p>
   ) : (
     <section className="main__rcmd">
-      <h2>이런곳은 어때요?</h2>
+      <p className="section-header__subtitle">이런곳은 어때요?</p>
       <div className="main__rcmd-wrapper">
         <div className="main__rcmd-left">
           <div className="rcmd-left__img-area">
@@ -39,7 +39,7 @@ const MainRecommand = () => {
           </div>
         </div>
         <div className="main__rcmd-right">
-          <h3>{data.facltNm}</h3>
+          <h3 className="section-header__title">{data.facltNm}</h3>
           <p className="main__rcmd-paragraph">{data.featureNm || data.intro}</p>
           <div className="rcmd__camp-info">
             <span className="camp-info-text">{data.addr1}</span>
@@ -57,12 +57,10 @@ const MainRecommand = () => {
             <span className="camp-info-text">
               {data.lineIntro || "한줄평이 없습니다."}
             </span>
-            <Link to={`/searchResult/${data.contentId}`}>
-              <Button width="14rem" margin="5rem 0rem 0rem 0rem">
-                옵션 더보기 →
-              </Button>
-            </Link>
           </div>
+          <Link to={`/searchResult/${data.contentId}`}>
+            <Button width="14rem">옵션 더보기 →</Button>
+          </Link>
         </div>
       </div>
     </section>
