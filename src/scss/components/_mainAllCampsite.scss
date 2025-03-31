@@ -20,7 +20,6 @@
 .all-campsite__wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
   justify-content: center;
   gap: 1rem;
   row-gap: 3rem;
