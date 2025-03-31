@@ -17,11 +17,11 @@ import {
   where,
   runTransaction,
 } from "firebase/firestore";
+import { getDatesInRange } from "../util/util";
 
 const Reservation = () => {
   const userId = useUserStore((state) => state.id);
   const { setTitle } = myPageTitleStore();
-  console.log(`${userId}`);
 
   // 모달
   const modalRef = useRef(null);
@@ -132,19 +132,6 @@ const Reservation = () => {
             const rsvEndDate = reservation.data.rsvEndDate;
 
             // 기간에 해당하는 날짜 구하기
-            const getDatesInRange = (startDate, endDate) => {
-              const dates = [];
-              let currentDate = new Date(startDate);
-              const end = new Date(endDate);
-
-              while (currentDate <= end) {
-                dates.push(currentDate.toISOString().split("T")[0]); // "YYYY-MM-DD"
-                currentDate.setDate(currentDate.getDate() + 1); // 하루씩 증가
-              }
-
-              return dates;
-            };
-
             const datesInRange = getDatesInRange(rsvStartDate, rsvEndDate);
 
             // Available_RSV 문서 조회
