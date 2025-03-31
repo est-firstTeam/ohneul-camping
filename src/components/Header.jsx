@@ -41,7 +41,7 @@ const Header = () => {
   return (
     <motion.header
       animate={(showNav) => ({
-        y: showNav ? 0 : -137,
+        y: showNav ? 0 : -144,
         transition: { duration: 0.3 },
       })}
       custom={showNav}
