@@ -28,6 +28,7 @@ const SearchResult = () => {
   const { data: searchData } = useQuery({
     queryKey: ["search", location, startdate, site], // querykey에 변경값을 작성해야 변경이 된다
     queryFn: () => {
+      console.log("SearchData  QueryFn!!!");
       if (location === "전체") {
         return fBService.getSearchAllARSV(startdate);
       }

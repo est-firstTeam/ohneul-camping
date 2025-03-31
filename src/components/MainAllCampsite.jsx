@@ -10,6 +10,7 @@ export default function MainAllCampsite() {
   const { data, status, error } = useQuery({
     queryKey: ["campsites"],
     queryFn: async () => fBService.getAllCampsites(),
+    staleTime: 300000,
   });
   const { reservation } = useSectionRefStore();
   const navi = useNavigate();
