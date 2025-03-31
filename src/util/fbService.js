@@ -154,14 +154,50 @@ class FBService {
           siteCPrice: campSiteInfoData.caravSiteCoPrice,
         };
 
-        return { ...cart, ...priceInfo };
+        return { ...cart, ...priceInfo, doNM: campSiteInfoData.doNm };
       })
     );
     return cartItems ?? [];
   };
 
   insertUserCart = async (userId, carts) => {
-    await firebaseAPI.updateData(CollectionName.User, userId, carts);
+    const data = { carts: carts };
+    await firebaseAPI.updateData(CollectionName.User, userId, data);
+  };
+
+  insertReservation = async (reservation) => {
+    await firebaseAPI.insertData(CollectionName.Reservation, reservation);
+  };
+
+  increaseRsvComplete = async (contentId) => {
+    try {
+      const campsiteQuery = query(
+        collection(firebaseDB, CollectionName.Campsite),
+        where("contentId", "==", contentId.toString())
+      );
+      const campsite = await firebaseAPI.getQueryDocs(campsiteQuery);
+
+      if (campsite.empty) {
+        throw new Error("해당 contentId를 가진 캠핑장을 찾을 수 없습니다.");
+      }
+
+      // Campsite : 캠핑장 정보 가져오기
+      const campsiteData = campsite[0].data;
+
+      // 캠핑장 예약 수 증가 (rsvComplete +1)
+      const currentCount = campsiteData.rsvComplete || 0;
+
+      await firebaseAPI.updateData(CollectionName.Campsite, contentId, {
+        rsvComplete: currentCount + 1,
+      });
+
+      console.log(
+        `rsvComplete 업데이트에 성공했습니다. (새 값: ${currentCount + 1})`
+      );
+    } catch (error) {
+      console.error("rsvComplete 오류:", error);
+      throw new Error("rsvComplete 업데이트에 실패했습니다.");
+    }
   };
 }
 

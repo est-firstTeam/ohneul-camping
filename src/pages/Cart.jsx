@@ -13,6 +13,11 @@ import Modal from "../components/Modal";
 import LoadingSpinner from "../components/Loading";
 import DetailOptionBox from "../components/DetailOptionBox";
 import Button from "../components/Button";
+import { firebaseDB } from "../firebaseConfig";
+import { doc } from "firebase/firestore";
+import { runTransaction } from "firebase/firestore";
+import { getDatesInRange } from "../util/util";
+import RefundModal from "../components/RefundModal";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
@@ -39,6 +44,13 @@ const Cart = () => {
   const openModal = (currentModal) => {
     if (currentModal.current) {
       currentModal.current.showModal();
+    }
+  };
+
+  const cannotPaymentRef = useRef(null); // 결제 불가 모달
+  const handleCancel = () => {
+    if (cannotPaymentRef.current) {
+      cannotPaymentRef.current.close();
     }
   };
 
@@ -95,21 +107,101 @@ const Cart = () => {
   };
 
   const payMutation = useMutation({
-    mutationFn: async ({ notToPayItems }) => {
-      // 유저 장바구니에서 제거
-      await fBService.insertUserCart(userId, notToPayItems);
-      // TODO: available rsv에서 - 1
-      // 예약데이터 생성
-      // rsvComplete + 1
+    mutationFn: async ({ toPayItems, notToPayItems }) => {
+      await fBService.insertUserCart(userId, notToPayItems); // 유저 장바구니에서 제거
+
+      // available rsv에서 - 1
+      // doNm_date로 document조회
+      toPayItems.forEach(async (toPayItem) => {
+        const datesInRange = getDatesInRange(
+          toPayItem.rsvStartDate,
+          toPayItem.rsvEndDate
+        );
+
+        // Available_RSV 문서 조회
+        for (const date of datesInRange) {
+          const docId = `${toPayItem.doNm}_${date}`; //  doNm_date 문자열 제작
+          const docRef = doc(firebaseDB, "Available_RSV", docId); // 조회
+
+          try {
+            // 재고 감소
+            runTransaction(firebaseDB, async (transaction) => {
+              const docSnap = await transaction.get(docRef);
+              if (!docSnap.exists()) return;
+
+              const availableData = docSnap.data();
+              const contentArray = availableData.content || [];
+
+              // site와 rsvSite 매칭해서 연산
+              const updatedContentArray = contentArray.map((item) => {
+                if (
+                  item.contentId.toString() === toPayItem.campSiteId.toString()
+                ) {
+                  let { siteS, siteM, siteL, siteC } = item;
+                  const afterPayRsvSiteS = (siteS ?? 0) - toPayItem.rsvSiteS;
+                  const afterPayRsvSiteM = (siteM ?? 0) - toPayItem.rsvSiteM;
+                  const afterPayRsvSiteL = (siteL ?? 0) - toPayItem.rsvSiteL;
+                  const afterPayRsvSiteC = (siteC ?? 0) - toPayItem.rsvSiteC;
+
+                  // 결제할때 현재 재고가 없으면 결제 못함
+                  if (
+                    afterPayRsvSiteS >= 0 &&
+                    afterPayRsvSiteM >= 0 &&
+                    afterPayRsvSiteL >= 0 &&
+                    afterPayRsvSiteC >= 0
+                  ) {
+                    siteS = afterPayRsvSiteS;
+                    siteM = afterPayRsvSiteM;
+                    siteL = afterPayRsvSiteL;
+                    siteC = afterPayRsvSiteC;
+                  } else {
+                    openModal(cannotPaymentRef);
+                    return;
+                  }
+
+                  return { ...item, siteS, siteM, siteL, siteC };
+                }
+                return item;
+              });
+
+              transaction.update(docRef, {
+                content: updatedContentArray,
+              });
+            });
+
+            console.log(`DB 업데이트 완료: ${docId}`);
+          } catch (error) {
+            console.error(`DB 업데이트 실패: ${error}`);
+          }
+        }
+        // 예약데이터 생성
+        const rsvData = {
+          campSiteId: toPayItem.campSiteId,
+          doNm: toPayItem.doNm,
+          facltNm: toPayItem.facltNm,
+          firstImageUrl: toPayItem.firstImageUrl,
+          rsvEndDate: toPayItem.rsvEndDate,
+          rsvIsCanceled: false,
+          rsvSiteC: toPayItem.rsvSiteC,
+          rsvSiteL: toPayItem.rsvSiteL,
+          rsvSiteM: toPayItem.rsvSiteM,
+          rsvSiteS: toPayItem.rsvSiteS,
+          rsvStartDate: toPayItem.rsvStartDate,
+          rsvTotalPrice: toPayItem.rsvTotalPrice,
+          userId: userId,
+        };
+
+        await fBService.insertReservation(rsvData);
+        await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
+      });
     },
   });
 
-  // TODO: 결제할(체크된) 아이템을 한번에 배열에 담는변수 생성 -> 다른 로직에서 사용
   const handleOrder = () => {
     const toPayItems = carts.filter((cart) => checkedItems[cart.id]); // 결제할 아이템
     const notToPayItems = carts.filter((cart) => !checkedItems[cart.id]); // 결제하지 않을 아이템들을 장바구니에 새로 set
 
-    payMutation.mutate({ notToPayItems });
+    payMutation.mutate({ toPayItems, notToPayItems });
   };
 
   let hasItemToPay; // 결제할 아이템이 있는지 확인하는 변수
@@ -176,6 +268,7 @@ const Cart = () => {
                 if (checkedItems[cart.id]) {
                   return (
                     <div className="cart__detail-option-box" key={cart.id}>
+                      <span>{cart.facltNm}</span>
                       <DetailOptionBox
                         startDate={cart.rsvStartDate}
                         endDate={cart.rsvEndDate}
@@ -226,40 +319,17 @@ const Cart = () => {
           </section>
         </article>
       )}
-      {/* 이용약관 환불규정 구현 */}
+      <RefundModal modalRef={modalRef} />
+
+      {/* 예약불가 모달 */}
       <Modal
-        modalRef={modalRef}
-        completeText="동의합니다"
-        text={"완료"}
-        confirmBtn
+        modalRef={cannotPaymentRef}
+        handleConfirm={handleCancel}
+        text={"확인"}
+        confirmBtn={true}
+        buttonType={"button"}
       >
-        <div className="cart__modal">
-          <span className="cart__modal-title">이용 약관 및 환불규정</span>
-          <span className="cart__modal-content-title">내용</span>
-          <ul className="cart__modal-list">
-            <li>
-              결제 예정 금액은 예약시 결제되는것이 아닌, 현장결제를 통해
-              지불하실 금액입니다.
-            </li>
-            <li>
-              본 사이트를 통해 예약한 캠핑장은 예약자 본인만 이용할 수 있습니다.
-            </li>
-            <li>
-              예약자는 캠핑장 이용 수칙을 준수해야 하며, 시설 훼손 시 배상
-              책임이 있습니다.
-            </li>
-            <li>현장 규정을 위반할 경우 이용이 제한될 수 있습니다.</li>
-          </ul>
-          <span className="cart__modal-content-title">환불 규정</span>
-          <ul className="cart__modal-list">
-            <li>이용일 2일 전까지 취소 시 100% 환불</li>
-            <li>이용일 1일 전부터는 환불 불가</li>
-            <li>
-              천재지변 등 불가피한 사유로 캠핑장이 운영되지 않을 경우 전액
-              환불됩니다.
-            </li>
-          </ul>
-        </div>
+        남은 자리가 없습니다
       </Modal>
     </section>
   );
