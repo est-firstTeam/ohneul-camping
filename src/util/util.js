@@ -1,5 +1,8 @@
 export function commaNumber(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return (typeof number === "string" ? number : number.toString()).replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ","
+  );
 }
 
 // 2025-01-01을 n월n일로 리턴
