@@ -10,10 +10,10 @@ const MyPage = () => {
       title: "예약 현황",
       link: "reservation",
     },
-    // {
-    //   title: "정보 변경",
-    //   link: "information",
-    // },
+    {
+      title: "정보 변경",
+      link: "account",
+    },
     {
       title: "장바구니",
       link: "cart",

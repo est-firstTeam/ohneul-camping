@@ -5,6 +5,8 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Account from "./pages/Account.jsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // import DetailPage from "./pages/DetailPage.jsx";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
@@ -38,6 +40,7 @@ function App() {
             },
             { path: "reservation", element: <Reservation /> },
             { path: "cart", element: <Cart /> },
+            { path: "account", element: <Account /> },
           ],
         },
         {
@@ -69,13 +72,23 @@ function App() {
     },
   ]);
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<div></div>}>
         <RouterProvider router={router} />
       </Suspense>
+      <div style={{ fontSize: "16px" }}>
+        <ReactQueryDevtools initialIsOpen={true} />
+      </div>
     </QueryClientProvider>
   );
 }

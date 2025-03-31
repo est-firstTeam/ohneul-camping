@@ -18,7 +18,7 @@ export default function MainMostRSV() {
   const canScrollNext = sliderIdx < SLIDER_MAX_IDX;
   const [back, setBack] = useState(false);
   const { data, error, status } = useQuery({
-    queryKey: ["sortCampsiteByRsvComplete"],
+    queryKey: ["campsites"],
     queryFn: async () => fBService.getAllCampsites(),
     select: (data) => {
       const sortedArr = data
@@ -26,6 +26,7 @@ export default function MainMostRSV() {
         .slice(0, 10);
       return sortedArr;
     },
+    staleTime: 300000,
   });
   const nextBtn = () => {
     setBack(false);

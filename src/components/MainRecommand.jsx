@@ -6,13 +6,14 @@ import { Link } from "react-router-dom";
 
 const MainRecommand = () => {
   const { data, status, error, isLoading } = useQuery({
-    queryKey: ["pickOneCampsite"],
+    queryKey: ["campsites"],
     queryFn: async () => fBService.getAllCampsites(),
     select: (data) => {
       const temp = data[Math.floor(Math.random() * data.length)].data;
       const returnObj = { ...temp };
       return returnObj;
     },
+    staleTime: 300000,
   });
 
   return status === "pending" ? (
