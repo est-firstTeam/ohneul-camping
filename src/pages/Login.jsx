@@ -111,7 +111,12 @@ const Login = () => {
           </div>
           {/* submit 버튼 */}
           <div>
-            <Button width="25rem" className="btn account__btn" type="submit">
+            <Button
+              disabled={isLoading && true}
+              width="25rem"
+              className="btn account__btn"
+              type="submit"
+            >
               {isLoading ? "Loading..." : "로그인"}
             </Button>
             {/* 파이어베이스쪽에서 나는 에러메세지 출력 */}

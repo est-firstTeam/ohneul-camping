@@ -8,6 +8,7 @@ export default function ProductCard({ camp }) {
       <img
         className="product__image"
         src={camp.data.firstImageUrl || noImageURL}
+        alt="캠핑장이미지"
       />
       <div className="detail-list">
         {/* 야영장 이름 */}
