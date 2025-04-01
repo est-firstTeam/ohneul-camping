@@ -15,7 +15,6 @@ const Header = () => {
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
-  const imgPath = useUserStore((state) => state.profileImg);
   const [showSelect, setShowSelect] = useState(false);
   const { selects } = useHeaderStore();
   const { search } = useSectionRefStore();

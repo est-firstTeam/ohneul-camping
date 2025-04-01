@@ -40,7 +40,7 @@ const ProductListCart = ({
 
   return (
     <div className="product product--w26">
-      <img src={firstImageUrl} className="product__image" />
+      <img src={firstImageUrl} className="product__image" alt="캠핑장이미지" />
       <div className="detail-list">
         {/* 장바구니에서 true */}
         {isCart ? (
