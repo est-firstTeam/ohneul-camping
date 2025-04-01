@@ -11,10 +11,10 @@ import DateModal from "../components/DateModal";
 import DTsiteModal from "../components/DTsiteModal";
 import useSiteStore from "../store/useSiteStore";
 import DetailOptionBox from "../components/DetailOptionBox";
-// import { firebaseAPI } from "../util/firebaseApi";
 import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
+import { fBService } from "../util/fbService";
 import {
   getDaysBetweenDates,
   handleCancelModal,
@@ -25,7 +25,6 @@ import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal.jsx";
-import { fBService } from "../util/fbService.js";
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -40,11 +39,8 @@ const DetailPage = () => {
   const [minAvailable, setMinAvailable] = useState(null);
 
   const { data: campData } = useQuery({
-    queryKey: ["campSite", id],
-    queryFn: async () => {
-      const matchedId = await fBService.getCampsiteData(id);
-      return matchedId[0].data;
-    },
+    queryKey: ["campdata", id],
+    queryFn: async () => await fBService.getCampsiteData(id),
     enabled: !!id,
   });
 
@@ -317,7 +313,10 @@ const DetailPage = () => {
                   endDate={endDate}
                   siteCounts={siteCounts}
                   nightCount={nightCount}
-                  campData={campData}
+                  siteSPrice={campData.siteMg1CoPrice}
+                  siteMPrice={campData.siteMg2CoPrice}
+                  siteLPrice={campData.siteMg3CoPrice}
+                  siteCPrice={campData.caravSiteCoPrice}
                 />
 
                 <div className="detail__overview-reserv--payment">

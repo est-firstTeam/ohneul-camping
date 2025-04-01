@@ -27,14 +27,14 @@ class FBService {
   };
 
   // id로 캠핑장 조회
-  getCampsiteData = async (ids) => {
+  getCampsiteData = async (id) => {
     try {
       const q = query(
         collection(firebaseDB, CollectionName.Campsite),
-        where("contentId", "==", ids.toString())
+        where("contentId", "==", id.toString())
       );
       const result = await firebaseAPI.getQueryDocs(q);
-      return result;
+      return result[0].data;
     } catch (e) {
       console.error("캠핑장 id로 조회 실패: %o", e);
       return null;
@@ -122,16 +122,16 @@ class FBService {
       const cartItems = await Promise.all(
         carts.map(async (cart) => {
           const campSiteInfo = await fBService.getCampsiteData(cart.campSiteId);
-          const campSiteInfoData = campSiteInfo[0].data;
+          // const campSiteInfoData = campSiteInfo[0].data;
 
           const priceInfo = {
-            siteSPrice: campSiteInfoData.siteMg1CoPrice,
-            siteMPrice: campSiteInfoData.siteMg2CoPrice,
-            siteLPrice: campSiteInfoData.siteMg3CoPrice,
-            siteCPrice: campSiteInfoData.caravSiteCoPrice,
+            siteSPrice: campSiteInfo.siteMg1CoPrice,
+            siteMPrice: campSiteInfo.siteMg2CoPrice,
+            siteLPrice: campSiteInfo.siteMg3CoPrice,
+            siteCPrice: campSiteInfo.caravSiteCoPrice,
           };
 
-          return { ...cart, ...priceInfo, doNM: campSiteInfoData.doNm };
+          return { ...cart, ...priceInfo, doNM: campSiteInfo.doNm };
         })
       );
       return cartItems ?? [];
