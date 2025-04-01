@@ -14,6 +14,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useUserStore } from "../store/useUserStore";
 import Button from "../components/Button";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import profileimg from "../images/ico_profile.svg";
 
 const CreateAccount = () => {
   const navi = useNavigate();
@@ -154,9 +155,7 @@ const CreateAccount = () => {
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
           {/* 아바타 파트 */}
           <label className="account__profile-label" htmlFor="file">
-            <img
-              src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
-            />
+            <img src={profileimg} />
           </label>
           <input
             {...register("profileImg")}
