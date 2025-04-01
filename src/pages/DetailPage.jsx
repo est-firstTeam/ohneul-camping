@@ -11,7 +11,7 @@ import DateModal from "../components/DateModal";
 import DTsiteModal from "../components/DTsiteModal";
 import useSiteStore from "../store/useSiteStore";
 import DetailOptionBox from "../components/DetailOptionBox";
-import { firebaseAPI } from "../util/firebaseApi";
+// import { firebaseAPI } from "../util/firebaseApi";
 import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
@@ -25,6 +25,7 @@ import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal.jsx";
+import { fBService } from "../util/fbService.js";
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -39,20 +40,15 @@ const DetailPage = () => {
   const [minAvailable, setMinAvailable] = useState(null);
 
   const { data: campData } = useQuery({
-    queryKey: ["campData", id],
+    queryKey: ["campSite", id],
     queryFn: async () => {
-      const allDocs = await firebaseAPI.getAllDocs("Available_RSV");
-      for (const doc of allDocs) {
-        const contentArray = doc.data.content || [];
-        const matchedContent = contentArray.find(
-          (item) => item.contentId === id
-        );
-        if (matchedContent) return matchedContent;
-      }
-      throw new Error("해당 contentId에 대한 데이터 없음");
+      const matchedId = await fBService.getCampsiteData(id);
+      return matchedId[0].data;
     },
     enabled: !!id,
   });
+
+  console.log(campData);
 
   const userId = useUserStore((state) => state.id);
   const mutation = useMutation({
@@ -97,10 +93,10 @@ const DetailPage = () => {
   const totalPrice = siteCounts.reduce((sum, count, index) => {
     let pricePerSite =
       [
-        campData?.siteSPrice,
-        campData?.siteMPrice,
-        campData?.siteLPrice,
-        campData?.siteCPrice,
+        campData?.siteMg1CoPrice,
+        campData?.siteMg2CoPrice,
+        campData?.siteMg3CoPrice,
+        campData?.caravSiteCoPrice,
       ][index] || 0;
     return sum + count * pricePerSite * nightCount;
   }, 0);
