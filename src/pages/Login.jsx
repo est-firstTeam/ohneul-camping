@@ -12,6 +12,7 @@ import { errorCodes } from "../constants/errorCodes";
 import { doc, getDoc } from "firebase/firestore";
 import { useUserStore } from "../store/useUserStore";
 import Button from "../components/Button";
+import imgLogo from "../../public/Logo.svg";
 
 const Login = () => {
   const { register, handleSubmit, formState } = useForm();
@@ -71,7 +72,7 @@ const Login = () => {
       <section className="account">
         <h2>로그인 양식</h2>
         <div className="account__img-wrapper">
-          <img src="../public/Logo.svg" alt="회원가입_로고" />
+          <img src={imgLogo} />
         </div>
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
           {/* 닉네임*/}
