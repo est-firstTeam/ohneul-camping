@@ -1,5 +1,4 @@
 import TopBtn from "../components/Topbtn.jsx";
-import ButtonExam from "./ButtonExam.jsx";
 import Searchbar from "../components/Searchbar.jsx";
 import MainIntro from "../components/MainIntro.jsx";
 import MainRecommand from "../components/MainRecommand.jsx";
