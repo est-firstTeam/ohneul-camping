@@ -133,7 +133,7 @@ const ProductList = ({ campSiteData }) => {
                   {camp.siteLPrice && site === "대(7~10인)" && (
                     <>{commaNumber(camp.siteLPrice)}</>
                   )}
-                  {camp.siteSPrice && site === "카라반(1~4인)" && (
+                  {camp.siteCPrice && site === "카라반(1~4인)" && (
                     <>{commaNumber(camp.siteCPrice)}</>
                   )}
                 </ItemDetails>
