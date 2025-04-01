@@ -1,6 +1,6 @@
 import { CollectionName } from "../constants/collectionName";
 import { firebaseAPI } from "./firebaseApi";
-import { query, where, collection } from "firebase/firestore";
+import { query, where, collection, deleteDoc, doc } from "firebase/firestore";
 import { firebaseDB } from "../firebaseConfig";
 
 class FBService {
@@ -188,6 +188,24 @@ class FBService {
     } catch (error) {
       console.error("rsvComplete 오류:%o", error);
       throw new Error("rsvComplete 업데이트에 실패했습니다.");
+    }
+  };
+
+  deleteReservation = async (reservationId) => {
+    try {
+      await deleteDoc(
+        doc(firebaseDB, CollectionName.Reservation, reservationId)
+      );
+    } catch (e) {
+      throw new Error("get all Reservation Error: %o", e);
+    }
+  };
+
+  deleteUser = async (userId) => {
+    try {
+      await deleteDoc(doc(firebaseDB, CollectionName.User, userId));
+    } catch (e) {
+      throw new Error("get all Reservation Error: %o", e);
     }
   };
 }
