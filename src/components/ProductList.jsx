@@ -69,7 +69,7 @@ const ProductList = ({ campSiteData }) => {
                   남은 자리
                 </ItemDetails>
 
-                <ul className="stock-list">
+                {/* <ul className="stock-list">
                   {stockData.map((stock, index) => (
                     <div key={index}>
                       {stock.value !== null && (
@@ -85,6 +85,25 @@ const ProductList = ({ campSiteData }) => {
                       )}
                     </div>
                   ))}
+                </ul> */}
+
+                <ul className="stock-list">
+                  {stockData.map((stock, index) => (
+                    <>
+                      {stock.value !== null && (
+                        <li
+                          key={index}
+                          className="stock-item"
+                          type="text"
+                          style={{
+                            color: stock.value > 10 ? "black" : "red",
+                          }}
+                        >
+                          {stock.label} {stock.value}자리
+                        </li>
+                      )}
+                    </>
+                  ))}
                 </ul>
 
                 {/* 가격 */}
@@ -92,10 +111,29 @@ const ProductList = ({ campSiteData }) => {
                 {/* ㄴ재고 무관하게! */}
                 {/* ㄴ만약 전일 매진이면/ 모든 재고가 0이라면 → 품절표시? */}
                 <ItemDetails type="price" size="default">
-                  {site === "소(1~3인)" && <>{commaNumber(camp.siteSPrice)}</>}
-                  {site === "중(4~6인)" && <>{commaNumber(camp.siteMPrice)}</>}
-                  {site === "대(7~10인)" && <>{commaNumber(camp.siteLPrice)}</>}
+                  {/* {site === "소(1~3인)" && (
+                    <>{commaNumber(camp.siteSPrice ?? 0)}</>
+                  )}
+                  {site === "중(4~6인)" && (
+                    <>{commaNumber(camp.siteMPrice ?? 0)}</>
+                  )}
+                  {site === "대(7~10인)" && (
+                    <>{commaNumber(camp.siteLPrice ?? 0)}</>
+                  )}
                   {site === "카라반(1~4인)" && (
+                    <>{commaNumber(camp.siteCPrice ?? 0)}</>
+                  )} */}
+
+                  {camp.siteSPrice && site === "소(1~3인)" && (
+                    <>{commaNumber(camp.siteSPrice)}</>
+                  )}
+                  {camp.siteMPrice && site === "중(4~6인)" && (
+                    <>{commaNumber(camp.siteMPrice)}</>
+                  )}
+                  {camp.siteLPrice && site === "대(7~10인)" && (
+                    <>{commaNumber(camp.siteLPrice)}</>
+                  )}
+                  {camp.siteSPrice && site === "카라반(1~4인)" && (
                     <>{commaNumber(camp.siteCPrice)}</>
                   )}
                 </ItemDetails>
