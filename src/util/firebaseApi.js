@@ -5,8 +5,6 @@ import {
   doc,
   updateDoc,
   addDoc,
-  query,
-  where,
 } from "firebase/firestore";
 class FirebaseAPI {
   getAllDocs = async (collectionName) => {
