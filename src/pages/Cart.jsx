@@ -81,8 +81,8 @@ const Cart = () => {
 
   const handleSelectAll = () => {
     const newCheckedState = {};
-    carts.forEach((item) => {
-      newCheckedState[item.id] = !allChecked;
+    carts.forEach((_, index) => {
+      newCheckedState[index] = !allChecked;
     });
     setCheckedItems(newCheckedState);
   };
