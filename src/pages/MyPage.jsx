@@ -1,5 +1,5 @@
 import MyPageAside from "../components/MyPageAside";
-import MyPageContentLayout from "../components/MyPageContentLayout";
+import MyPageContentLayout from "../layout/MyPageContentLayout";
 import myPageTitleStore from "../store/mypageTitleStore";
 
 const MyPage = () => {
