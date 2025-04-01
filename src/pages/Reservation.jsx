@@ -4,7 +4,12 @@ import { useUserStore } from "../store/useUserStore";
 import { useQuery } from "@tanstack/react-query";
 import { reservationService } from "../util/reservationService";
 import { firebaseDB } from "../firebaseConfig";
-import { monthDateFormat, getDaysBetweenDates } from "../util/util";
+import {
+  monthDateFormat,
+  getDaysBetweenDates,
+  handleOpenModal,
+  handleCancelModal,
+} from "../util/util";
 import ProductListCart from "../components/ProductListCart";
 import Modal from "../components/Modal";
 import { Link } from "react-router-dom";
@@ -45,15 +50,11 @@ const Reservation = () => {
   // 예약 취소 확인용 모달
   const handleCancelClick = (reservationId) => {
     setSelectedReservationId(reservationId);
-    if (modalRef.current) {
-      modalRef.current.showModal();
-    }
+    handleOpenModal(modalRef);
   };
   // 모달 취소 버튼 클릭 : 창 닫기
   const handleCancel = () => {
-    if (modalRef.current) {
-      modalRef.current.close();
-    }
+    handleCancelModal(modalRef);
     setSelectedReservationId(null);
     setModalStep("confirm"); // 초기화
   };

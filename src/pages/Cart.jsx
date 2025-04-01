@@ -22,10 +22,14 @@ import { doc } from "firebase/firestore";
 import { runTransaction } from "firebase/firestore";
 import RefundModal from "../components/RefundModal";
 import { useNavigate } from "react-router-dom";
+import { handleOpenModal, handleCancelModal } from "../util/util";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
   const navigate = useNavigate();
+  const modalRef = useRef(null); // 위치 모달 관리
+  const cannotPaymentRef = useRef(null); // 결제 불가 모달
+  const paymentCompleteRef = useRef(null); // 결제완료모달 관리
   const [amountToPay, setAmountToPay] = useState(0);
 
   const {
@@ -44,23 +48,6 @@ const Cart = () => {
   useEffect(() => {
     setTitle("나의 장바구니");
   }, []);
-
-  const modalRef = useRef(null); // 위치 모달 관리
-  const openModal = (currentModal) => {
-    // TODO: 공용코드인지 확인
-    if (currentModal.current) {
-      currentModal.current.showModal();
-    }
-  };
-
-  const cannotPaymentRef = useRef(null); // 결제 불가 모달
-  const handleCancel = (currentModal) => {
-    if (currentModal.current) {
-      currentModal.current.close();
-    }
-  };
-
-  const paymentCompleteRef = useRef(null); // 결제완료모달 관리
 
   // 환불규정 체크
   const [isAgree, setIsAgree] = useState(false);
@@ -170,7 +157,7 @@ const Cart = () => {
                     siteL = siteL !== null ? afterPayRsvSiteL : null;
                     siteC = siteC !== null ? afterPayRsvSiteC : null;
                   } else {
-                    openModal(cannotPaymentRef);
+                    handleOpenModal(cannotPaymentRef);
                     return;
                   }
 
@@ -210,7 +197,7 @@ const Cart = () => {
         await fBService.insertReservation(rsvData);
         await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
         refetch(); // 데이터 새로고침
-        openModal(paymentCompleteRef);
+        handleOpenModal(paymentCompleteRef);
       });
     },
   });
@@ -316,7 +303,7 @@ const Cart = () => {
               })}
             <div className="cart__agreement">
               <Checkbox id="agree" onChange={() => setIsAgree(!isAgree)} />
-              <button onClick={() => openModal(modalRef)}>
+              <button onClick={() => handleOpenModal(modalRef)}>
                 환불규정 및 약관동의 (보기)
               </button>
             </div>
@@ -343,7 +330,7 @@ const Cart = () => {
       {/* 예약불가 모달 */}
       <Modal
         modalRef={cannotPaymentRef}
-        handleConfirm={() => handleCancel(cannotPaymentRef)}
+        handleConfirm={() => handleCancelModal(cannotPaymentRef)}
         text={"확인"}
         confirmBtn={true}
         buttonType={"button"}
@@ -355,7 +342,7 @@ const Cart = () => {
         modalRef={paymentCompleteRef}
         handleConfirm={() => {
           navigate("/my/reservation");
-          handleCancel(paymentCompleteRef);
+          handleCancelModal(paymentCompleteRef);
         }}
         text={"예약내역 확인하러가기"}
         confirmBtn={true}
