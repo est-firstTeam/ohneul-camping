@@ -5,7 +5,10 @@ const DetailOptionBox = ({
   startDate,
   endDate,
   siteCounts,
-  campData,
+  siteSPrice,
+  siteMPrice,
+  siteLPrice,
+  siteCPrice,
   nightCount,
 }) => {
   const isInvalidDate = startDate === endDate;
@@ -37,13 +40,13 @@ const DetailOptionBox = ({
 
               let price = 0;
               if (index === 0) {
-                price = count * campData.siteMg1CoPrice * nightCount; // 소
+                price = count * siteSPrice * nightCount; // 소
               } else if (index === 1) {
-                price = count * campData.siteMg2CoPrice * nightCount; // 중
+                price = count * siteMPrice * nightCount; // 중
               } else if (index === 2) {
-                price = count * campData.siteMg3CoPrice * nightCount; // 대
+                price = count * siteLPrice * nightCount; // 대
               } else if (index === 3) {
-                price = count * campData.caravSiteCoPrice * nightCount; // 카라반
+                price = count * siteCPrice * nightCount; // 카라반
               }
 
               return (

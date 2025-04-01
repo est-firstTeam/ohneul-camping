@@ -95,7 +95,6 @@ const Cart = () => {
   };
 
   const handleDeleteItem = async (id) => {
-    console.log(id);
     const newCarts = carts.filter((_, index) => index !== id); // 불변성 유지
     if (newCarts.length) {
       await fBService.insertUserCart(userId, newCarts);
@@ -286,7 +285,10 @@ const Cart = () => {
                           cart.rsvSiteL,
                           cart.rsvSiteC,
                         ]}
-                        campData={cart}
+                        siteSPrice={cart.siteSPrice}
+                        siteMPrice={cart.siteMPrice}
+                        siteLPrice={cart.siteLPrice}
+                        siteCPrice={cart.siteCPrice}
                         nightCount={getDaysBetweenDates(
                           cart.rsvStartDate,
                           cart.rsvEndDate

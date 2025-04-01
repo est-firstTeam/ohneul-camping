@@ -11,11 +11,15 @@ import DateModal from "../components/DateModal";
 import DTsiteModal from "../components/DTsiteModal";
 import useSiteStore from "../store/useSiteStore";
 import DetailOptionBox from "../components/DetailOptionBox";
-import { firebaseAPI } from "../util/firebaseApi";
 import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
-import { getDaysBetweenDates } from "../util/util.js";
+import { fBService } from "../util/fbService";
+import {
+  getDaysBetweenDates,
+  handleCancelModal,
+  handleOpenModal,
+} from "../util/util.js";
 import SearchBarButton from "../components/SearchBarButton.jsx";
 import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
@@ -35,18 +39,8 @@ const DetailPage = () => {
   const [minAvailable, setMinAvailable] = useState(null);
 
   const { data: campData } = useQuery({
-    queryKey: ["campData", id],
-    queryFn: async () => {
-      const allDocs = await firebaseAPI.getAllDocs("Available_RSV");
-      for (const doc of allDocs) {
-        const contentArray = doc.data.content || [];
-        const matchedContent = contentArray.find(
-          (item) => item.contentId === id
-        );
-        if (matchedContent) return matchedContent;
-      }
-      throw new Error("해당 contentId에 대한 데이터 없음");
-    },
+    queryKey: ["campdata", id],
+    queryFn: async () => await fBService.getCampsiteData(id),
     enabled: !!id,
   });
 
@@ -342,7 +336,10 @@ const DetailPage = () => {
                   endDate={endDate}
                   siteCounts={siteCounts}
                   nightCount={nightCount}
-                  campData={campData}
+                  siteSPrice={campData.siteMg1CoPrice}
+                  siteMPrice={campData.siteMg2CoPrice}
+                  siteLPrice={campData.siteMg3CoPrice}
+                  siteCPrice={campData.caravSiteCoPrice}
                 />
 
                 <div className="detail__overview-reserv--payment">
