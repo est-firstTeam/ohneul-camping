@@ -176,12 +176,7 @@
   padding: 1.6rem 2.4rem;
   width: 100%;
   text-align: start;
-  // TODO: 코드 중복 제거 필요
   &--active {
-    font-size: 2rem;
-    padding: 1.6rem 2.4rem;
-    text-align: start;
-    width: 100%;
     color: $secondary;
   }
 }

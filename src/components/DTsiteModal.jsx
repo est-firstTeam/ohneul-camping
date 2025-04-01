@@ -2,6 +2,7 @@ import Modal from "./Modal";
 import PlusBtn from "../images/ico-plusBtn.svg";
 import MinusBtn from "../images/ico-minusBtn.svg";
 import useSiteStore from "../store/useSiteStore";
+import { handleCancelModal } from "../util/util";
 
 const DTsiteModal = ({ modalRef, minAvailable, startDate, endDate }) => {
   const { siteCounts, setSiteCounts } = useSiteStore();
@@ -36,13 +37,6 @@ const DTsiteModal = ({ modalRef, minAvailable, startDate, endDate }) => {
     );
   };
 
-  // 모달 취소 버튼 클릭 : 창 닫기
-  const handleCancel = () => {
-    if (modalRef.current) {
-      modalRef.current.close();
-    }
-  };
-
   // site의 모든 값이 null인 경우
   const allNull = availableSites.every((site) => site === null);
 
@@ -51,7 +45,7 @@ const DTsiteModal = ({ modalRef, minAvailable, startDate, endDate }) => {
   return (
     <Modal
       modalRef={modalRef}
-      handleCancel={handleCancel}
+      handleCancel={() => handleCancelModal(modalRef)}
       text="확인"
       cancelBtn={true}
       confirmBtn={true}

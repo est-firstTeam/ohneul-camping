@@ -2,10 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import myPageTitleStore from "../store/mypageTitleStore";
 import { useUserStore } from "../store/useUserStore";
 import { useQuery } from "@tanstack/react-query";
-import { fBService } from "../util/fbService";
-import { firebaseDB } from "../firebaseConfig";
-import { monthDateFormat, getDaysBetweenDates } from "../util/util";
 import { reservationService } from "../util/reservationService";
+import { firebaseDB } from "../firebaseConfig";
+import {
+  monthDateFormat,
+  getDaysBetweenDates,
+  handleOpenModal,
+  handleCancelModal,
+} from "../util/util";
 import ProductListCart from "../components/ProductListCart";
 import Modal from "../components/Modal";
 import { Link } from "react-router-dom";
@@ -33,7 +37,7 @@ const Reservation = () => {
   // Reservation/userId: 예약 정보 조회에 사용
   const { data: reservationData, refetch } = useQuery({
     queryKey: [`/reservation/${userId}`],
-    queryFn: () => fBService.getAllReservation(userId),
+    queryFn: () => reservationService.getAllReservation(userId),
     enabled: !!userId, // userId가 존재할 때만 실행
   });
 
@@ -46,15 +50,11 @@ const Reservation = () => {
   // 예약 취소 확인용 모달
   const handleCancelClick = (reservationId) => {
     setSelectedReservationId(reservationId);
-    if (modalRef.current) {
-      modalRef.current.showModal();
-    }
+    handleOpenModal(modalRef);
   };
   // 모달 취소 버튼 클릭 : 창 닫기
   const handleCancel = () => {
-    if (modalRef.current) {
-      modalRef.current.close();
-    }
+    handleCancelModal(modalRef);
     setSelectedReservationId(null);
     setModalStep("confirm"); // 초기화
   };

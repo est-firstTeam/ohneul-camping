@@ -28,7 +28,9 @@ const MyPageAside = (props) => {
                   setActivePath(menu.link);
                   navigate(`${menu.link}`);
                 }}
-                className={`mypage__btn-menu${isActiveMenu ? "--active" : ""}`}
+                className={`mypage__btn-menu ${
+                  isActiveMenu ? "mypage__btn-menu--active" : ""
+                }`}
               >
                 {menu.title}
               </button>

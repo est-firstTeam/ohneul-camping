@@ -4,26 +4,44 @@ import { query, where, collection, deleteDoc, doc } from "firebase/firestore";
 import { firebaseDB } from "../firebaseConfig";
 
 class FBService {
-  getAllReservation = async (userId) => {
-    try {
-      const q = query(
-        collection(firebaseDB, CollectionName.Reservation),
-        where("userId", "==", userId) // 해당 userId 정보만 가져옴
-      );
-      return await firebaseAPI.getQueryDocs(q);
-    } catch (e) {
-      throw new Error("get all Reservation Error: %o", e);
-    }
-  };
-
+  // 모든 캠핑장 조회
   getAllCampsites = async () => {
     try {
       return firebaseAPI.getAllDocs(CollectionName.Campsite);
     } catch (e) {
-      throw new Error("get all Reservation Error: %o", e);
+      throw new Error("모든 캠핑장 조회 실패: %o", e);
     }
   };
 
+  // 캠핑장 검색
+  getSearchCampSite = async (contentId) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.Campsite),
+        where("contentId", "==", contentId)
+      );
+      return firebaseAPI.getListQueryDocs(q);
+    } catch (e) {
+      throw new Error("캠핑장 검색 실패: %o", e);
+    }
+  };
+
+  // id로 캠핑장 조회
+  getCampsiteData = async (ids) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.Campsite),
+        where("contentId", "==", ids.toString())
+      );
+      const result = await firebaseAPI.getQueryDocs(q);
+      return result;
+    } catch (e) {
+      console.error("캠핑장 id로 조회 실패: %o", e);
+      return null;
+    }
+  };
+
+  // 유저 가져오기
   fetchUser = async (userId) => {
     try {
       const q = query(
@@ -32,10 +50,11 @@ class FBService {
       );
       return await firebaseAPI.getQueryDocs(q);
     } catch (e) {
-      throw new Error("get all Reservation Error: %o", e);
+      throw new Error("유저 정보 가져오기 실패: %o", e);
     }
   };
 
+  // 예약 가능데이터 검색
   getSearchARSV = async (location, startDate) => {
     try {
       const q = query(
@@ -45,22 +64,11 @@ class FBService {
       );
       return firebaseAPI.getQueryDocs(q);
     } catch (e) {
-      throw new Error("search AvailableRSV Error: %o", e);
+      throw new Error("예약 가능데이터 검색 실패: %o", e);
     }
   };
 
-  getSearchCampSite = async (contentId) => {
-    try {
-      const q = query(
-        collection(firebaseDB, CollectionName.Campsite),
-        where("contentId", "==", contentId)
-      );
-      return firebaseAPI.getListQueryDocs(q);
-    } catch (e) {
-      throw new Error("search Campsite Error: %o", e);
-    }
-  };
-
+  // 모든 지역의 예약 가능데이터 검색
   getSearchAllARSV = async (startDate) => {
     try {
       const location = [
@@ -96,60 +104,65 @@ class FBService {
     }
   };
 
-  getCampsiteData = async (ids) => {
-    try {
-      const q = query(
-        collection(firebaseDB, CollectionName.Campsite),
-        where("contentId", "==", ids.toString())
-      );
-      const result = await firebaseAPI.getQueryDocs(q);
-      return result;
-    } catch (e) {
-      console.error("get getCampsiteData Error: %o", e);
-      return null;
-    }
-  };
-
+  // 해당 유저의 장바구니 내역조회 + 캠핑장 가격,지역이름 조회 후 조합하여 리턴
   getUserCartItems = async (users) => {
-    const hasCartItems =
-      users &&
-      users[0] &&
-      users[0].data &&
-      users[0].data.carts &&
-      users[0].data.carts.length > 0;
+    try {
+      const hasCartItems =
+        users &&
+        users[0] &&
+        users[0].data &&
+        users[0].data.carts &&
+        users[0].data.carts.length > 0;
 
-    if (!hasCartItems) {
-      return [];
+      if (!hasCartItems) {
+        return [];
+      }
+      const carts = users[0].data.carts;
+      // cart의 campsiteId를 가져와 campsite의 각 사이트 price조회
+      const cartItems = await Promise.all(
+        carts.map(async (cart) => {
+          const campSiteInfo = await fBService.getCampsiteData(cart.campSiteId);
+          const campSiteInfoData = campSiteInfo[0].data;
+
+          const priceInfo = {
+            siteSPrice: campSiteInfoData.siteMg1CoPrice,
+            siteMPrice: campSiteInfoData.siteMg2CoPrice,
+            siteLPrice: campSiteInfoData.siteMg3CoPrice,
+            siteCPrice: campSiteInfoData.caravSiteCoPrice,
+          };
+
+          return { ...cart, ...priceInfo, doNM: campSiteInfoData.doNm };
+        })
+      );
+      return cartItems ?? [];
+    } catch (error) {
+      console.error("장바구니 데이터 조회에 실패%o:", error);
+      throw new Error("장바구니 데이터 조회에 실패했습니다.");
     }
-    const carts = users[0].data.carts;
-    // cart의 campsiteId를 가져와 campsite의 각 사이트 price조회
-    const cartItems = await Promise.all(
-      carts.map(async (cart) => {
-        const campSiteInfo = await fBService.getCampsiteData(cart.campSiteId);
-        const campSiteInfoData = campSiteInfo[0].data;
-
-        const priceInfo = {
-          siteSPrice: campSiteInfoData.siteMg1CoPrice,
-          siteMPrice: campSiteInfoData.siteMg2CoPrice,
-          siteLPrice: campSiteInfoData.siteMg3CoPrice,
-          siteCPrice: campSiteInfoData.caravSiteCoPrice,
-        };
-
-        return { ...cart, ...priceInfo, doNM: campSiteInfoData.doNm };
-      })
-    );
-    return cartItems ?? [];
   };
 
+  // 장바구니 데이터 업데이트
   insertUserCart = async (userId, carts) => {
-    const data = { carts: carts };
-    await firebaseAPI.updateData(CollectionName.User, userId, data);
+    try {
+      const data = { carts: carts };
+      await firebaseAPI.updateData(CollectionName.User, userId, data);
+    } catch (error) {
+      console.error("장바구니 데이터 업데이트 실패%o:", error);
+      throw new Error("장바구니 데이터 업데이트에 실패했습니다");
+    }
   };
 
+  // 예약데이터 추가
   insertReservation = async (reservation) => {
-    await firebaseAPI.insertData(CollectionName.Reservation, reservation);
+    try {
+      await firebaseAPI.insertData(CollectionName.Reservation, reservation);
+    } catch (error) {
+      console.error("예약 데이터 추가 오류%o:", error);
+      throw new Error("예약 데이터 추가에 실패했습니다.");
+    }
   };
 
+  // 예약 완료 횟수 증가
   increaseRsvComplete = async (contentId) => {
     try {
       const campsiteQuery = query(
@@ -162,11 +175,8 @@ class FBService {
         throw new Error("해당 contentId를 가진 캠핑장을 찾을 수 없습니다.");
       }
 
-      // Campsite : 캠핑장 정보 가져오기
-      const campsiteData = campsite[0].data;
-
-      // 캠핑장 예약 수 증가 (rsvComplete +1)
-      const currentCount = campsiteData.rsvComplete || 0;
+      const campsiteData = campsite[0].data; // Campsite : 캠핑장 정보 가져오기
+      const currentCount = campsiteData.rsvComplete || 0; // 캠핑장 예약 수 증가 (rsvComplete +1)
 
       await firebaseAPI.updateData(CollectionName.Campsite, contentId, {
         rsvComplete: currentCount + 1,
@@ -176,7 +186,7 @@ class FBService {
         `rsvComplete 업데이트에 성공했습니다. (새 값: ${currentCount + 1})`
       );
     } catch (error) {
-      console.error("rsvComplete 오류:", error);
+      console.error("rsvComplete 오류:%o", error);
       throw new Error("rsvComplete 업데이트에 실패했습니다.");
     }
   };

@@ -15,7 +15,11 @@ import { firebaseAPI } from "../util/firebaseApi";
 import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
-import { getDaysBetweenDates } from "../util/util.js";
+import {
+  getDaysBetweenDates,
+  handleCancelModal,
+  handleOpenModal,
+} from "../util/util.js";
 import SearchBarButton from "../components/SearchBarButton.jsx";
 import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
@@ -236,29 +240,6 @@ const DetailPage = () => {
   // console.log("나 날짜 중에 최솟값", minAvailable);
   // }
 
-  const openDateModal = () => {
-    if (dateModal.current) {
-      dateModal.current.showModal();
-    }
-  };
-  // 자리 선택 모달 열기
-  const openSiteModal = () => {
-    if (siteModal.current) {
-      siteModal.current.showModal();
-    }
-  };
-
-  const openConfirmModal = () => {
-    if (cartModal.current) {
-      cartModal.current.showModal();
-    }
-  };
-
-  const handleCloseModal = () => {
-    if (cartModal.current) {
-      cartModal.current.close();
-    }
-  };
   return (
     <section className="detail">
       {campData ? (
@@ -301,7 +282,7 @@ const DetailPage = () => {
                       iconPosition="left"
                       // padding={"1rem 15rem 1rem 1rem"}
                       icon={<img src={calico} width={"20px"} height={"20px"} />}
-                      onClick={openDateModal}
+                      onClick={() => handleOpenModal(dateModal)}
                     >
                       날짜 선택
                     </SearchBarButton>
@@ -322,7 +303,7 @@ const DetailPage = () => {
                       icon={
                         <img src={siteico} width={"20px"} height={"20px"} />
                       }
-                      onClick={openSiteModal}
+                      onClick={() => handleOpenModal(siteModal)}
                     >
                       자리 선택
                     </SearchBarButton>
@@ -363,7 +344,7 @@ const DetailPage = () => {
                             siteCounts,
                             totalPrice,
                           });
-                          openConfirmModal();
+                          handleOpenModal(cartModal);
                           resetSiteCounts(); // site 개수 초기화
                         }}
                         disabled={
@@ -376,7 +357,7 @@ const DetailPage = () => {
                       </Button>
                       <ConfirmModal
                         modalRef={cartModal}
-                        handleClose={handleCloseModal}
+                        handleClose={() => handleCancelModal(cartModal)}
                         startDate={startDate}
                         endDate={endDate}
                         totalPrice={totalPrice}

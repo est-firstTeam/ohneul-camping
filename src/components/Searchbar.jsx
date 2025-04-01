@@ -10,6 +10,7 @@ import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
 import { useNavigate } from "react-router-dom";
 import SearchBarButton from "./SearchBarButton";
+import { handleOpenModal } from "../util/util";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -28,27 +29,20 @@ const SearchBar = () => {
     setSite,
   } = useSearchStore();
 
-  // 모달 열기
-  const openModal = (currentModal) => {
-    if (currentModal.current) {
-      currentModal.current.showModal();
-    }
-  };
-
   // 검색바 버튼 옵션 배열
   const searchBarButtons = [
     {
       name: "location",
       label: "어디로 가세요?",
       icon: <img src={mapico} width={"20px"} height={"20px"} />,
-      onClick: () => openModal(locationModal),
+      onClick: () => handleOpenModal(locationModal),
       onValue: searchValue.location,
     },
     {
       name: "date",
       label: "날짜 및 일정",
       icon: <img src={calico} width={"20px"} height={"20px"} />,
-      onClick: () => openModal(dateModal),
+      onClick: () => handleOpenModal(dateModal),
       onValue:
         searchValue.startDate && searchValue.endDate
           ? `${searchValue.startDate} ~ ${searchValue.endDate}`
@@ -58,7 +52,7 @@ const SearchBar = () => {
       name: "site",
       label: "사이트 형태",
       icon: <img src={siteico} width={"20px"} height={"20px"} />,
-      onClick: () => openModal(siteModal),
+      onClick: () => handleOpenModal(siteModal),
       onValue: searchValue.site,
     },
   ];

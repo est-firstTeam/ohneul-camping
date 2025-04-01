@@ -99,6 +99,10 @@ class FirebaseAPI {
   };
 
   insertData = async (collectionName, data) => {
+    /*
+    데이터 insert
+    https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko&_gl=1*1xljah9*_up*MQ..*_ga*MTM5MTExODI2NS4xNzQzNDcxNTI4*_ga_CW55HF8NVT*MTc0MzQ3MTUyNy4xLjAuMTc0MzQ3MTUyNy4wLjAuMA..#add_a_document
+    */
     await addDoc(collection(firebaseDB, collectionName), data);
   };
 }

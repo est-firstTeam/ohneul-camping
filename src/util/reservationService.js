@@ -5,16 +5,28 @@ import {
   where,
   getDocs,
   updateDoc,
-  doc,
 } from "firebase/firestore";
+import { CollectionName } from "../constants/collectionName";
+import { firebaseAPI } from "./firebaseApi";
 
+// 예약관련 fb service 코드
 class ReservationService {
+  getAllReservation = async (userId) => {
+    try {
+      const q = query(
+        collection(firebaseDB, CollectionName.Reservation),
+        where("userId", "==", userId) // 해당 userId 정보만 가져옴
+      );
+      return await firebaseAPI.getQueryDocs(q);
+    } catch (e) {
+      throw new Error("get all Reservation Error: %o", e);
+    }
+  };
   // 예약 취소
   cancelReservation = async (reservationId) => {
-    const reservationRef = doc(firebaseDB, "Reservation", reservationId);
     try {
-      await updateDoc(reservationRef, {
-        rsvIsCanceled: true, // 예약 취소(true) 상태로 DB 업데이트
+      firebaseAPI.updateData(CollectionName.Reservation, reservationId, {
+        rsvIsCanceled: true,
       });
     } catch (error) {
       console.error("예약 취소 오류:", error);
@@ -30,6 +42,7 @@ class ReservationService {
         collection(firebaseDB, "Campsite"),
         where("contentId", "==", String(contentId))
       );
+
       const querySnapshot = await getDocs(campsiteQuery);
 
       if (querySnapshot.empty) {
