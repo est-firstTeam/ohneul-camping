@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const MyPageAside = (props) => {
@@ -10,6 +10,10 @@ const MyPageAside = (props) => {
   const [activePath, setActivePath] = useState(
     location.pathname.split("/")[2] ?? menus[0].link
   );
+
+  useEffect(() => {
+    setActivePath(location.pathname.split("/")[2]);
+  }, [location.pathname]);
 
   return (
     <aside className="mypage__aside">

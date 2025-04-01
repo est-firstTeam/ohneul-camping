@@ -1,4 +1,4 @@
-import cart from "../images/ico-cart.svg";
+// import cart from "../images/ico-cart.svg";
 import search from "../images/ico-search.svg";
 export const menus = [
   {
@@ -12,11 +12,11 @@ export const menus = [
     iconPath: null,
     sectionId: "reservation",
   },
-  {
-    title: null,
-    path: "my/cart",
-    iconPath: cart,
-  },
+  // {
+  //   title: null,
+  //   path: "my/cart",
+  //   iconPath: cart,
+  // },
   {
     title: null,
     path: null,
