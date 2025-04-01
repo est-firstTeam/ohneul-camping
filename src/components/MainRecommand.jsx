@@ -22,7 +22,7 @@ const MainRecommand = () => {
     <p>Error: {error.message}</p>
   ) : (
     <section className="main__rcmd">
-      <p className="section-header__subtitle">이런곳은 어때요?</p>
+      <p className="section-header__subtitle">이런 곳은 어때요?</p>
       <div className="main__rcmd-wrapper">
         <div className="main__rcmd-left">
           <div className="rcmd-left__img-area">
