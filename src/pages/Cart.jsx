@@ -21,9 +21,11 @@ import { firebaseDB } from "../firebaseConfig";
 import { doc } from "firebase/firestore";
 import { runTransaction } from "firebase/firestore";
 import RefundModal from "../components/RefundModal";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
+  const navigate = useNavigate();
   const [amountToPay, setAmountToPay] = useState(0);
 
   const {
@@ -45,17 +47,20 @@ const Cart = () => {
 
   const modalRef = useRef(null); // 위치 모달 관리
   const openModal = (currentModal) => {
+    // TODO: 공용코드인지 확인
     if (currentModal.current) {
       currentModal.current.showModal();
     }
   };
 
   const cannotPaymentRef = useRef(null); // 결제 불가 모달
-  const handleCancel = () => {
-    if (cannotPaymentRef.current) {
-      cannotPaymentRef.current.close();
+  const handleCancel = (currentModal) => {
+    if (currentModal.current) {
+      currentModal.current.close();
     }
   };
+
+  const paymentCompleteRef = useRef(null); // 결제완료모달 관리
 
   // 환불규정 체크
   const [isAgree, setIsAgree] = useState(false);
@@ -68,8 +73,8 @@ const Cart = () => {
   useEffect(() => {
     const newCheckedState = {};
     if (Array.isArray(carts) && carts.length > 0) {
-      carts.forEach((item) => {
-        newCheckedState[item.id] = true;
+      carts.forEach((item, index) => {
+        newCheckedState[index] = true;
       });
       setCheckedItems(newCheckedState);
     }
@@ -78,8 +83,8 @@ const Cart = () => {
   useEffect(() => {
     // 총 결제 가격 계산
     if (carts) {
-      const total = carts.reduce((acc, cart) => {
-        return checkedItems[cart.id] ? acc + cart.rsvTotalPrice : acc;
+      const total = carts.reduce((acc, cart, index) => {
+        return checkedItems[index] ? acc + cart.rsvTotalPrice : acc;
       }, 0);
 
       setAmountToPay(total);
@@ -102,7 +107,8 @@ const Cart = () => {
   };
 
   const handleDeleteItem = async (id) => {
-    const newCarts = carts.filter((prev) => prev.campSiteId !== id);
+    console.log(id);
+    const newCarts = carts.filter((_, index) => index !== id); // 불변성 유지
     if (newCarts.length) {
       await fBService.insertUserCart(userId, newCarts);
       refetch();
@@ -111,7 +117,7 @@ const Cart = () => {
 
   const payMutation = useMutation({
     mutationFn: async ({ toPayItems, notToPayItems }) => {
-      await fBService.insertUserCart(userId, notToPayItems); // 유저 장바구니에서 제거
+      //  await fBService.insertUserCart(userId, notToPayItems); // 유저 장바구니에서 제거
 
       // available rsv에서 - 1
       // doNm_date로 document조회
@@ -140,11 +146,17 @@ const Cart = () => {
                 if (
                   item.contentId.toString() === toPayItem.campSiteId.toString()
                 ) {
+                  // null값은 없는자리여서 null로 두기.
                   let { siteS, siteM, siteL, siteC } = item;
-                  const afterPayRsvSiteS = (siteS ?? 0) - toPayItem.rsvSiteS;
-                  const afterPayRsvSiteM = (siteM ?? 0) - toPayItem.rsvSiteM;
-                  const afterPayRsvSiteL = (siteL ?? 0) - toPayItem.rsvSiteL;
-                  const afterPayRsvSiteC = (siteC ?? 0) - toPayItem.rsvSiteC;
+
+                  const afterPayRsvSiteS =
+                    siteS !== null ? siteS - toPayItem.rsvSiteS : null;
+                  const afterPayRsvSiteM =
+                    siteM !== null ? siteM - toPayItem.rsvSiteM : null;
+                  const afterPayRsvSiteL =
+                    siteL !== null ? siteL - toPayItem.rsvSiteL : null;
+                  const afterPayRsvSiteC =
+                    siteC !== null ? siteC - toPayItem.rsvSiteC : null;
 
                   // 결제할때 현재 재고가 없으면 결제 못함
                   if (
@@ -153,10 +165,10 @@ const Cart = () => {
                     afterPayRsvSiteL >= 0 &&
                     afterPayRsvSiteC >= 0
                   ) {
-                    siteS = afterPayRsvSiteS;
-                    siteM = afterPayRsvSiteM;
-                    siteL = afterPayRsvSiteL;
-                    siteC = afterPayRsvSiteC;
+                    siteS = siteS !== null ? afterPayRsvSiteS : null;
+                    siteM = siteM !== null ? afterPayRsvSiteM : null;
+                    siteL = siteL !== null ? afterPayRsvSiteL : null;
+                    siteC = siteC !== null ? afterPayRsvSiteC : null;
                   } else {
                     openModal(cannotPaymentRef);
                     return;
@@ -166,10 +178,10 @@ const Cart = () => {
                 }
                 return item;
               });
-
-              transaction.update(docRef, {
-                content: updatedContentArray,
-              });
+              console.log("result: %o", updatedContentArray);
+              // transaction.update(docRef, {
+              //   content: updatedContentArray,
+              // });
             });
 
             console.log(`DB 업데이트 완료: ${docId}`);
@@ -194,15 +206,18 @@ const Cart = () => {
           userId: userId,
         };
 
-        await fBService.insertReservation(rsvData);
-        await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
+        console.log("rsvData:%o", rsvData);
+        //await fBService.insertReservation(rsvData);
+        //await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
+        refetch(); // 데이터 새로고침
+        openModal(paymentCompleteRef);
       });
     },
   });
 
   const handleOrder = () => {
-    const toPayItems = carts.filter((cart) => checkedItems[cart.id]); // 결제할 아이템
-    const notToPayItems = carts.filter((cart) => !checkedItems[cart.id]); // 결제하지 않을 아이템들을 장바구니에 새로 set
+    const toPayItems = carts.filter((_, index) => checkedItems[index]); // 결제할 아이템
+    const notToPayItems = carts.filter((_, index) => !checkedItems[index]); // 결제하지 않을 아이템들을 장바구니에 새로 set
 
     payMutation.mutate({ toPayItems, notToPayItems });
   };
@@ -210,7 +225,7 @@ const Cart = () => {
   let hasItemToPay; // 결제할 아이템이 있는지 확인하는 변수
   if (carts) {
     hasItemToPay =
-      carts.map((cart) => checkedItems[cart.id]).indexOf(true) === -1
+      carts.map((cart, index) => checkedItems[index]).indexOf(true) === -1
         ? false
         : true;
   }
@@ -237,10 +252,10 @@ const Cart = () => {
             carts.map((cartItem, index) => {
               return (
                 <ProductListCart
-                  id={cartItem.id}
+                  id={index}
                   key={index}
                   firstImageUrl={cartItem.firstImageUrl}
-                  checked={checkedItems[cartItem.id] || false}
+                  checked={checkedItems[index] || false}
                   startDate={monthDateFormat(cartItem.rsvStartDate)}
                   endDate={monthDateFormat(cartItem.rsvEndDate)}
                   day={getDaysBetweenDates(
@@ -253,8 +268,8 @@ const Cart = () => {
                   selected3={cartItem.rsvSiteL}
                   selected4={cartItem.rsvSiteC}
                   sumPrice={cartItem.rsvTotalPrice}
-                  handleCheckboxChange={() => handleCheckboxChange(cartItem.id)}
-                  handleDeleteItem={() => handleDeleteItem(cartItem.campSiteId)}
+                  handleCheckboxChange={() => handleCheckboxChange(index)}
+                  handleDeleteItem={() => handleDeleteItem(index)}
                   isCart
                 />
               );
@@ -268,7 +283,7 @@ const Cart = () => {
             {Array.isArray(carts) &&
               carts.length > 0 &&
               carts.map((cart, index) => {
-                if (checkedItems[cart.id]) {
+                if (checkedItems[index]) {
                   return (
                     <div className="cart__detail-option-box" key={index}>
                       <span className="cart__detail-option-facltNm">
@@ -328,12 +343,30 @@ const Cart = () => {
       {/* 예약불가 모달 */}
       <Modal
         modalRef={cannotPaymentRef}
-        handleConfirm={handleCancel}
+        handleConfirm={() => handleCancel(cannotPaymentRef)}
         text={"확인"}
         confirmBtn={true}
         buttonType={"button"}
       >
         남은 자리가 없습니다
+      </Modal>
+
+      <Modal
+        modalRef={paymentCompleteRef}
+        handleConfirm={() => {
+          navigate("/my/reservation");
+          handleCancel(paymentCompleteRef);
+        }}
+        text={"예약내역 확인하러가기"}
+        confirmBtn={true}
+        buttonType="button"
+      >
+        <div className="cart__payment-complete-title">
+          예약이 완료되었습니다.
+        </div>
+        <div className="cart__payment-complete-content">
+          결제는 현장에서 해주시면 됩니다
+        </div>
       </Modal>
     </section>
   );
