@@ -203,7 +203,7 @@ const CreateAccount = () => {
               {...register("password", {
                 pattern: {
                   value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                  message: "6~15자 이내 / 숫자+영문 조합으로 만들어주세요.",
+                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
                 },
                 required: "패스워드를 입력해주세요.",
               })}
@@ -214,12 +214,12 @@ const CreateAccount = () => {
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <div
+            <button
               onClick={() => eyeToggle(0)}
               type="button"
               color="none"
               className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-            ></div>
+            ></button>
           </div>
           {/* 비밀번호 체크 */}
           <div className="account__form__password">
@@ -243,12 +243,12 @@ const CreateAccount = () => {
             <span className="account__error">
               {formState.errors?.passwordCheck?.message}
             </span>
-            <div
+            <button
               onClick={() => eyeToggle(1)}
               type="button"
               color="none"
               className={pwIcons[1] ? "account__icon" : "account__icon-slash"}
-            ></div>
+            ></button>
           </div>
           {/* Submit */}
           <div>

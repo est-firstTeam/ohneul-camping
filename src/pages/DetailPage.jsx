@@ -15,11 +15,7 @@ import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
 import { fBService } from "../util/fbService";
-import {
-  getDaysBetweenDates,
-  handleCancelModal,
-  handleOpenModal,
-} from "../util/util.js";
+import { getDaysBetweenDates } from "../util/util.js";
 import SearchBarButton from "../components/SearchBarButton.jsx";
 import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";

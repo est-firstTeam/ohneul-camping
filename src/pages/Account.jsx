@@ -221,7 +221,7 @@ export default function Account() {
               {...register("password", {
                 pattern: {
                   value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                  message: "6~15자 이내 / 숫자+영문 조합으로 만들어주세요.",
+                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
                 },
                 required: "패스워드를 입력해주세요.",
               })}
@@ -233,12 +233,12 @@ export default function Account() {
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <div
+            <button
               onClick={() => eyeToggle(0)}
               type="button"
               color="none"
               className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-            ></div>
+            ></button>
           </div>
           {/* Submit */}
           <div>
