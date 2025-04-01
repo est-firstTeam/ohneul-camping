@@ -58,7 +58,6 @@ const CreateAccount = () => {
         displayName: data.displayName,
         photoURL: avatarURL ?? "",
       });
-      console.log("credential info -> ", credential.user);
 
       //Zustand Data 세팅
       setUser({
@@ -253,7 +252,12 @@ const CreateAccount = () => {
           </div>
           {/* Submit */}
           <div>
-            <Button width="25rem" className="btn account__btn" type="submit">
+            <Button
+              disabled={isLoading && true}
+              width="25rem"
+              className="btn account__btn"
+              type="submit"
+            >
               {isLoading ? "Loading..." : "계정 생성"}
             </Button>
             {/* 파이어베이스 에러 확인용 */}

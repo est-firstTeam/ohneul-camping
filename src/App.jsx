@@ -10,7 +10,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // import DetailPage from "./pages/DetailPage.jsx";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
-const Main = lazy(() => import("./pages/Main.jsx"));
+const Main = lazy(() => import("./pages/MainPage.jsx"));
 const SearchResult = lazy(() => import("./pages/SearchResult.jsx"));
 const MyPage = lazy(() => import("./pages/MyPage.jsx"));
 const Reservation = lazy(() => import("./pages/Reservation.jsx"));
