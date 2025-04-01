@@ -96,10 +96,8 @@ const Cart = () => {
 
   const handleDeleteItem = async (id) => {
     const newCarts = carts.filter((_, index) => index !== id); // 불변성 유지
-    if (newCarts.length) {
-      await fBService.insertUserCart(userId, newCarts);
-      refetch();
-    }
+    await fBService.insertUserCart(userId, newCarts);
+    refetch();
   };
 
   const payMutation = useMutation({
