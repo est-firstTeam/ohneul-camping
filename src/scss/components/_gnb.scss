@@ -2,7 +2,7 @@
 .gnb {
   &__list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   &__item-text {
@@ -17,6 +17,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem 3rem;
+
   span {
     display: block;
   }
