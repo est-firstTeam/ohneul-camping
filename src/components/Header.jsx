@@ -32,6 +32,7 @@ const Header = () => {
       if (currentScrollY > lastScrollY) {
         // 스크롤이 아래로 진행되었는지 확인
         setShowNav(false);
+        setShowSelect(false);
       } else {
         setShowNav(true);
       }
