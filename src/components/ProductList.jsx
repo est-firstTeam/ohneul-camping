@@ -46,6 +46,7 @@ const ProductList = ({ campSiteData }) => {
               <img
                 src={camp.firstImageUrl || noImage}
                 className="product__image"
+                alt="캠핑장이미지"
               />
               <div className="detail-list">
                 {/* 야영장 이름 */}
