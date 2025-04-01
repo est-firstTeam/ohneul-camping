@@ -107,22 +107,6 @@ class FirebaseAPI {
     */
     await addDoc(collection(firebaseDB, collectionName), data);
   };
-
-  // 특정 contentId에 맞는 문서만 조회
-  getMatchedContent = async (collectionName, contentId) => {
-    const q = query(
-      collection(firebaseDB, collectionName),
-      where("content", "array-contains", { contentId })
-    );
-    const querySnapshot = await getDocs(q);
-
-    // 조건에 맞는 첫 번째 문서 반환
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
-      return { ...doc.data(), id: doc.id };
-    }
-    return null;
-  };
 }
 
 export const firebaseAPI = new FirebaseAPI();

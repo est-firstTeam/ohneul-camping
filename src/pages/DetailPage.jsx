@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
 import calico from "../images/ico-calendar.svg";
@@ -130,40 +138,52 @@ const DetailPage = () => {
 
     const dateList = getDatesInRange(startDate, endDate);
     let datesAvailability = {};
+    const batchSize = 10;
 
-    // Firebase 문서 조회
-    const docIds = dateList.map((date) => `${location}_${date}`);
-    const docRefs = docIds.map((docId) =>
-      doc(firebaseDB, "Available_RSV", docId)
-    );
-    const docSnapshots = await Promise.all(
-      docRefs.map((docRef) => getDoc(docRef))
-    );
+    // Batch Query 사용 (최대 10개의 문서를 동시에 조회)
+    for (let i = 0; i < dateList.length; i += batchSize) {
+      const batchDates = dateList.slice(i, i + batchSize);
+      const q = query(
+        collection(firebaseDB, "Available_RSV"),
+        //__name__ field는 full document path!
+        where(
+          "__name__",
+          "in",
+          batchDates.map((date) => `${location}_${date}`)
+        )
+      );
 
-    // 데이터 처리
-    docSnapshots.forEach((docSnap, index) => {
-      const date = dateList[index];
+      const querySnapshot = await getDocs(q);
 
-      if (docSnap.exists()) {
+      // 조회 결과 처리
+      querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const matchedContent = data?.content?.find(
           (item) => item.contentId === contentId
         );
 
-        if (matchedContent) {
+        datesAvailability[docSnap.id.split("_")[1]] = matchedContent
+          ? {
+              siteS: matchedContent.siteS,
+              siteM: matchedContent.siteM,
+              siteL: matchedContent.siteL,
+              siteC: matchedContent.siteC,
+            }
+          : { siteS: 0, siteM: 0, siteL: 0, siteC: 0 };
+      });
+
+      // 없는 날짜 초기화
+      batchDates.forEach((date) => {
+        if (!datesAvailability[date]) {
           datesAvailability[date] = {
-            siteS: matchedContent.siteS,
-            siteM: matchedContent.siteM,
-            siteL: matchedContent.siteL,
-            siteC: matchedContent.siteC,
+            siteS: 0,
+            siteM: 0,
+            siteL: 0,
+            siteC: 0,
           };
-        } else {
-          datesAvailability[date] = { siteS: 0, siteM: 0, siteL: 0, siteC: 0 };
         }
-      } else {
-        datesAvailability[date] = { siteS: 0, siteM: 0, siteL: 0, siteC: 0 };
-      }
-    });
+      });
+    }
 
     return datesAvailability;
   };
