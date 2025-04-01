@@ -115,11 +115,11 @@ const MainIntro = () => {
         className="main__intro-right-wrapper"
       >
         <div className="intro__img-wrapper__left">
-          <img src={img1} alt="캠핑이미지01" />
-          <img src={img2} alt="캠핑이미지02" />
+          <img src={img1} />
+          <img src={img2} />
         </div>
         <div className="intro__img-wrapper__right">
-          <img src={img3} alt="캠핑이미지03" />
+          <img src={img3} />
         </div>
       </motion.div>
     </section>
