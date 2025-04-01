@@ -25,6 +25,7 @@ import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal.jsx";
+import { fBService } from "../util/fbService.js";
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -43,6 +44,8 @@ const DetailPage = () => {
     queryFn: async () => await fBService.getCampsiteData(id),
     enabled: !!id,
   });
+
+  console.log(campData);
 
   const userId = useUserStore((state) => state.id);
   const mutation = useMutation({

@@ -26,6 +26,7 @@ import { handleOpenModal, handleCancelModal } from "../util/util";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
+  const userName = useUserStore((state) => state.name);
   const navigate = useNavigate();
   const modalRef = useRef(null); // 위치 모달 관리
   const cannotPaymentRef = useRef(null); // 결제 불가 모달
@@ -46,7 +47,7 @@ const Cart = () => {
 
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
-    setTitle("나의 장바구니");
+    setTitle(`${userName} 님의 장바구니`);
   }, []);
 
   // 환불규정 체크
