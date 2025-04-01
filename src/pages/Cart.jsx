@@ -23,6 +23,7 @@ import { runTransaction } from "firebase/firestore";
 import RefundModal from "../components/RefundModal";
 import { useNavigate } from "react-router-dom";
 import { handleOpenModal, handleCancelModal } from "../util/util";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const userId = useUserStore((state) => state.id);
@@ -44,7 +45,7 @@ const Cart = () => {
       return fBService.getUserCartItems(users);
     },
   });
-
+  console.log("carts:%o", carts);
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
     setTitle(`${userName} 님의 장바구니`);
@@ -236,27 +237,28 @@ const Cart = () => {
             carts.length > 0 &&
             carts.map((cartItem, index) => {
               return (
-                <ProductListCart
-                  id={index}
-                  key={index}
-                  firstImageUrl={cartItem.firstImageUrl}
-                  checked={checkedItems[index] || false}
-                  startDate={monthDateFormat(cartItem.rsvStartDate)}
-                  endDate={monthDateFormat(cartItem.rsvEndDate)}
-                  day={getDaysBetweenDates(
-                    cartItem.rsvStartDate,
-                    cartItem.rsvEndDate
-                  )}
-                  facltNm={cartItem.facltNm}
-                  selected1={cartItem.rsvSiteS}
-                  selected2={cartItem.rsvSiteM}
-                  selected3={cartItem.rsvSiteL}
-                  selected4={cartItem.rsvSiteC}
-                  sumPrice={cartItem.rsvTotalPrice}
-                  handleCheckboxChange={() => handleCheckboxChange(index)}
-                  handleDeleteItem={() => handleDeleteItem(index)}
-                  isCart
-                />
+                <Link key={index} to={`/searchResult/${cartItem.campSiteId}`}>
+                  <ProductListCart
+                    id={index}
+                    firstImageUrl={cartItem.firstImageUrl}
+                    checked={checkedItems[index] || false}
+                    startDate={monthDateFormat(cartItem.rsvStartDate)}
+                    endDate={monthDateFormat(cartItem.rsvEndDate)}
+                    day={getDaysBetweenDates(
+                      cartItem.rsvStartDate,
+                      cartItem.rsvEndDate
+                    )}
+                    facltNm={cartItem.facltNm}
+                    selected1={cartItem.rsvSiteS}
+                    selected2={cartItem.rsvSiteM}
+                    selected3={cartItem.rsvSiteL}
+                    selected4={cartItem.rsvSiteC}
+                    sumPrice={cartItem.rsvTotalPrice}
+                    handleCheckboxChange={() => handleCheckboxChange(index)}
+                    handleDeleteItem={() => handleDeleteItem(index)}
+                    isCart
+                  />
+                </Link>
               );
             })}
         </div>
