@@ -19,6 +19,7 @@ const Header = () => {
   const [showSelect, setShowSelect] = useState(false);
   const { selects } = useHeaderStore();
   const { search } = useSectionRefStore();
+  const imgPath = useUserStore((state) => state.profileImg);
 
   useEffect(() => {
     const handleScroll = () => {
