@@ -220,7 +220,7 @@ const Cart = () => {
   }
   return (
     <section className="cart">
-      <h2 className="cart__title"></h2>
+      <h2 className="cart__title">장바구니</h2>
       {carts && carts.length > 0 && (
         <Checkbox
           checked={allChecked}
