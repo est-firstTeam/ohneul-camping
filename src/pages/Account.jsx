@@ -19,13 +19,12 @@ import { fBService } from "../util/fbService";
 import myPageTitleStore from "../store/mypageTitleStore";
 
 export default function Account() {
-  const {
-    register,
-    handleSubmit,
-    formState,
-    reset,
-    //Mode 값으로 -> OnBlur, OnChange, OnSubmit 가능. 어떤 시점에 Validation을 할지 정할 수 있다.
-  } = useForm({ mode: "onBlur" });
+  const { register, handleSubmit, formState, reset } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      displayName: JSON.parse(localStorage.getItem("storage-user")).state.name,
+    },
+  });
   const [isLoading, setLoading] = useState(false);
   const [pwIcons, setPwIcons] = useState([true, true]);
   const [imgFile, setImgFile] = useState(null);
@@ -201,14 +200,16 @@ export default function Account() {
           <div>
             <input
               {...register("displayName", {
+                required: "닉네임은 필수값입니다.",
                 maxLength: {
                   value: 8,
                   message: "8글자 이하로 만들어주세요.",
                 },
               })}
               className="account__input account__displayName"
-              placeholder="변경할 닉네임"
+              // placeholder="변경할 닉네임"
               autoComplete="new-password"
+              value={user.displayName}
             />
             <span className="account__error">
               {formState.errors?.displayName?.message}
@@ -220,7 +221,7 @@ export default function Account() {
               {...register("password", {
                 pattern: {
                   value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                  message: "6~15자 이내 / 숫자+영문 조합으로 만들어주세요.",
+                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
                 },
                 required: "패스워드를 입력해주세요.",
               })}
@@ -232,12 +233,12 @@ export default function Account() {
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <div
+            <button
               onClick={() => eyeToggle(0)}
               type="button"
               color="none"
               className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-            ></div>
+            ></button>
           </div>
           {/* Submit */}
           <div>
