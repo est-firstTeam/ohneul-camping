@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const MyPageAside = (props) => {
+const MyPageNav = () => {
+  const menus = [
+    {
+      title: "예약 현황",
+      link: "reservation",
+    },
+    {
+      title: "정보 변경",
+      link: "account",
+    },
+    {
+      title: "장바구니",
+      link: "cart",
+    },
+  ];
   const navigate = useNavigate();
   const location = useLocation();
-  const menus = props.menus;
 
   // 경로: /my/path -> activePath에는 path만 저장. undefined인 경우 첫번째 메뉴링크 사용
   const [activePath, setActivePath] = useState(
@@ -16,7 +29,7 @@ const MyPageAside = (props) => {
   }, [location.pathname]);
 
   return (
-    <aside className="mypage__aside">
+    <nav className="mypage__aside">
       <ul>
         {menus.map((menu) => {
           const isActiveMenu = activePath === menu.link;
@@ -38,7 +51,7 @@ const MyPageAside = (props) => {
           );
         })}
       </ul>
-    </aside>
+    </nav>
   );
 };
-export default MyPageAside;
+export default MyPageNav;
