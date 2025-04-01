@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
-import Gnb from "./Gnb";
-import { menus } from "../constants/headerMenus";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import HeaderSelectBox from "./HeaderSelect";
 import useHeaderStore from "../store/useHeaderStore";
+import useSectionRefStore from "../store/useSectionRefStore";
+import searchIcon from "../images/ico-search.svg";
 
 const Header = () => {
   const { isLoggedIn } = useUserStore();
@@ -15,16 +15,9 @@ const Header = () => {
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
   const imgPath = useUserStore((state) => state.profileImg);
-
   const [showSelect, setShowSelect] = useState(false);
-
   const { selects } = useHeaderStore();
-
-  // const handleLogout = () => {
-  //   resetUser();
-  //   useUserStore.persist.clearStorage();
-  //   navigate("/");
-  // };
+  const { search } = useSectionRefStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +39,22 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]); // lastScrollY가 변경될 때마다 useEffect가 실행됩니다.
 
+  const handleClick = () => {
+    if (location.pathname === "/") {
+      scrollToSection(search);
+    } else {
+      navigate("/");
+      setTimeout(() => scrollToSection(search), 500);
+    }
+  };
+
+  const scrollToSection = (ref) => {
+    ref?.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  };
+
   return (
     <motion.header
       animate={(showNav) => ({
@@ -57,7 +66,9 @@ const Header = () => {
     >
       <Logo />
       <div className="header__inner">
-        <Gnb menus={menus} />
+        <button onClick={handleClick}>
+          <img src={searchIcon} />
+        </button>
         <button
           className="header__auth-btn"
           onClick={() => {
@@ -76,11 +87,6 @@ const Header = () => {
             <span className="gnb__item-text">로그인/회원가입</span>
           )}
         </button>
-        {/* {isLoggedIn && (
-          <button onClick={handleLogout}>
-            <span className="gnb__item-text">로그아웃</span>
-          </button>
-        )} */}
       </div>
     </motion.header>
   );
