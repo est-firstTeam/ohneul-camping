@@ -182,10 +182,11 @@ const Reservation = () => {
 
   return (
     <section className="reservation">
-      <h2 className="reservation__title ">예약 확인 페이지 입니다.</h2>
-      <div className="reservation__list">
-        {reservationData?.length > 0 ? (
-          reservationData.map((reservation) => {
+      <h2 className="reservation__title">예약 확인 페이지 입니다.</h2>
+
+      {reservationData?.length > 0 ? (
+        <div className="reservation__list">
+          {reservationData.map((reservation) => {
             const isCanceled = reservation.data?.rsvIsCanceled === true;
             const isPastDate =
               new Date(reservation.data?.rsvStartDate) <= new Date();
@@ -226,47 +227,45 @@ const Reservation = () => {
                 />
               </Link>
             );
-          })
-        ) : (
-          <div className="reservation__no-item">예약 내역이 없습니다.</div>
-        )}
-        {/* 예약 취소 모달*/}
-        <Modal
-          modalRef={modalRef}
-          handleCancel={handleCancel}
-          handleConfirm={
-            modalStep === "confirm" ? handleConfirmModal : handleCancel
-          }
-          text={"확인"}
-          cancelBtn={modalStep === "confirm"}
-          confirmBtn={true}
-          buttonType={"button"}
-        >
-          <div className="modal__rsvcancel">
-            {modalStep === "confirm" ? (
-              <>
-                <h2 className="modal__rsvcancel-title">
-                  예약을 취소하시겠습니까?
-                </h2>
-                <div className="modal__rsvcancel-content">
-                  예약을 취소하시면 되돌릴 수 없습니다.
-                  <br />
-                  예약 취소를 원하실 경우 '확인' 버튼을 클릭해 주세요.
-                </div>
-              </>
-            ) : (
-              <>
-                <h2 className="modal__rsvcancel-title">
-                  예약이 취소되었습니다.
-                </h2>
-                <div className="modal__rsvcancel-content">
-                  예약 현황 목록에서 확인하실 수 있습니다.
-                </div>
-              </>
-            )}
-          </div>
-        </Modal>
-      </div>
+          })}
+        </div>
+      ) : (
+        <div className="reservation__no-item">예약 내역이 없습니다.</div>
+      )}
+      {/* 예약 취소 모달*/}
+      <Modal
+        modalRef={modalRef}
+        handleCancel={handleCancel}
+        handleConfirm={
+          modalStep === "confirm" ? handleConfirmModal : handleCancel
+        }
+        text={"확인"}
+        cancelBtn={modalStep === "confirm"}
+        confirmBtn={true}
+        buttonType={"button"}
+      >
+        <div className="modal__rsvcancel">
+          {modalStep === "confirm" ? (
+            <>
+              <h2 className="modal__rsvcancel-title">
+                예약을 취소하시겠습니까?
+              </h2>
+              <div className="modal__rsvcancel-content">
+                예약을 취소하시면 되돌릴 수 없습니다.
+                <br />
+                예약 취소를 원하실 경우 '확인' 버튼을 클릭해 주세요.
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="modal__rsvcancel-title">예약이 취소되었습니다.</h2>
+              <div className="modal__rsvcancel-content">
+                예약 현황 목록에서 확인하실 수 있습니다.
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
     </section>
   );
 };
