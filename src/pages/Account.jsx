@@ -182,7 +182,7 @@ export default function Account() {
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
           {/* 아바타 파트 */}
           <label className="account__profile-label" htmlFor="file">
-            <img src={profileimg} />
+            <img src={imgPath === null ? { profileimg } : imgPath} />
           </label>
           <input
             {...register("profileImg")}

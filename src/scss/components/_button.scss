@@ -142,26 +142,6 @@
   width: 20rem;
   color: $btn-black;
 }
-// .btn-searchbar {
-//   width: 20rem;
-//   gap: 1rem;
-//   color: $btn-black;
-// }
-
-// .btn-searchbar-location {
-//   width: 15rem;
-//   color: $btn-black;
-// }
-
-// .btn-searchbar-date {
-//   width: 30rem;
-//   color: $btn-black;
-// }
-
-// .btn-searchbar-site {
-//   width: 15rem;
-//   color: $btn-black;
-// }
 
 .top-btn {
   position: fixed;
@@ -235,4 +215,8 @@
 }
 .cart__order-btn {
   font-size: 2.4rem;
+}
+
+.nosearch-btn {
+  cursor: not-allowed;
 }

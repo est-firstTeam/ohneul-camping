@@ -83,12 +83,9 @@ const SearchBar = () => {
               icon={<img src={right_arr} />}
               iconPosition="right"
               onClick={() => {
-                {
-                  navigate(
-                    `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
-                  );
-                  // window.location.reload();
-                }
+                navigate(
+                  `/searchResult/${searchValue.location}/${searchValue.startDate}/${searchValue.endDate}/${searchValue.site}`
+                );
               }}
             >
               검색
@@ -101,6 +98,7 @@ const SearchBar = () => {
               icon={<img src={right_arr} />}
               iconPosition="right"
               disabled={"disabled"}
+              className="nosearch-btn"
             >
               검색
             </Button>
@@ -125,10 +123,11 @@ const SearchBar = () => {
             {locations.map((location, index) => (
               <Chip
                 key={index}
-                chipValue={location}
-                groupName="캠핑 사이트"
+                chipValue={location.kor}
+                groupName="campsite"
                 onClick={(e) => setLocation(e.target.value)}
-                chipText={location}
+                chipText={location.kor}
+                idValue={location.eng}
               />
             ))}
           </div>
@@ -160,9 +159,10 @@ const SearchBar = () => {
             {sites.map((site, index) => (
               <Chip
                 key={index}
-                chipValue={site}
-                groupName="캠핑 사이트"
+                chipValue={site.kor}
+                groupName="campsite"
                 onClick={(e) => setSite(e.target.value)}
+                idValue={site.eng}
               />
             ))}
           </div>
