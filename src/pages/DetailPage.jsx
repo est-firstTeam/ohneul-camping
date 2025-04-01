@@ -11,20 +11,16 @@ import DateModal from "../components/DateModal";
 import DTsiteModal from "../components/DTsiteModal";
 import useSiteStore from "../store/useSiteStore";
 import DetailOptionBox from "../components/DetailOptionBox";
-import { firebaseAPI } from "../util/firebaseApi";
 import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
-import {
-  getDaysBetweenDates,
-  handleCancelModal,
-  handleOpenModal,
-} from "../util/util.js";
+import { getDaysBetweenDates } from "../util/util.js";
 import SearchBarButton from "../components/SearchBarButton.jsx";
 import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal.jsx";
+import { fBService } from "../util/fbService.js";
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -39,18 +35,8 @@ const DetailPage = () => {
   const [minAvailable, setMinAvailable] = useState(null);
 
   const { data: campData } = useQuery({
-    queryKey: ["campData", id],
-    queryFn: async () => {
-      const allDocs = await firebaseAPI.getAllDocs("Available_RSV");
-      for (const doc of allDocs) {
-        const contentArray = doc.data.content || [];
-        const matchedContent = contentArray.find(
-          (item) => item.contentId === id
-        );
-        if (matchedContent) return matchedContent;
-      }
-      throw new Error("해당 contentId에 대한 데이터 없음");
-    },
+    queryKey: ["campdata", id],
+    queryFn: async () => await fBService.getCampsiteData(id),
     enabled: !!id,
   });
 
@@ -240,6 +226,29 @@ const DetailPage = () => {
   // console.log("나 날짜 중에 최솟값", minAvailable);
   // }
 
+  const openDateModal = () => {
+    if (dateModal.current) {
+      dateModal.current.showModal();
+    }
+  };
+  // 자리 선택 모달 열기
+  const openSiteModal = () => {
+    if (siteModal.current) {
+      siteModal.current.showModal();
+    }
+  };
+
+  const openConfirmModal = () => {
+    if (cartModal.current) {
+      cartModal.current.showModal();
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (cartModal.current) {
+      cartModal.current.close();
+    }
+  };
   return (
     <section className="detail">
       {campData ? (
@@ -282,7 +291,7 @@ const DetailPage = () => {
                       iconPosition="left"
                       // padding={"1rem 15rem 1rem 1rem"}
                       icon={<img src={calico} width={"20px"} height={"20px"} />}
-                      onClick={() => handleOpenModal(dateModal)}
+                      onClick={openDateModal}
                     >
                       날짜 선택
                     </SearchBarButton>
@@ -303,7 +312,7 @@ const DetailPage = () => {
                       icon={
                         <img src={siteico} width={"20px"} height={"20px"} />
                       }
-                      onClick={() => handleOpenModal(siteModal)}
+                      onClick={openSiteModal}
                     >
                       자리 선택
                     </SearchBarButton>
@@ -344,7 +353,7 @@ const DetailPage = () => {
                             siteCounts,
                             totalPrice,
                           });
-                          handleOpenModal(cartModal);
+                          openConfirmModal();
                           resetSiteCounts(); // site 개수 초기화
                         }}
                         disabled={
@@ -357,7 +366,7 @@ const DetailPage = () => {
                       </Button>
                       <ConfirmModal
                         modalRef={cartModal}
-                        handleClose={() => handleCancelModal(cartModal)}
+                        handleClose={handleCloseModal}
                         startDate={startDate}
                         endDate={endDate}
                         totalPrice={totalPrice}

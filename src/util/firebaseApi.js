@@ -15,6 +15,7 @@ class FirebaseAPI {
     data :값
   }
   */
+    console.log("FirbaseAPI GetAllDocs!!");
     const querySnapshot = await getDocs(collection(firebaseDB, collectionName));
 
     return querySnapshot.docs.map((doc) => {
