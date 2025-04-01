@@ -16,7 +16,7 @@ import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { fBService } from "../util/fbService";
-import { useQuery } from "@tanstack/react-query";
+import myPageTitleStore from "../store/mypageTitleStore";
 
 export default function Account() {
   const {
@@ -37,6 +37,9 @@ export default function Account() {
   const user = JSON.parse(localStorage.getItem("storage-user")).state;
   const setUser = useUserStore((state) => state.setUser);
   const resetUser = useUserStore((state) => state.resetUser);
+  const userName = useUserStore((state) => state.name); // User/name: 레이아웃 상단에 이름 출력 시 사용
+  const { setTitle } = myPageTitleStore();
+
   const navi = useNavigate();
 
   const modalOpen = (ref) => {
@@ -60,6 +63,12 @@ export default function Account() {
       setImgFile(files);
     }
   };
+
+  useEffect(() => {
+    if (userName) {
+      setTitle(`${userName} 님, 반가워요!`);
+    }
+  }, [userName, setTitle]);
 
   const eyeToggle = (idx) => {
     setPwIcons((prev) => {
@@ -114,7 +123,7 @@ export default function Account() {
       setErr(errorCodes[error.code]);
     } finally {
       setLoading(false);
-      // navi("/");
+      navi("/");
     }
   };
 
