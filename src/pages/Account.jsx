@@ -17,6 +17,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { fBService } from "../util/fbService";
 import myPageTitleStore from "../store/mypageTitleStore";
+import profileimg from "../images/ico_profile.svg";
 
 export default function Account() {
   const { register, handleSubmit, formState, reset } = useForm({
@@ -181,9 +182,7 @@ export default function Account() {
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
           {/* 아바타 파트 */}
           <label className="account__profile-label" htmlFor="file">
-            <img
-              src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
-            />
+            <img src={profileimg} />
           </label>
           <input
             {...register("profileImg")}

@@ -3,6 +3,7 @@ import { fBService } from "../util/fbService";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import noImage from "../images/no_image.png";
 
 const MainRecommand = () => {
   const { data, status, error, isLoading } = useQuery({
@@ -32,7 +33,7 @@ const MainRecommand = () => {
                   ? ""
                   : data.firstImageUrl
                   ? data.firstImageUrl
-                  : "/src/images/no_image.png"
+                  : { noImage }
               }
               alt=""
             />
