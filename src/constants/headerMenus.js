@@ -6,12 +6,12 @@ export const menus = [
     path: "/",
     iconPath: null,
   },
-  {
-    title: "예약",
-    path: null,
-    iconPath: null,
-    sectionId: "reservation",
-  },
+  // {
+  //   title: "예약",
+  //   path: null,
+  //   iconPath: null,
+  //   sectionId: "reservation",
+  // },
   // {
   //   title: null,
   //   path: "my/cart",

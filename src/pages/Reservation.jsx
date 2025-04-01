@@ -43,7 +43,7 @@ const Reservation = () => {
 
   useEffect(() => {
     if (userName) {
-      setTitle(`${userName} 님, 반가워요!`);
+      setTitle(`${userName} 님의 예약현황`);
     }
   }, [userName, setTitle]);
 
