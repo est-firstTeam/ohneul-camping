@@ -6,18 +6,25 @@ import { useUserStore } from "../store/useUserStore";
 import Gnb from "./Gnb";
 import { menus } from "../constants/headerMenus";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
+import HeaderSelectBox from "./HeaderSelect";
+import useHeaderStore from "../store/useHeaderStore";
 
 const Header = () => {
-  const { isLoggedIn, resetUser } = useUserStore();
+  const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0); // 마지막 스크롤 위치를 저장하는 state
   const imgPath = useUserStore((state) => state.profileImg);
-  const handleLogout = () => {
-    resetUser();
-    useUserStore.persist.clearStorage();
-    navigate("/");
-  };
+
+  const [showSelect, setShowSelect] = useState(false);
+
+  const { selects } = useHeaderStore();
+
+  // const handleLogout = () => {
+  //   resetUser();
+  //   useUserStore.persist.clearStorage();
+  //   navigate("/");
+  // };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,23 +60,26 @@ const Header = () => {
         <button
           className="header__auth-btn"
           onClick={() => {
-            isLoggedIn ? navigate("/my") : navigate("/Login");
+            isLoggedIn ? setShowSelect((prev) => !prev) : navigate("/Login");
           }}
         >
           {isLoggedIn ? (
-            <img
-              className="header__img-path"
-              src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
-            />
+            <>
+              <img
+                className="header__img-path"
+                src={imgPath === null ? "/src/images/ico_profile.svg" : imgPath}
+              />
+              {showSelect && <HeaderSelectBox valueArr={selects} />}
+            </>
           ) : (
             <span className="gnb__item-text">로그인/회원가입</span>
           )}
         </button>
-        {isLoggedIn && (
+        {/* {isLoggedIn && (
           <button onClick={handleLogout}>
             <span className="gnb__item-text">로그아웃</span>
           </button>
-        )}
+        )} */}
       </div>
     </motion.header>
   );
