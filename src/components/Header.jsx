@@ -6,9 +6,9 @@ import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import HeaderSelectBox from "./HeaderSelect";
 import useHeaderStore from "../store/useHeaderStore";
-import profileimg from "../images/ico_profile.svg";
 import useSectionRefStore from "../store/useSectionRefStore";
 import searchIcon from "../images/ico-search.svg";
+import profileimg from "../images/ico_profile.svg";
 
 const Header = () => {
   const { isLoggedIn } = useUserStore();
@@ -77,7 +77,10 @@ const Header = () => {
         >
           {isLoggedIn ? (
             <>
-              <img className="header__img-path" src={profileimg} />
+              <img
+                className="header__img-path"
+                src={imgPath === null ? { profileimg } : imgPath}
+              />
               {showSelect && <HeaderSelectBox valueArr={selects} />}
             </>
           ) : (

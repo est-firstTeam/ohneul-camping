@@ -3,9 +3,6 @@ import React from "react";
 import noImage from "./../images/no_image.png";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
-import { commaNumber } from "../util/util";
-// import { commaNumber } from "../util/util";
-// import { useMotionValueEvent, useScroll } from "framer-motion";
 
 // Campsite 컬렉션
 // doNm, facltNm, firstImageUrl, induty, sigunguNm, caravSiteCo, siteMg1Co, siteMg2Co, siteMg3Co
@@ -70,24 +67,6 @@ const ProductList = ({ campSiteData }) => {
                   남은 자리
                 </ItemDetails>
 
-                {/* <ul className="stock-list">
-                  {stockData.map((stock, index) => (
-                    <div key={index}>
-                      {stock.value !== null && (
-                        <li
-                          className="stock-item"
-                          type="text"
-                          style={{
-                            color: stock.value > 10 ? "black" : "red",
-                          }}
-                        >
-                          {stock.label} {stock.value}자리
-                        </li>
-                      )}
-                    </div>
-                  ))}
-                </ul> */}
-
                 <ul className="stock-list">
                   {stockData.map((stock, index) => (
                     <>
@@ -112,30 +91,17 @@ const ProductList = ({ campSiteData }) => {
                 {/* ㄴ재고 무관하게! */}
                 {/* ㄴ만약 전일 매진이면/ 모든 재고가 0이라면 → 품절표시? */}
                 <ItemDetails type="price" size="default">
-                  {/* {site === "소(1~3인)" && (
-                    <>{commaNumber(camp.siteSPrice ?? 0)}</>
-                  )}
-                  {site === "중(4~6인)" && (
-                    <>{commaNumber(camp.siteMPrice ?? 0)}</>
-                  )}
-                  {site === "대(7~10인)" && (
-                    <>{commaNumber(camp.siteLPrice ?? 0)}</>
-                  )}
-                  {site === "카라반(1~4인)" && (
-                    <>{commaNumber(camp.siteCPrice ?? 0)}</>
-                  )} */}
-
                   {camp.siteSPrice && site === "소(1~3인)" && (
-                    <>{commaNumber(camp.siteSPrice)}</>
+                    <>{camp.siteSPrice.toLocaleString()}</>
                   )}
                   {camp.siteMPrice && site === "중(4~6인)" && (
-                    <>{commaNumber(camp.siteMPrice)}</>
+                    <>{camp.siteMPrice.toLocaleString()}</>
                   )}
                   {camp.siteLPrice && site === "대(7~10인)" && (
-                    <>{commaNumber(camp.siteLPrice)}</>
+                    <>{camp.siteLPrice.toLocaleString()}</>
                   )}
                   {camp.siteCPrice && site === "카라반(1~4인)" && (
-                    <>{commaNumber(camp.siteCPrice)}</>
+                    <>{camp.siteCPrice.toLocaleString()}</>
                   )}
                 </ItemDetails>
                 <ItemDetails type="unit" size="default">
