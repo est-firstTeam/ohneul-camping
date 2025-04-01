@@ -229,7 +229,7 @@ const Cart = () => {
         />
       )}
       {!carts || carts.length === 0 ? (
-        <div>장바구니가 비어 있습니다.</div>
+        <div className="reservation__no-item">장바구니가 비어 있습니다.</div>
       ) : (
         <div className={"cart__list"}>
           {Array.isArray(carts) &&
