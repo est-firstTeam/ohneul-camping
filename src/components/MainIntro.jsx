@@ -1,4 +1,7 @@
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
+import img1 from "../images/img_camp01.png";
+import img2 from "../images/img_camp02.png";
+import img3 from "../images/img_firewood.png";
 
 const MainIntro = () => {
   const leftVariants = {
@@ -112,11 +115,11 @@ const MainIntro = () => {
         className="main__intro-right-wrapper"
       >
         <div className="intro__img-wrapper__left">
-          <img src="/src/images/img_camp01.png" alt="캠핑이미지01" />
-          <img src="/src/images/img_camp02.png" alt="캠핑이미지02" />
+          <img src={img1} alt="캠핑이미지01" />
+          <img src={img2} alt="캠핑이미지02" />
         </div>
         <div className="intro__img-wrapper__right">
-          <img src="/src/images/img_firewood.png" alt="캠핑이미지02" />
+          <img src={img3} alt="캠핑이미지03" />
         </div>
       </motion.div>
     </section>
