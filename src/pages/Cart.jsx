@@ -117,7 +117,7 @@ const Cart = () => {
 
   const payMutation = useMutation({
     mutationFn: async ({ toPayItems, notToPayItems }) => {
-      //  await fBService.insertUserCart(userId, notToPayItems); // 유저 장바구니에서 제거
+      await fBService.insertUserCart(userId, notToPayItems); // 유저 장바구니에서 제거
 
       // available rsv에서 - 1
       // doNm_date로 document조회
@@ -179,9 +179,9 @@ const Cart = () => {
                 return item;
               });
               console.log("result: %o", updatedContentArray);
-              // transaction.update(docRef, {
-              //   content: updatedContentArray,
-              // });
+              transaction.update(docRef, {
+                content: updatedContentArray,
+              });
             });
 
             console.log(`DB 업데이트 완료: ${docId}`);
@@ -207,8 +207,8 @@ const Cart = () => {
         };
 
         console.log("rsvData:%o", rsvData);
-        //await fBService.insertReservation(rsvData);
-        //await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
+        await fBService.insertReservation(rsvData);
+        await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
         refetch(); // 데이터 새로고침
         openModal(paymentCompleteRef);
       });
