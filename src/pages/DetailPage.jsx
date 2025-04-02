@@ -248,7 +248,7 @@ const DetailPage = () => {
 
   return (
     <section className="detail">
-      {campData ? (
+      {campData && (
         <>
           <div className="detail__overview">
             <div className="detail__overview-image-box">
@@ -284,7 +284,7 @@ const DetailPage = () => {
                       className="searchbutton-site"
                       color="secondary"
                       iconPosition="left"
-                      icon={<img src={calico} width={"20px"} height={"20px"} />}
+                      icon={<img src={calico} width={"2rem"} height={"2rem"} />}
                       onClick={() => handleOpenModal(dateModal)}
                     >
                       날짜 선택
@@ -309,7 +309,7 @@ const DetailPage = () => {
                       color={"secondary"}
                       iconPosition="left"
                       icon={
-                        <img src={siteico} width={"20px"} height={"20px"} />
+                        <img src={siteico} width={"2rem"} height={"2rem"} />
                       }
                       onClick={() => handleOpenModal(siteModal)}
                     >
@@ -395,9 +395,8 @@ const DetailPage = () => {
             <DetailInfo campData={campData} />
           </div>
         </>
-      ) : (
-        <p>로딩 중...</p>
       )}
+
       <Topbtn />
     </section>
   );
