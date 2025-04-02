@@ -17,7 +17,6 @@ const MyPage = () => {
   return (
     <section className="mypage">
       <h2 className="mypage__title">{title}</h2>
-      <hr className="mypage__hr" />
       <div className="mypage__inner">
         <MyPageNav />
         <MyPageContentLayout />
