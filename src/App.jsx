@@ -17,7 +17,6 @@ const Cart = lazy(() => import("./pages/Cart.jsx"));
 const CreateAccount = lazy(() => import("./pages/CreateAccount.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const DetailPage = lazy(() => import("./pages/DetailPage.jsx"));
-const ProductListExam = lazy(() => import("./pages/ProductListExam.jsx"));
 
 function App() {
   const router = createBrowserRouter([
@@ -57,11 +56,6 @@ function App() {
         {
           path: "login",
           element: <Login />,
-        },
-        {
-          // 임시 페이지 (추후 삭제)
-          path: "/productListExam",
-          element: <ProductListExam />,
         },
       ],
     },
