@@ -10,10 +10,10 @@
 
 ## 1. 프로젝트 개요
 
-### 1.1 프로젝트 주제 / 기획 의도
+### 1.1 프로젝트 주제 / 특화 포인트
 
 <b>프로젝트 주제</b><br>
-- React와 Firebase를 활용하여 캠핑장 예약 서비스를 구축했습니다. <br>
+- React와 Firebase를 활용한 캠핑장 예약 서비스 구축 <br>
 
 <b>특화 포인트</b><br>
 - 고캠핑 (공공데이터) API 활용
@@ -24,7 +24,6 @@
 - 캐러셀 슬라이드
 
 ### 1.2 프로젝트 내용
-- Firebase와 React를 사용하여 캠핑 예약 사이트 구축
 
 - 가격 · 시설 현황 · 이미지 등의 정보를 제공하는 캠핑장 상세 정보 조회 및 <b>‘지역 · 기간 · 사이트 수’</b>로 검색 기능 제공
   
@@ -137,13 +136,14 @@
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)
 
 
+
 ### 1.5 활용 방안 및 기대 효과 
 
 - 지역, 날짜, 사이트 수등 맞춤형 검색을 통해 편리한 캠핑장 조회 및 예약 가능
 - Firebase 기반의 예약 · 결제 시스템으로 효율적인 예약 관리 지원 가능
 
 ## 2. 시작 가이드
-### Requirements
+### 요구 사항
 
 For building and running the application you need:
 
@@ -163,6 +163,23 @@ $ npm run dev
 <img width="1215" alt="스크린샷 2025-04-02 오전 9 41 06" src="https://github.com/user-attachments/assets/e2959259-c118-48a7-80de-5f640905fad5" />
 
 ## 5. 프로젝트 수행경과
+
+### 메인 페이지
+
+#### 메인 페이지 - 헤더
+<img width="500" alt="스크린샷 2025-04-02 오후 5 32 25" src="https://github.com/user-attachments/assets/ddf53e1e-e644-467b-9908-36a883a339c4" />
+
+#### 회원가입 & 로그인
+<img width="500" alt="스크린샷 2025-04-02 오후 5 33 35" src="https://github.com/user-attachments/assets/d468f0f9-8535-4f62-bbe9-36642d779895" />
+<img width="500" alt="스크린샷 2025-04-02 오후 5 36 18" src="https://github.com/user-attachments/assets/e1eafc3a-aa0c-4c84-b749-3878cb05a0d0" />
+
+#### 검색바 · 검색 모달
+
+#### 검색 결과 페이지
+
+#### 상세 정보 페이지
+
+#### 마이 페이지
 
 
 
