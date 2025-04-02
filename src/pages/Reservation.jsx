@@ -197,34 +197,36 @@ const Reservation = () => {
               ? "취소 불가"
               : "예약 취소";
 
+            // ProductListCart Props
+            const reservationInfo = {
+              ...reservation.data,
+              startDate: monthDateFormat(reservation.data.rsvStartDate),
+              endDate: monthDateFormat(reservation.data.rsvEndDate),
+              day: getDaysBetweenDates(
+                reservation.data.rsvStartDate,
+                reservation.data.rsvEndDate
+              ),
+              facltNm: reservation.data.facltNm,
+              selected1: reservation.data.rsvSiteS,
+              selected2: reservation.data.rsvSiteM,
+              selected3: reservation.data.rsvSiteL,
+              selected4: reservation.data.rsvSiteC,
+              sumPrice: reservation.data.rsvTotalPrice,
+              isDisabled,
+              buttonText,
+              onCancelClick: (event) => {
+                event.stopPropagation(); // 버튼 클릭 시 Link 이벤트 전파 방지
+                event.preventDefault(); // Link 이동 막기
+                handleCancelClick(reservation.id);
+              },
+            };
+
             return (
               <Link
                 key={reservation.id}
                 to={`/searchResult/${reservation.data.campSiteId}`}
               >
-                <ProductListCart
-                  firstImageUrl={reservation.data.firstImageUrl}
-                  startDate={monthDateFormat(reservation.data.rsvStartDate)}
-                  endDate={monthDateFormat(reservation.data.rsvEndDate)}
-                  day={getDaysBetweenDates(
-                    reservation.data.rsvStartDate,
-                    reservation.data.rsvEndDate
-                  )}
-                  facltNm={reservation.data.facltNm}
-                  selected1={reservation.data.rsvSiteS}
-                  selected2={reservation.data.rsvSiteM}
-                  selected3={reservation.data.rsvSiteL}
-                  selected4={reservation.data.rsvSiteC}
-                  sumPrice={reservation.data.rsvTotalPrice}
-                  isRSV
-                  isDisabled={isDisabled}
-                  buttonText={buttonText}
-                  onCancelClick={(event) => {
-                    event.stopPropagation(); // 버튼 클릭 시 Link 이벤트 전파 방지
-                    event.preventDefault(); // Link 이동 막기
-                    handleCancelClick(reservation.id);
-                  }}
-                />
+                <ProductListCart {...reservationInfo} isRSV />
               </Link>
             );
           })}
