@@ -29,6 +29,9 @@ const Header = () => {
         setShowSelect(false);
       } else {
         setShowNav(false);
+        setTimeout(() => {
+          setShowNav(true);
+        }, 1000);
       }
       setLastScrollY(currentScrollY); // 마지막 스크롤 위치 업데이트
     };

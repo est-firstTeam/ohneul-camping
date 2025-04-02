@@ -4,12 +4,8 @@ import { useUserStore } from "../store/useUserStore";
 import { useQuery } from "@tanstack/react-query";
 import { reservationService } from "../util/reservationService";
 import { firebaseDB } from "../firebaseConfig";
-import {
-  monthDateFormat,
-  getDaysBetweenDates,
-  handleOpenModal,
-  handleCancelModal,
-} from "../util/util";
+import { monthDateFormat, getDaysBetweenDates } from "../util/dateUtil";
+import { handleOpenModal, handleCancelModal } from "../util/modalUtil";
 import ProductListCart from "../components/ProductListCart";
 import Modal from "../components/Modal";
 import { Link } from "react-router-dom";
@@ -21,7 +17,7 @@ import {
   where,
   runTransaction,
 } from "firebase/firestore";
-import { getDatesInRange } from "../util/util";
+import { getDatesInRange } from "../util/dateUtil";
 
 const Reservation = () => {
   const userId = useUserStore((state) => state.id);

@@ -1,5 +1,5 @@
 import React from "react";
-import { monthDateFormat } from "../util/util.js";
+import { monthDateFormat } from "../util/dateUtil.js";
 
 const DetailOptionBox = ({
   startDate,
