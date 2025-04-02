@@ -62,7 +62,12 @@ const SearchBar = () => {
   return (
     <>
       {/* 검색 바 */}
-      <div className="search__bar" ref={search} tabIndex={0}>
+      <div
+        className="search__bar"
+        ref={search}
+        tabIndex={0}
+        onMouseDown={(e) => e.preventDefault()}
+      >
         {searchBarButtons.map((sButton, index) => (
           <SearchBarButton
             key={index}
