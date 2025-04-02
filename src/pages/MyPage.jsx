@@ -7,7 +7,7 @@ const MyPage = () => {
 
   return (
     <section className="mypage">
-      <div className="mypage__title">{title}</div>
+      <h2 className="mypage__title">{title}</h2>
       <hr className="mypage__hr" />
       <div className="mypage__inner">
         <MyPageNav />
