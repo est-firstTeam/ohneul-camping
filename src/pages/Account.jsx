@@ -25,7 +25,6 @@ import myPageTitleStore from "../store/mypageTitleStore";
 import profileimg from "../images/ico_profile.svg";
 import { handleOpenModal } from "../util/modalUtil";
 import { reservationService } from "../util/reservationService";
-import keyIcon from "../images/ico_password.svg";
 import nicknameIcon from "../images/ico_profile.svg";
 
 export default function Account() {
