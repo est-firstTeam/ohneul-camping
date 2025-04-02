@@ -214,7 +214,7 @@ export default function Account() {
               value={user.displayName}
             />
             <span className="account__error">
-              {formState.errors?.displayName?.message}
+              {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
             </span>
           </div>
           {/* 비밀번호 */}
