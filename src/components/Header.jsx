@@ -50,6 +50,9 @@ const Header = () => {
   };
 
   const scrollToSection = (ref) => {
+    setTimeout(() => {
+      ref.current?.focus();
+    }, 1000);
     ref?.current?.scrollIntoView({
       behavior: "smooth",
       block: "center",

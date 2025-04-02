@@ -11,12 +11,14 @@ import useSearchStore from "../store/useSearchStore";
 import { useNavigate } from "react-router-dom";
 import SearchBarButton from "./SearchBarButton";
 import { handleOpenModal } from "../util/util";
+import useSectionRefStore from "../store/useSectionRefStore.js";
 
 const SearchBar = () => {
   const navigate = useNavigate();
   const locationModal = useRef(null); // 위치 모달 관리
   const dateModal = useRef(null); // 날짜 및 일정 모달 관리
   const siteModal = useRef(null); // 캠프 사이트 모달 관리
+  const { search } = useSectionRefStore();
 
   const {
     locations,
@@ -60,7 +62,7 @@ const SearchBar = () => {
   return (
     <>
       {/* 검색 바 */}
-      <div className="search__bar">
+      <div className="search__bar" ref={search} tabIndex={0}>
         {searchBarButtons.map((sButton, index) => (
           <SearchBarButton
             key={index}

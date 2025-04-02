@@ -12,6 +12,11 @@
   padding: 1.5rem 2rem;
   flex-shrink: 0;
   gap: 1.5rem;
+  border: 2px solid transparent;
+  pointer-events: none;
+  &:focus {
+    border: 2px solid $primary;
+  }
 }
 
 .content__name {
