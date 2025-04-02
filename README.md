@@ -1,10 +1,8 @@
 
+# 🏕️오늘캠핑 홈페이지
+<img width="1215" alt="스크린샷 2025-04-02 오전 10 23 47" src="https://github.com/user-attachments/assets/6a23027d-957a-4224-b98e-0985a0fd7740" />
 
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/aaab04ef-6fb4-4413-ad64-011cf225bb8f" alt="오늘캠핑" width="250px">
-</p>
 
-# 🏕️오늘캠핑 홈페이지 제작
 
 - 배포 URL : https://ohneul-camping.vercel.app/
 - Test ID : ohneul@test.com
@@ -32,29 +30,45 @@
   
 ### 1.3 프로젝트 구조
 
-### 1.4 활용장비 및 재료
-- Front : HTML, React, SCSS, Zustand
-- Back-end : 고캠핑 (공공데이터) API 활용
-- 버전 및 이슈관리 : Github
-- 협업 툴 : Discord, Notion
-- 서비스 배포 환경 : Vercel
+### 1.4 개발 환경
+- Front-end: ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![React](https://img.shields.io/badge/react%20zustand-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![SCSS](https://img.shields.io/badge/Scss-CC6699?style=for-the-badge&logo=Sass&logoColor=white)
+- DB: ![Firebase](https://img.shields.io/badge/Firebase-DD2C00?style=for-the-badge&logo=Firebase&logoColor=white)  
+- 버전 및 이슈 관리:  ![Github](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white) ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white)       
+- 협업 툴:  ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white), ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white)
+- 서비스 배포 환경:  ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=Vercel&logoColor=white)
+- 디자인: ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)
+
 
 ### 1.5 활용 방안 및 기대 효과 
 
 - 지역, 날짜, 사이트 수등 맞춤형 검색을 통해 편리한 캠핑장 조회 및 예약 가능
 - Firebase 기반의 예약 · 결제 시스템으로 효율적인 예약 관리 지원 가능
 
+## 2. 시작 가이드
+### Requirements
 
-# React + Vite
+For building and running the application you need:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Frontend
+```
+$ cd ohneul-camping
+$ nvm use v18.20.5
+$ npm install 
+$ npm run dev
+```
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 3. 프로젝트 팀 구성 및 역할
+<img width="1215" alt="스크린샷 2025-04-02 오전 9 38 16" src="https://github.com/user-attachments/assets/6ae4724d-8c2e-430c-8d50-8886bf609dc3" />
 
-## Expanding the ESLint configuration
+## 4. 프로젝트 수행 절차 및 방법
+<img width="1215" alt="스크린샷 2025-04-02 오전 9 41 06" src="https://github.com/user-attachments/assets/e2959259-c118-48a7-80de-5f640905fad5" />
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 5. 프로젝트 수행경과
+
+
+
+
+
+
 

@@ -4,16 +4,13 @@ import MainIntro from "../components/MainIntro.jsx";
 import MainRecommand from "../components/MainRecommand.jsx";
 import MainMostRSV from "../components/MainMostRSV.jsx";
 import MainAllCampsite from "../components/MainAllCampsite.jsx";
-import useSectionRefStore from "../store/useSectionRefStore.js";
 
 const Main = () => {
-  const { search } = useSectionRefStore();
-
   return (
     <>
       <TopBtn />
       <MainIntro />
-      <article className="searchbar-wrapper" ref={search}>
+      <article className="searchbar-wrapper">
         <Searchbar />
       </article>
       <MainRecommand />
