@@ -2,7 +2,6 @@ import React from "react";
 import ItemDetails from "./ItemDetails";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
-import { commaNumber } from "../util/util";
 import closeIcon from "/src/images/ico_close.svg";
 //TODO
 // - data 연결
@@ -65,7 +64,7 @@ const ProductListCart = ({
           {sitesSort}
         </ItemDetails>
         <ItemDetails type="price" size="reserved">
-          {commaNumber(sumPrice)}
+          {sumPrice.toLocaleString()}
         </ItemDetails>
         <ItemDetails type="unit" size="reserved">
           원 {!isCart}
@@ -79,6 +78,7 @@ const ProductListCart = ({
           margin={"1rem"}
           disabled={isDisabled}
           onClick={onCancelClick}
+          className="cancel-btn"
         >
           {buttonText}
         </Button>

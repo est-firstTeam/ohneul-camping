@@ -5,6 +5,8 @@
   width: 100%;
   flex-direction: column;
   gap: 1.6rem;
+  align-items: center;
+
   &__title {
     @include a11y-hidden;
   }
@@ -14,6 +16,10 @@
     gap: 2.8rem;
     grid-template-columns: repeat(4, 1fr);
     width: min-content;
+  }
+
+  &__total-check {
+    margin-right: auto;
   }
 }
 
@@ -44,9 +50,11 @@
 }
 .cart__detail-option-box-total {
   display: flex;
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin-bottom: 2.8rem;
   justify-content: space-between;
+  margin-inline: 3rem;
+  color: $gray3;
 
   &-price {
     font-weight: 600;

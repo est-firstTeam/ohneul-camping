@@ -6,11 +6,12 @@
 }
 
 .mypage__inner {
+  position: relative;
   display: grid;
-  width: 100%;
   grid-template-columns: min-content 1fr;
   gap: 2.8rem;
-  margin-top: 5rem;
+  padding-top: 5rem;
+  border-top: 1px solid $gray4;
 }
 
 .mypage__title {
@@ -18,11 +19,4 @@
   font-weight: bold;
   font-family: $title;
   margin: 2.4rem;
-}
-
-.mypage__hr {
-  width: 70%;
-  height: 0.1rem;
-  background-color: $gray4;
-  border: 0;
 }
