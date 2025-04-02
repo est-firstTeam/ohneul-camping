@@ -25,10 +25,10 @@ const Header = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY) {
         // 스크롤이 아래로 진행되었는지 확인
-        setShowNav(false);
+        setShowNav(true);
         setShowSelect(false);
       } else {
-        setShowNav(true);
+        setShowNav(false);
       }
       setLastScrollY(currentScrollY); // 마지막 스크롤 위치 업데이트
     };

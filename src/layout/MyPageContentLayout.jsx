@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 const MyPageContentLayout = () => {
   return (
-    <section className="mypage__content">
+    <div className="mypage__content">
       <Outlet />
-    </section>
+    </div>
   );
 };
 
