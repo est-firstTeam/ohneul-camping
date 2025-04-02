@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { fBService } from "../util/fbService";
 import myPageTitleStore from "../store/mypageTitleStore";
 import profileimg from "../images/ico_profile.svg";
+import { reservationService } from "../util/reservationService";
 
 export default function Account() {
   const { register, handleSubmit, formState, reset } = useForm({
@@ -130,11 +131,13 @@ export default function Account() {
   const deleteConfirm = async () => {
     try {
       //유저가 예약한 부분 삭제
-      fBService.getAllReservation(auth.currentUser.uid).then((rsvArr) => {
-        rsvArr.map((ele) => {
-          fBService.deleteReservation(ele.id);
+      reservationService
+        .getAllReservation(auth.currentUser.uid)
+        .then((rsvArr) => {
+          rsvArr.map((ele) => {
+            fBService.deleteReservation(ele.id);
+          });
         });
-      });
 
       //유저의 아바타 삭제
       const deleteRef = ref(fbStorage, `avatars/${auth.currentUser.uid}`);
