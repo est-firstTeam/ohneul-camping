@@ -197,7 +197,7 @@ const Reservation = () => {
               ? "취소 불가"
               : "예약 취소";
 
-            // PeoductListCart Props
+            // ProductListCart Props
             const reservationInfo = {
               ...reservation.data,
               startDate: monthDateFormat(reservation.data.rsvStartDate),
