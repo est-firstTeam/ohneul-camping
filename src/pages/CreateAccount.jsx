@@ -15,6 +15,8 @@ import { useUserStore } from "../store/useUserStore";
 import Button from "../components/Button";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import profileimg from "../images/ico_profile.svg";
+import emailIcon from "../images/ico_email.svg";
+import keyIcon from "../images/ico_password.svg";
 
 const CreateAccount = () => {
   const navi = useNavigate();
@@ -169,85 +171,106 @@ const CreateAccount = () => {
             {formState.errors?.profileImg?.message}
           </span>
           {/* 닉네임 파트 */}
-          <div>
-            <input
-              {...register("displayName", {
-                maxLength: { value: 8, message: "8글자 이하로 만들어주세요." },
-                required: "닉네임을 입력해주세요.",
-              })}
-              className="account__input account__displayName"
-              placeholder="닉네임"
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={profileimg} />
+
+              <input
+                {...register("displayName", {
+                  maxLength: {
+                    value: 8,
+                    message: "8글자 이하로 만들어주세요.",
+                  },
+                  required: "닉네임을 입력해주세요.",
+                })}
+                className="account__input"
+                placeholder="닉네임"
+              />
+            </div>
+
             <span className="account__error">
               {formState.errors?.displayName?.message}
             </span>
           </div>
           {/* 이메일 */}
-          <div>
-            <input
-              {...register("email", {
-                required: "이메일을 입력해주세요.",
-              })}
-              className="account__input account__email"
-              placeholder="이메일"
-              type="email"
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={emailIcon} />
+              <input
+                {...register("email", {
+                  required: "이메일을 입력해주세요.",
+                })}
+                className="account__input"
+                placeholder="이메일"
+                type="email"
+              />
+            </div>
             <span className="account__error">
               {formState.errors?.email?.message}
             </span>
           </div>
           {/* 비밀번호 */}
-          <div className="account__form__password">
-            <input
-              {...register("password", {
-                pattern: {
-                  value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
-                },
-                required: "패스워드를 입력해주세요.",
-              })}
-              className="account__input account__password"
-              placeholder="비밀번호"
-              type={pwIcons[0] ? "password" : "text"}
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={keyIcon} />
+              <input
+                {...register("password", {
+                  pattern: {
+                    value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
+                    message: "6~15자 이내 / 숫자+영문 조합 필요.",
+                  },
+                  required: "패스워드를 입력해주세요.",
+                })}
+                className="account__input"
+                placeholder="비밀번호"
+                type={pwIcons[0] ? "password" : "text"}
+              />
+              <button
+                onClick={() => eyeToggle(0)}
+                type="button"
+                color="none"
+                className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
+              ></button>
+            </div>
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <button
-              onClick={() => eyeToggle(0)}
-              type="button"
-              color="none"
-              className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-            ></button>
           </div>
+
           {/* 비밀번호 체크 */}
-          <div className="account__form__password">
-            <input
-              {...register("passwordCheck", {
-                minLength: {
-                  value: 6,
-                  message: "비밀번호가 너무 짧습니다.",
-                },
-                validate: {
-                  matchPassword: (value) => {
-                    const { password } = getValues();
-                    return password === value || "비밀번호가 일치하지 않습니다";
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={keyIcon} />
+
+              <input
+                {...register("passwordCheck", {
+                  minLength: {
+                    value: 6,
+                    message: "비밀번호가 너무 짧습니다.",
                   },
-                },
-              })}
-              className="account__input account__password-chk"
-              placeholder="비밀번호 확인"
-              type={pwIcons[1] ? "password" : "text"}
-            />
+                  validate: {
+                    matchPassword: (value) => {
+                      const { password } = getValues();
+                      return (
+                        password === value || "비밀번호가 일치하지 않습니다"
+                      );
+                    },
+                  },
+                })}
+                className="account__input"
+                placeholder="비밀번호 확인"
+                type={pwIcons[1] ? "password" : "text"}
+              />
+              <button
+                onClick={() => eyeToggle(1)}
+                type="button"
+                color="none"
+                className={pwIcons[1] ? "account__icon" : "account__icon-slash"}
+              ></button>
+            </div>
             <span className="account__error">
               {formState.errors?.passwordCheck?.message}
             </span>
-            <button
-              onClick={() => eyeToggle(1)}
-              type="button"
-              color="none"
-              className={pwIcons[1] ? "account__icon" : "account__icon-slash"}
-            ></button>
           </div>
           {/* Submit */}
           <div>

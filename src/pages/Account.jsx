@@ -20,6 +20,8 @@ import myPageTitleStore from "../store/mypageTitleStore";
 import profileimg from "../images/ico_profile.svg";
 import { handleOpenModal } from "../util/modalUtil";
 import { reservationService } from "../util/reservationService";
+import keyIcon from "../images/ico_password.svg";
+import nicknameIcon from "../images/ico_profile.svg";
 
 export default function Account() {
   const { register, handleSubmit, formState, reset } = useForm({
@@ -194,48 +196,54 @@ export default function Account() {
             {formState.errors?.profileImg?.message}
           </span>
           {/* 닉네임 파트 */}
-          <div>
-            <input
-              {...register("displayName", {
-                required: "닉네임은 필수값입니다.",
-                maxLength: {
-                  value: 8,
-                  message: "8글자 이하로 만들어주세요.",
-                },
-              })}
-              className="account__input account__displayName"
-              // placeholder="변경할 닉네임"
-              autoComplete="new-password"
-              value={user.displayName}
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={nicknameIcon} />
+              <input
+                {...register("displayName", {
+                  required: "닉네임은 필수값입니다.",
+                  maxLength: {
+                    value: 8,
+                    message: "8글자 이하로 만들어주세요.",
+                  },
+                })}
+                className="account__input"
+                autoComplete="new-password"
+                value={user.displayName}
+              />
+            </div>
+
             <span className="account__error">
               {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
             </span>
           </div>
           {/* 비밀번호 */}
-          <div className="account__form__password">
-            <input
-              {...register("password", {
-                pattern: {
-                  value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
-                },
-                required: "패스워드를 입력해주세요.",
-              })}
-              className="account__input account__password"
-              placeholder="현재 비밀번호"
-              type={pwIcons[0] ? "password" : "text"}
-              autoComplete="new-password"
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={keyIcon} />
+              <input
+                {...register("password", {
+                  pattern: {
+                    value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
+                    message: "6~15자 이내 / 숫자+영문 조합 필요.",
+                  },
+                  required: "패스워드를 입력해주세요.",
+                })}
+                className="account__input account__password"
+                placeholder="현재 비밀번호"
+                type={pwIcons[0] ? "password" : "text"}
+                autoComplete="new-password"
+              />
+              <button
+                onClick={() => eyeToggle(0)}
+                type="button"
+                color="none"
+                className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
+              ></button>
+            </div>
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <button
-              onClick={() => eyeToggle(0)}
-              type="button"
-              color="none"
-              className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-            ></button>
           </div>
           {/* Submit */}
           <div>
