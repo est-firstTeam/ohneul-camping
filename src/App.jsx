@@ -7,7 +7,6 @@ import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Account from "./pages/Account.jsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-// import DetailPage from "./pages/DetailPage.jsx";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
 const Main = lazy(() => import("./pages/MainPage.jsx"));
@@ -64,10 +63,6 @@ function App() {
           path: "/productListExam",
           element: <ProductListExam />,
         },
-        // {
-        //   path: "detail",
-        //   element: <DetailPage />,
-        // },
       ],
     },
   ]);
