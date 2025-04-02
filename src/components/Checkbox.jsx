@@ -6,7 +6,12 @@ import unCheckedIcon from "../images/ico-uncheked.svg";
 const Checkbox = ({ checked, onChange, label }) => {
   const id = useId();
   return (
-    <div className="checkbox-container">
+    <div
+      className="checkbox-container"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
       {/* 실제 체크 여부 확인 */}
       <input
         type="checkbox"
