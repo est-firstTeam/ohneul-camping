@@ -3,44 +3,50 @@ import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Footer = () => {
-  const [footerY, setFooterY] = useState(0);
+  const [footerY, setFooterY] = useState(100); // 기본값: 숨김
   const [isScroll, setIsScroll] = useState(false);
   const location = useLocation(); // 현재 페이지 확인
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.scrollY;
-      const clientHeight = window.innerHeight;
+  const updateFooter = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY;
+    const clientHeight = window.innerHeight;
 
-      if (scrollHeight > clientHeight) {
-        setIsScroll(true);
-        if (scrollTop + clientHeight >= scrollHeight - 10) {
-          setFooterY(0);
-        } else {
-          setFooterY(100);
-        }
+    if (scrollHeight > clientHeight) {
+      setIsScroll(true);
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        setFooterY(0);
       } else {
-        setIsScroll(false);
-        setFooterY(0); // 스크롤 없을 때 하단 고정
+        setFooterY(100);
       }
+    } else {
+      setIsScroll(false);
+      setFooterY(0); // 스크롤 없을 때 하단 고정
+    }
+  };
+
+  useEffect(() => {
+    // 새로고침 시 푸터 위치 설정(로딩 확인)
+    const checkLoad = () => {
+      setTimeout(updateFooter, 100); // 푸터 위치 체크
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+    window.addEventListener("scroll", updateFooter);
+    window.addEventListener("load", checkLoad);
+    updateFooter(); // 로드된 후 실행함
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", updateFooter);
+      window.removeEventListener("load", checkLoad);
+    };
   }, []);
 
   useEffect(() => {
-    const bodyHeight = document.body.scrollHeight;
-    const clientHeight = window.innerHeight;
+    setFooterY(100); // 페이지 이동 시 푸터 초기화
 
-    if (bodyHeight <= clientHeight) {
-      setFooterY(0); // 스크롤 없는 페이지로 이동하면 보이게
-    } else {
-      setFooterY(100); // 스크롤이 있으면 하단 고정
-    }
+    setTimeout(() => {
+      updateFooter();
+    }, 50);
   }, [location]);
 
   return (
