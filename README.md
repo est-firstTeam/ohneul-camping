@@ -167,17 +167,20 @@ $ npm run dev
 ### 메인 페이지
 
 #### 메인 페이지 - 헤더
-<img width="500" alt="스크린샷 2025-04-02 오후 5 32 25" src="https://github.com/user-attachments/assets/ddf53e1e-e644-467b-9908-36a883a339c4" />
+<img width="800" alt="스크린샷 2025-04-02 오후 5 32 25" src="https://github.com/user-attachments/assets/ddf53e1e-e644-467b-9908-36a883a339c4" />
 
 #### 회원가입 & 로그인
-<img width="500" alt="스크린샷 2025-04-02 오후 5 33 35" src="https://github.com/user-attachments/assets/d468f0f9-8535-4f62-bbe9-36642d779895" />
-<img width="500" alt="스크린샷 2025-04-02 오후 5 36 18" src="https://github.com/user-attachments/assets/e1eafc3a-aa0c-4c84-b749-3878cb05a0d0" />
+<img width="800" alt="스크린샷 2025-04-02 오후 5 33 35" src="https://github.com/user-attachments/assets/d468f0f9-8535-4f62-bbe9-36642d779895" />
+<img width="800" alt="스크린샷 2025-04-02 오후 5 36 18" src="https://github.com/user-attachments/assets/e1eafc3a-aa0c-4c84-b749-3878cb05a0d0" />
 
 #### 검색바 · 검색 모달
+<img width="800" alt="스크린샷 2025-04-02 오후 5 40 14" src="https://github.com/user-attachments/assets/6e9f3054-3c6b-4dc9-b8c1-aecb34f97d0a" />
 
 #### 검색 결과 페이지
+<img width="800" alt="스크린샷 2025-04-02 오후 5 40 39" src="https://github.com/user-attachments/assets/9fdd471a-c700-4a51-a751-36632affee3b" />
 
 #### 상세 정보 페이지
+<img width="800" alt="스크린샷 2025-04-02 오후 5 40 59" src="https://github.com/user-attachments/assets/24e5977d-41c9-403e-b4a8-1fa4d88f70d0" />
 
 #### 마이 페이지
 
