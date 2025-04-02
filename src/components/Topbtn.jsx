@@ -11,7 +11,7 @@ const TopBtn = () => {
   return (
     <Button
       color={"transparent"}
-      icon={<img src={topIcon} width={"50px"} alt="Scroll to top" />}
+      icon={<img src={topIcon} width={"50px"} alt="상단으로 이동하기" />}
       onClick={scrollToTop}
       className={"top-btn"}
       isIconOnly
