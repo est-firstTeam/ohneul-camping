@@ -56,7 +56,6 @@ const DetailOptionBox = ({
                     <span className="site-num"> {numArr[index]}</span> : {count}{" "}
                     자리
                   </span>
-                  {/* <span className="site-count"></span> */}
                   <span className="site-price">{price.toLocaleString()}원</span>
                 </li>
               );
