@@ -80,7 +80,7 @@ const Header = () => {
             <>
               <img
                 className="header__img-path"
-                src={imgPath === null ? { profileimg } : imgPath}
+                src={imgPath === null ? profileimg : imgPath}
               />
               {showSelect && <HeaderSelectBox valueArr={selects} />}
             </>
