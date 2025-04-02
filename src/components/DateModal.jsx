@@ -3,6 +3,7 @@ import "react-date-range/dist/styles.css"; // 달력 main css file
 import "react-date-range/dist/theme/default.css"; // 달력 theme css file
 import { DateRange } from "react-date-range";
 import { useState } from "react";
+import { ko } from "date-fns/locale";
 
 // 날짜 및 일정 관리하는 모달
 const DateModal = ({ modalRef, setStartDate, setEndDate, handleCancel }) => {
@@ -52,6 +53,7 @@ const DateModal = ({ modalRef, setStartDate, setEndDate, handleCancel }) => {
     >
       <div className="modal__date">
         <DateRange
+          locale={ko}
           editableDateInputs={true}
           onChange={handleDateChange}
           moveRangeOnFirstSelection={false}
