@@ -222,13 +222,15 @@ const Cart = () => {
   return (
     <section className="cart">
       <h2 className="cart__title">장바구니</h2>
-      {carts && carts.length > 0 && (
-        <Checkbox
-          checked={allChecked}
-          onChange={handleSelectAll}
-          label="전체 선택"
-        />
-      )}
+      <div className="cart__total-check">
+        {carts && carts.length > 0 && (
+          <Checkbox
+            checked={allChecked}
+            onChange={handleSelectAll}
+            label="전체 선택"
+          />
+        )}
+      </div>
       {!carts || carts.length === 0 ? (
         <div className="reservation__no-item">장바구니가 비어 있습니다.</div>
       ) : (
