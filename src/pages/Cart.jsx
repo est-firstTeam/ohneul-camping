@@ -8,10 +8,9 @@ import ProductListCart from "../components/ProductListCart";
 import { useUserStore } from "../store/useUserStore";
 import {
   getDaysBetweenDates,
-  commaNumber,
   getDatesInRange,
   monthDateFormat,
-} from "../util/util";
+} from "../util/dateUtil";
 import { useRef } from "react";
 import Modal from "../components/Modal";
 import LoadingSpinner from "../components/Loading";
@@ -22,7 +21,7 @@ import { doc } from "firebase/firestore";
 import { runTransaction } from "firebase/firestore";
 import RefundModal from "../components/RefundModal";
 import { useNavigate } from "react-router-dom";
-import { handleOpenModal, handleCancelModal } from "../util/util";
+import { handleOpenModal, handleCancelModal } from "../util/modalUtil";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
@@ -299,7 +298,7 @@ const Cart = () => {
                       <div className="cart__detail-option-box-total">
                         <span>선택 상품 금액</span>
                         <span className="cart__detail-option-box-total-price">
-                          {commaNumber(cart.rsvTotalPrice)}원
+                          {cart.rsvTotalPrice.toLocaleString()}원
                         </span>
                       </div>
                     </div>
@@ -315,7 +314,7 @@ const Cart = () => {
             <div className="cart__amount-to-pay">
               <div>결제 예정 금액</div>
               <span className="cart__amount-to-pay-price">
-                {commaNumber(amountToPay)} 원
+                {amountToPay.toLocaleString()} 원
               </span>
             </div>
             <Button
