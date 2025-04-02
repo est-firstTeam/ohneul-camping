@@ -29,7 +29,7 @@ const MyPageNav = () => {
   }, [location.pathname]);
 
   return (
-    <nav className="mypage__aside">
+    <nav className="mypage__nav">
       <ul>
         {menus.map((menu) => {
           const isActiveMenu = activePath === menu.link;

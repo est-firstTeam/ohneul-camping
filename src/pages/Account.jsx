@@ -20,6 +20,8 @@ import myPageTitleStore from "../store/mypageTitleStore";
 import profileimg from "../images/ico_profile.svg";
 import { handleOpenModal } from "../util/modalUtil";
 import { reservationService } from "../util/reservationService";
+import keyIcon from "../images/ico_password.svg";
+import nicknameIcon from "../images/ico_profile.svg";
 
 export default function Account() {
   const { register, handleSubmit, formState, reset } = useForm({
@@ -167,7 +169,7 @@ export default function Account() {
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
           {/* 아바타 파트 */}
           <label className="account__profile-label" htmlFor="file">
-            <img src={imgPath === null ? { profileimg } : imgPath} />
+            <img src={imgPath === null ? profileimg : imgPath} />
           </label>
           <input
             {...register("profileImg")}
@@ -181,20 +183,23 @@ export default function Account() {
             {formState.errors?.profileImg?.message}
           </span>
           {/* 닉네임 파트 */}
-          <div>
-            <input
-              {...register("displayName", {
-                required: "닉네임은 필수값입니다.",
-                maxLength: {
-                  value: 8,
-                  message: "8글자 이하로 만들어주세요.",
-                },
-              })}
-              className="account__input account__displayName"
-              // placeholder="변경할 닉네임"
-              autoComplete="new-password"
-              value={user.displayName}
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={nicknameIcon} />
+              <input
+                {...register("displayName", {
+                  required: "닉네임은 필수값입니다.",
+                  maxLength: {
+                    value: 8,
+                    message: "8글자 이하로 만들어주세요.",
+                  },
+                })}
+                className="account__input"
+                autoComplete="new-password"
+                value={user.displayName}
+              />
+            </div>
+
             <span className="account__error">
               {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
             </span>
