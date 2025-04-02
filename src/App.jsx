@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Account from "./pages/Account.jsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import LoadingSpinner from "./components/Loading.jsx";
 
 const BaseLayout = lazy(() => import("./layout/BaseLayout.jsx"));
 const Main = lazy(() => import("./pages/MainPage.jsx"));
@@ -72,10 +73,10 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<div></div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <RouterProvider router={router} />
       </Suspense>
-      <div style={{ fontSize: "20px" }}>
+      <div style={{ fontSize: "2rem" }}>
         <ReactQueryDevtools initialIsOpen={true} />
       </div>
     </QueryClientProvider>

@@ -3,12 +3,7 @@
 .detail__add-on-left {
   display: flex;
   width: 67rem;
-  // width: 60%;
-  // flex: 1;
-  // margin-left: 50rem;
   flex-direction: column;
-  // border-right: 1px solid $gray4;
-  // padding-right: 5rem;
   gap: 5rem;
 
   .detail__add-on-left--container {
@@ -27,7 +22,7 @@
       flex-direction: column;
       gap: 1rem;
       padding: 1rem 2rem;
-      border: 1px solid $primary;
+      border: 0.1rem solid $primary;
       border-radius: 1rem;
 
       .detail__orange-box--title {
@@ -91,10 +86,7 @@
 
 .detail__add-on-right {
   display: flex;
-  // width: 40%;
-  // flex: 1;
   flex-direction: column;
-  // margin-right: 50rem;
   gap: 2rem;
 
   .detail__add-on-right--title {

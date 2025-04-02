@@ -8,9 +8,10 @@ const LoadingSpinner = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        width: "400px",
-        height: "400px",
-        margin: "20px auto",
+        width: "20rem",
+        height: "20rem",
+        margin: "2rem auto",
+        zIndex: "100000",
       }}
     >
       <Lottie animationData={loadingSpinner} />

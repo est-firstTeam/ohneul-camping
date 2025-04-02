@@ -1,27 +1,27 @@
 .chip__value {
   border: 0;
   clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
+  height: 0.1rem;
+  margin: -0.1rem;
   overflow: hidden;
   padding: 0;
   position: absolute;
-  width: 1px;
+  width: 0.1rem;
 
   &:checked + .chip__label {
-    border: 1px solid #f57b21;
+    border: 0.1rem solid #f57b21;
     color: #f57b21;
   }
 }
 
 .chip__label {
-  border: 1px solid red;
+  border: 0.1rem solid red;
   // line-height: 3.5rem;
   border-radius: 3rem;
-  font-size: 14px;
+  font-size: 1.4rem;
   background-color: #fafafa;
   text-align: center;
   padding: 1rem 1.3rem;
-  border: 1px solid #e5e5e5;
+  border: 0.1rem solid #e5e5e5;
   cursor: pointer;
 }
