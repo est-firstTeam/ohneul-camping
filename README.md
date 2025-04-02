@@ -29,6 +29,95 @@
 - 가격 · 시설 현황 · 이미지 등의 정보를 제공하는 캠핑장 상세 정보 조회 및 <b>‘지역 · 기간 · 사이트 수’</b>로 검색 기능 제공
   
 ### 1.3 프로젝트 구조
+```
+├── README.md
+├── index.html
+├── eslint.config.js
+├── .env
+├── .gitignore
+├── vercel.json
+├── vite.config.js
+├── package.json
+├── package-lock.json
+│
+├── public
+│    ├── favicon.svg
+│    └── Logo.svg
+└── src
+     ├── App.jsx
+     ├── main.jsx
+     ├── firebaseConfig.js
+     ├── util
+     │     ├── fbService.js
+     │     ├── firebaseApi.js
+     │     ├── loading.json
+     │     ├── reservationService.js
+     │     ├── selectors.js
+     │     └── util.js
+     ├── store
+     │     ├── mypageTitleStore.js
+     │     ├── useHeaderStore.js
+     │     ├── useSearchStore.js
+     │     ├── useSiteStore.js
+     │     ├── useUserStore.js
+     │     └── useSectionRefStore.js
+     ├── constants
+     │     ├── collectionName.js
+     │     └── errorCodes.js
+     ├── pages
+     │     ├── Account.jsx
+     │     ├── Cart.jsx
+     │     ├── CreateAccount.jsx
+     │     ├── DetailPage.jsx
+     │     ├── Login.jsx
+     │     ├── MainPage.jsx
+     │     ├── MyPage.jsx
+     │     ├── Reservation.jsx
+     │     └── SearchResult.jsx
+     ├── layout
+     │     ├── BaseLayout.jsx
+     │     ├── MyPageContentLayout.jsx
+     ├── images
+     │     ├── ico-homepage.svg
+     │          .
+     │          .
+     │          .
+     │     └── ico-topbtn.svg
+     ├── scss
+     │     ├── index.scss
+     │     ├── base
+     │     │    ├── _index.scss
+     │     │    ├── _normalize.scss
+     │     │    ├── _reset.scss
+     │     │    └── _typography.scss
+     │     ├── abstracts
+     │     │    ├── _index.scss
+     │     │    ├── _ir.scss
+     │     │    ├── _mixin.scss
+     │     │    └── _variables.scss
+     │     ├── components
+     │     │    ├── _aside.scss
+     │     │    ├──       .
+     │     │    ├──       .
+     │     │    └── _selectBox.scss
+     │     ├── layout
+     │     │    ├── _baselayout.scss
+     │     │    ├──       .
+     │     │    ├──       .
+     │     │    └── _main.scss
+     │     ├── pages
+     │     │    ├── _account.scss
+     │     │    ├──       .
+     │     │    ├──       .
+     │     │    └── _searchResult.scss
+     └── conponents
+           ├── Button.jsx
+           ├── Modal.jsx
+           │          .
+           │          .
+           └── Topbtn.jsx
+```
+
 
 ### 1.4 개발 환경
 - Front-end: ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![React](https://img.shields.io/badge/react%20zustand-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![SCSS](https://img.shields.io/badge/Scss-CC6699?style=for-the-badge&logo=Sass&logoColor=white)
