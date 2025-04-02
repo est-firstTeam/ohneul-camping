@@ -77,19 +77,6 @@ export default function Account() {
     let profileURL = null;
     data.profileImg = imgFile === null ? "" : imgFile;
 
-    //사용자 인증 재확인
-    const credential = EmailAuthProvider.credential(
-      auth.currentUser.email,
-      data.password
-    );
-    reauthenticateWithCredential(auth.currentUser, credential)
-      .then(() => {
-        console.log("Re Authenticate success!!");
-      })
-      .catch(() => {
-        console.log("ReAuthenticate Failed!");
-      });
-
     try {
       // Storage에 유저 이미지 저장. 파일이름 -> userID
       if (data.profileImg) {
