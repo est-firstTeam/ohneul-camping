@@ -85,8 +85,15 @@ const ProductListCart = ({
       )}
       {/* 장바구니에서만 제거 버튼 표시 */}
       {handleDeleteItem && (
-        <button className="btn-close" onClick={handleDeleteItem}>
-          <img src={closeIcon} width={"8px"} height={"8px"} />
+        <button
+          className="btn-close"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleDeleteItem();
+          }}
+        >
+          <img src={closeIcon} width={"10px"} height={"10px"} />
         </button>
       )}
     </div>
