@@ -10,7 +10,12 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { auth, fbStorage, firebaseDB } from "../firebaseConfig";
-import { deleteUser, updateProfile } from "firebase/auth";
+import {
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateProfile,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
@@ -31,7 +36,6 @@ export default function Account() {
     },
   });
   const [isLoading, setLoading] = useState(false);
-  const [pwIcons, setPwIcons] = useState([true, true]);
   const [imgFile, setImgFile] = useState(null);
   const [imgPath, setImgPath] = useState(
     JSON.parse(localStorage.getItem("storage-user")).state.profileImg
@@ -67,14 +71,6 @@ export default function Account() {
       setTitle(`${userName} 님, 반가워요!`);
     }
   }, [userName, setTitle]);
-
-  const eyeToggle = (idx) => {
-    setPwIcons((prev) => {
-      const pwIcons = [...prev];
-      pwIcons[idx] = !pwIcons[idx];
-      return pwIcons;
-    });
-  };
 
   const onValid = async (data) => {
     setLoading(true);
@@ -135,7 +131,6 @@ export default function Account() {
             fBService.deleteReservation(ele.id);
           });
         });
-
       //유저의 아바타 삭제
       const deleteRef = ref(fbStorage, `avatars/${auth.currentUser.uid}`);
       deleteObject(deleteRef)
@@ -149,7 +144,6 @@ export default function Account() {
             }
           }
         });
-
       //User DB 삭제
       fBService.deleteUser(auth.currentUser.uid);
       //Auth 삭제
@@ -162,10 +156,8 @@ export default function Account() {
             console.log("ERR!!", error.code);
           }
         });
-
       //Zustand Data 초기화
       resetUser();
-
       console.log("User Delete Success!!");
     } catch (error) {
       console.log("ERR!!", error);
@@ -175,116 +167,86 @@ export default function Account() {
   };
 
   return (
-    <div className="account__wrapper account__modify">
-      {/* h2 회원가입 display:none */}
-      <section className="account">
-        <h2>회원 가입</h2>
-        <form className="account__form" onSubmit={handleSubmit(onValid)}>
-          {/* 아바타 파트 */}
-          <label className="account__profile-label" htmlFor="file">
-            <img src={imgPath === null ? profileimg : imgPath} />
-          </label>
-          <input
-            {...register("profileImg")}
-            id="file"
-            type="file"
-            accept="image/*"
-            className="account__input account__profile-input"
-            onChange={avatarURL}
-          />
+    <section className="account">
+      <h2>회원 가입</h2>
+      <form className="account__form" onSubmit={handleSubmit(onValid)}>
+        {/* 아바타 파트 */}
+        <label className="account__profile-label" htmlFor="file">
+          <img src={imgPath === null ? profileimg : imgPath} />
+        </label>
+        <input
+          {...register("profileImg")}
+          id="file"
+          type="file"
+          accept="image/*"
+          className="account__input account__profile-input"
+          onChange={avatarURL}
+        />
+        <span className="account__error">
+          {formState.errors?.profileImg?.message}
+        </span>
+        {/* 닉네임 파트 */}
+        <div className="account__input-container">
+          <div className="account__input-inner">
+            <img src={nicknameIcon} />
+            <input
+              {...register("displayName", {
+                required: "닉네임은 필수값입니다.",
+                maxLength: {
+                  value: 8,
+                  message: "8글자 이하로 만들어주세요.",
+                },
+              })}
+              className="account__input"
+              autoComplete="new-password"
+              value={user.displayName}
+            />
+          </div>
+
           <span className="account__error">
-            {formState.errors?.profileImg?.message}
+            {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
           </span>
-          {/* 닉네임 파트 */}
-          <div className="account__input-container">
-            <div className="account__input-inner">
-              <img src={nicknameIcon} />
-              <input
-                {...register("displayName", {
-                  required: "닉네임은 필수값입니다.",
-                  maxLength: {
-                    value: 8,
-                    message: "8글자 이하로 만들어주세요.",
-                  },
-                })}
-                className="account__input"
-                autoComplete="new-password"
-                value={user.displayName}
-              />
-            </div>
-
-            <span className="account__error">
-              {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
-            </span>
-          </div>
-          {/* 비밀번호 */}
-          <div className="account__input-container">
-            <div className="account__input-inner">
-              <img src={keyIcon} />
-              <input
-                {...register("password", {
-                  pattern: {
-                    value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                    message: "6~15자 이내 / 숫자+영문 조합 필요.",
-                  },
-                  required: "패스워드를 입력해주세요.",
-                })}
-                className="account__input account__password"
-                placeholder="현재 비밀번호"
-                type={pwIcons[0] ? "password" : "text"}
-                autoComplete="new-password"
-              />
-              <button
-                onClick={() => eyeToggle(0)}
-                type="button"
-                color="none"
-                className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-              ></button>
-            </div>
-            <span className="account__error">
-              {formState.errors?.password?.message}
-            </span>
-          </div>
-          {/* Submit */}
-          <div>
-            <Button
-              disabled={isLoading && true}
-              width="25rem"
-              className="btn account__btn"
-              type="submit"
-            >
-              {isLoading ? "Loading..." : "정보 변경"}
-            </Button>
-            {/* 파이어베이스 에러 확인용 */}
-            {error === "" ? null : (
-              <span className="account__error">{error}</span>
-            )}
-          </div>
-        </form>
-        <div className="account__delete">
-          <button onClick={() => handleOpenModal(modalRef)}>
-            <span className="gnb__item-text">회원탈퇴는 여기를 클릭</span>
-          </button>
-
-          <Modal
-            modalRef={modalRef}
-            handleConfirm={deleteConfirm}
-            text={"확인"}
-            cancelBtn
-            confirmBtn={true}
-            buttonType={"button"}
-          >
-            <div className="delete-modal-wrapper">
-              <div>
-                <span className="delete-modal__title">진짜 탈퇴할꾸에염?</span>
-              </div>
-              <span className="delete-modal__content">
-                탈퇴하시면 계정을 되돌릴 수 없습니다.
-              </span>
-            </div>
-          </Modal>
         </div>
-      </section>
-    </div>
+
+        {/* Submit */}
+        <div>
+          <Button
+            disabled={isLoading && true}
+            width="25rem"
+            className="btn account__btn"
+            type="submit"
+          >
+            {isLoading ? "Loading..." : "정보 변경"}
+          </Button>
+          {/* 파이어베이스 에러 확인용 */}
+          {error === "" ? null : (
+            <span className="account__error">{error}</span>
+          )}
+        </div>
+      </form>
+      <div className="account__delete">
+        <button onClick={() => handleOpenModal(modalRef)}>
+          <span className="gnb__item-text">회원탈퇴는 여기를 클릭</span>
+        </button>
+
+        <Modal
+          modalRef={modalRef}
+          handleConfirm={deleteConfirm}
+          text={"확인"}
+          cancelBtn
+          confirmBtn={true}
+          buttonType={"button"}
+        >
+          <div className="delete-modal-wrapper">
+            <div>
+              <span className="delete-modal__title">진짜 탈퇴할꾸에염?</span>
+            </div>
+            <span className="delete-modal__content">
+              탈퇴하시면 계정을 되돌릴 수 없습니다.
+            </span>
+          </div>
+        </Modal>
+      </div>
+    </section>
   );
 }
