@@ -110,7 +110,7 @@
         // position: absolute;
         gap: 3rem;
         align-items: center;
-        border-top: 1px solid $secondary;
+        border-top: 0.1rem solid $secondary;
         justify-content: space-between;
         padding: 1rem 0;
 
@@ -149,7 +149,7 @@
 
     .detail__overview--optionbox-option {
       padding: 0.3rem 0.7rem;
-      border: 0.5px solid $gray3;
+      border: 0.05rem solid $gray3;
       border-radius: 3rem;
       background-color: $white;
       font-size: 1.3rem;

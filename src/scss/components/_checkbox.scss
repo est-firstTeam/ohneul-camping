@@ -9,9 +9,9 @@
 
   .checkbox-input {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
+    width: 0.1rem;
+    height: 0.1rem;
+    margin: -0.1rem;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
@@ -27,7 +27,7 @@
   .checkmark {
     width: 2.2rem;
     height: 2.2rem;
-    border: 1px solid $semi-black;
+    border: 0.1rem solid $semi-black;
     border-radius: 0.5rem;
     display: flex;
     align-items: center;
@@ -38,7 +38,7 @@
   // 체크 상태일 때 스타일 변경
   .checkbox-input:checked + .checkbox-label .checkmark {
     background-color: $primary;
-    border: 1px solid $primary;
+    border: 0.1rem solid $primary;
   }
 
   .label {

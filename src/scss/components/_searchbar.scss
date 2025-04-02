@@ -4,7 +4,7 @@
 .search__bar {
   border-radius: 6.25rem;
   background: #fff;
-  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 3rem 0 rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,10 +12,10 @@
   padding: 1.5rem 2rem;
   flex-shrink: 0;
   gap: 1.5rem;
-  border: 2px solid transparent;
+  border: 0.2rem solid transparent;
 
   &:focus {
-    border: 2px solid $primary;
+    border: 0.2rem solid $primary;
   }
 }
 

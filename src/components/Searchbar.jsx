@@ -36,14 +36,14 @@ const SearchBar = () => {
     {
       name: "location",
       label: "어디로 가세요?",
-      icon: <img src={mapico} width={"20px"} height={"20px"} />,
+      icon: <img src={mapico} width={"2rem"} height={"2rem"} />,
       onClick: () => handleOpenModal(locationModal),
       onValue: searchValue.location,
     },
     {
       name: "date",
       label: "날짜 및 일정",
-      icon: <img src={calico} width={"20px"} height={"20px"} />,
+      icon: <img src={calico} width={"2rem"} height={"2rem"} />,
       onClick: () => handleOpenModal(dateModal),
       onValue:
         searchValue.startDate && searchValue.endDate
@@ -53,7 +53,7 @@ const SearchBar = () => {
     {
       name: "site",
       label: "사이트 형태",
-      icon: <img src={siteico} width={"20px"} height={"20px"} />,
+      icon: <img src={siteico} width={"2rem"} height={"2rem"} />,
       onClick: () => handleOpenModal(siteModal),
       onValue: searchValue.site,
     },
