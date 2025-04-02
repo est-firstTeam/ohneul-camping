@@ -5,6 +5,7 @@
   width: 100%;
   flex-direction: column;
   gap: 1.6rem;
+  align-items: center;
 
   &__title {
     @include a11y-hidden;
