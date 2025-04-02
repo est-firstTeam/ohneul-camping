@@ -157,10 +157,10 @@ $ npm run dev
 
 
 ## 3. 프로젝트 팀 구성 및 역할
-<img width="1215" alt="스크린샷 2025-04-02 오전 9 38 16" src="https://github.com/user-attachments/assets/6ae4724d-8c2e-430c-8d50-8886bf609dc3" />
+<img width="800" alt="스크린샷 2025-04-02 오전 9 38 16" src="https://github.com/user-attachments/assets/6ae4724d-8c2e-430c-8d50-8886bf609dc3" />
 
 ## 4. 프로젝트 수행 절차 및 방법
-<img width="1215" alt="스크린샷 2025-04-02 오전 9 41 06" src="https://github.com/user-attachments/assets/e2959259-c118-48a7-80de-5f640905fad5" />
+<img width="800" alt="스크린샷 2025-04-02 오전 9 41 06" src="https://github.com/user-attachments/assets/e2959259-c118-48a7-80de-5f640905fad5" />
 
 ## 5. 프로젝트 수행경과
 
