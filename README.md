@@ -29,14 +29,112 @@
 - 가격 · 시설 현황 · 이미지 등의 정보를 제공하는 캠핑장 상세 정보 조회 및 <b>‘지역 · 기간 · 사이트 수’</b>로 검색 기능 제공
   
 ### 1.3 프로젝트 구조
+```
+├── README.md
+├── index.html
+├── eslint.config.js
+├── .env
+├── .gitignore
+├── vercel.json
+├── vite.config.js
+├── package.json
+├── package-lock.json
+│
+├── public
+│    ├── favicon.svg
+│    └── Logo.svg
+└── src
+     ├── App.jsx
+     ├── main.jsx
+     ├── firebaseConfig.js
+     ├── util
+     │     ├── fbService.js
+     │     ├── firebaseApi.js
+     │     ├── loading.json
+     │     ├── reservationService.js
+     │     ├── selectors.js
+     │     └── util.js
+     ├── store
+     │     ├── mypageTitleStore.js
+     │     ├── useHeaderStore.js
+     │     ├── useSearchStore.js
+     │     ├── useSiteStore.js
+     │     ├── useUserStore.js
+     │     └── useSectionRefStore.js
+     ├── constants
+     │     ├── collectionName.js
+     │     └── errorCodes.js
+     ├── pages
+     │     ├── Account.jsx
+     │     ├── Cart.jsx
+     │     ├── CreateAccount.jsx
+     │     ├── DetailPage.jsx
+     │     ├── Login.jsx
+     │     ├── MainPage.jsx
+     │     ├── MyPage.jsx
+     │     ├── Reservation.jsx
+     │     └── SearchResult.jsx
+     ├── layout
+     │     ├── BaseLayout.jsx
+     │     ├── MyPageContentLayout.jsx
+     ├── images
+     │     ├── ico-homepage.svg
+     │          .
+     │          .
+     │          .
+     │     └── ico-topbtn.svg
+     ├── scss
+     │     ├── index.scss
+     │     ├── base
+     │     │    ├── _index.scss
+     │     │    ├── _normalize.scss
+     │     │    ├── _reset.scss
+     │     │    └── _typography.scss
+     │     ├── abstracts
+     │     │    ├── _index.scss
+     │     │    ├── _ir.scss
+     │     │    ├── _mixin.scss
+     │     │    └── _variables.scss
+     │     ├── components
+     │     │    ├── _aside.scss
+     │     │    ├──       .
+     │     │    ├──       .
+     │     │    └── _selectBox.scss
+     │     ├── layout
+     │     │    ├── _baselayout.scss
+     │     │    ├──       .
+     │     │    ├──       .
+     │     │    └── _main.scss
+     │     ├── pages
+     │     │    ├── _account.scss
+     │     │    ├──       .
+     │     │    ├──       .
+     │     │    └── _searchResult.scss
+     └── conponents
+           ├── Button.jsx
+           ├── Modal.jsx
+           │          .
+           │          .
+           └── Topbtn.jsx
+```
+
 
 ### 1.4 개발 환경
-- Front-end: ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![React](https://img.shields.io/badge/react%20zustand-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![SCSS](https://img.shields.io/badge/Scss-CC6699?style=for-the-badge&logo=Sass&logoColor=white)
-- DB: ![Firebase](https://img.shields.io/badge/Firebase-DD2C00?style=for-the-badge&logo=Firebase&logoColor=white)  
-- 버전 및 이슈 관리:  ![Github](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white) ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white)       
-- 협업 툴:  ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white), ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white)
-- 서비스 배포 환경:  ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=Vercel&logoColor=white)
-- 디자인: ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)
+#### API 
+[고캠핑 API 홈페이지 바로 가기](https://www.data.go.kr/data/15101933/openapi.do)
+
+#### Front-end 
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![React](https://img.shields.io/badge/react%20zustand-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![SCSS](https://img.shields.io/badge/Scss-CC6699?style=for-the-badge&logo=Sass&logoColor=white)
+#### DB
+![Firebase](https://img.shields.io/badge/Firebase-DD2C00?style=for-the-badge&logo=Firebase&logoColor=white)
+#### 버전 및 이슈 관리
+![Github](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white) ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white)
+#### 협업 툴  
+![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white)
+#### 서비스 배포 환경  
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=Vercel&logoColor=white)
+#### 디자인 
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)
 
 
 ### 1.5 활용 방안 및 기대 효과 
