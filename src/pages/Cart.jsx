@@ -44,7 +44,7 @@ const Cart = () => {
       return fBService.getUserCartItems(users);
     },
   });
-  console.log("carts:%o", carts);
+
   const { setTitle } = myPageTitleStore();
   useEffect(() => {
     setTitle(`${userName} 님의 장바구니`);
@@ -321,7 +321,7 @@ const Cart = () => {
               className="cart__order-btn"
               disabled={!isAgree}
               width={"100%"}
-              height={"58px"}
+              height={"5.8rem"}
               onClick={handleOrder}
             >
               예약하기
