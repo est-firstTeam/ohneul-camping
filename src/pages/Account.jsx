@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { fBService } from "../util/fbService";
 import myPageTitleStore from "../store/mypageTitleStore";
 import profileimg from "../images/ico_profile.svg";
+import { handleOpenModal } from "../util/modalUtil";
 import { reservationService } from "../util/reservationService";
 
 export default function Account() {
@@ -42,12 +43,6 @@ export default function Account() {
   const { setTitle } = myPageTitleStore();
 
   const navi = useNavigate();
-
-  const modalOpen = (ref) => {
-    if (ref.current) {
-      ref.current.showModal();
-    }
-  };
 
   //에러없이 모든게 Ok되면 FormState를 리셋해준다.
   useEffect(() => {
@@ -259,7 +254,7 @@ export default function Account() {
           </div>
         </form>
         <div className="account__delete">
-          <button onClick={() => modalOpen(modalRef)}>
+          <button onClick={() => handleOpenModal(modalRef)}>
             <span className="gnb__item-text">회원탈퇴는 여기를 클릭</span>
           </button>
 

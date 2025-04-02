@@ -76,7 +76,7 @@ const ProductList = ({ campSiteData }) => {
                           className="stock-item"
                           type="text"
                           style={{
-                            color: stock.value > 10 ? "black" : "red",
+                            color: stock.value > 0 ? "black" : "red",
                           }}
                         >
                           {stock.label} {stock.value}자리

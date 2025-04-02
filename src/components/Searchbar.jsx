@@ -10,7 +10,7 @@ import Chip from "./Chip";
 import useSearchStore from "../store/useSearchStore";
 import { useNavigate } from "react-router-dom";
 import SearchBarButton from "./SearchBarButton";
-import { handleOpenModal } from "../util/util";
+import { handleOpenModal } from "../util/modalUtil";
 import useSectionRefStore from "../store/useSectionRefStore.js";
 
 const SearchBar = () => {

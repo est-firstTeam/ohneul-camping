@@ -2,7 +2,7 @@ import Modal from "./Modal";
 import PlusBtn from "../images/ico-plusBtn.svg";
 import MinusBtn from "../images/ico-minusBtn.svg";
 import useSiteStore from "../store/useSiteStore";
-import { handleCancelModal } from "../util/util";
+import { handleCancelModal } from "../util/modalUtil";
 
 const DTsiteModal = ({ modalRef, minAvailable, startDate, endDate }) => {
   const { siteCounts, setSiteCounts } = useSiteStore();
