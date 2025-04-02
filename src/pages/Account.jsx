@@ -10,7 +10,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { auth, fbStorage, firebaseDB } from "../firebaseConfig";
-import { deleteUser, updateProfile } from "firebase/auth";
+import { deleteUser, EmailAuthProvider, updateProfile } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
@@ -29,7 +29,6 @@ export default function Account() {
     },
   });
   const [isLoading, setLoading] = useState(false);
-  const [pwIcons, setPwIcons] = useState([true, true]);
   const [imgFile, setImgFile] = useState(null);
   const [imgPath, setImgPath] = useState(
     JSON.parse(localStorage.getItem("storage-user")).state.profileImg
@@ -65,14 +64,6 @@ export default function Account() {
       setTitle(`${userName} 님, 반가워요!`);
     }
   }, [userName, setTitle]);
-
-  const eyeToggle = (idx) => {
-    setPwIcons((prev) => {
-      const pwIcons = [...prev];
-      pwIcons[idx] = !pwIcons[idx];
-      return pwIcons;
-    });
-  };
 
   const onValid = async (data) => {
     setLoading(true);
@@ -133,7 +124,6 @@ export default function Account() {
             fBService.deleteReservation(ele.id);
           });
         });
-
       //유저의 아바타 삭제
       const deleteRef = ref(fbStorage, `avatars/${auth.currentUser.uid}`);
       deleteObject(deleteRef)
@@ -147,7 +137,6 @@ export default function Account() {
             }
           }
         });
-
       //User DB 삭제
       fBService.deleteUser(auth.currentUser.uid);
       //Auth 삭제
@@ -160,10 +149,8 @@ export default function Account() {
             console.log("ERR!!", error.code);
           }
         });
-
       //Zustand Data 초기화
       resetUser();
-
       console.log("User Delete Success!!");
     } catch (error) {
       console.log("ERR!!", error);
@@ -212,31 +199,7 @@ export default function Account() {
               {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
             </span>
           </div>
-          {/* 비밀번호 */}
-          <div className="account__form__password">
-            <input
-              {...register("password", {
-                pattern: {
-                  value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
-                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
-                },
-                required: "패스워드를 입력해주세요.",
-              })}
-              className="account__input account__password"
-              placeholder="현재 비밀번호"
-              type={pwIcons[0] ? "password" : "text"}
-              autoComplete="new-password"
-            />
-            <span className="account__error">
-              {formState.errors?.password?.message}
-            </span>
-            <button
-              onClick={() => eyeToggle(0)}
-              type="button"
-              color="none"
-              className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
-            ></button>
-          </div>
+
           {/* Submit */}
           <div>
             <Button
