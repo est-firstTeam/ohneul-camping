@@ -6,13 +6,7 @@ import { Link } from "react-router-dom";
 
 const ConfirmModal = ({ modalRef, handleClose }) => {
   return (
-    <Modal
-      modalRef={modalRef}
-      handleCancel={handleClose}
-      text="확인"
-      // cancelBtn={true}
-      // confirmBtn={true}
-    >
+    <Modal modalRef={modalRef} handleCancel={handleClose} text="확인">
       <div className="confirm__modal">
         <div className="confirm__modal-imgContainer">
           <img className="confirm__modal-icon" src={addCart} />
