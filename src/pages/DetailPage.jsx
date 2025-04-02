@@ -23,7 +23,11 @@ import DetailInfo from "../components/DetailInfo";
 import DetailFacility from "../components/DetailFacility";
 import { firebaseDB } from "../firebaseConfig";
 import { fBService } from "../util/fbService";
-import { getDaysBetweenDates } from "../util/util.js";
+import {
+  getDaysBetweenDates,
+  handleCancelModal,
+  handleOpenModal,
+} from "../util/util.js";
 import SearchBarButton from "../components/SearchBarButton.jsx";
 import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
@@ -39,7 +43,6 @@ const DetailPage = () => {
   const resetSiteCounts = useSiteStore((state) => state.resetSiteCounts);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [availableSites, setAvailableSites] = useState(null);
   const [minAvailable, setMinAvailable] = useState(null);
 
   const { data: campData } = useQuery({
@@ -47,8 +50,6 @@ const DetailPage = () => {
     queryFn: async () => await fBService.getCampsiteData(id),
     enabled: !!id,
   });
-
-  console.log(campData);
 
   const userId = useUserStore((state) => state.id);
   const mutation = useMutation({
@@ -226,11 +227,7 @@ const DetailPage = () => {
         endDate,
         contentId
       );
-      setAvailableSites(siteCountsByDate);
-
-      console.log("날짜별 사이트 개수:", siteCountsByDate);
       const minAvailable = getMinAvailableSites(siteCountsByDate);
-      console.log("최소 값 계산된 결과:", minAvailable);
 
       // DTsiteModal에 minAvailable 전달
       setMinAvailable(minAvailable);
@@ -239,38 +236,19 @@ const DetailPage = () => {
     fetchData();
   }, [startDate, endDate]);
 
-  console.log("가능 개수", availableSites);
+  // site 개수 보여주기 위한 함수
+  const getSelectedSites = () => {
+    if (siteCounts.every((count) => count === 0)) return;
 
-  // console.log("나 시작", startDate);
-  // console.log("나 끝", endDate);
-  // if (startDate && startDate !== endDate) {
-  // const minAvailable = getMinAvailableSites(availableSites);
-  // console.log("나 날짜 중에 최솟값", minAvailable);
-  // }
-
-  const openDateModal = () => {
-    if (dateModal.current) {
-      dateModal.current.showModal();
-    }
-  };
-  // 자리 선택 모달 열기
-  const openSiteModal = () => {
-    if (siteModal.current) {
-      siteModal.current.showModal();
-    }
+    const siteNames = ["소", "중", "대", "카라반"];
+    return siteCounts
+      .map((count, index) =>
+        count > 0 ? `${siteNames[index]} ${count}` : null
+      )
+      .filter(Boolean) // null 제거
+      .join(" / ");
   };
 
-  const openConfirmModal = () => {
-    if (cartModal.current) {
-      cartModal.current.showModal();
-    }
-  };
-
-  const handleCloseModal = () => {
-    if (cartModal.current) {
-      cartModal.current.close();
-    }
-  };
   return (
     <section className="detail">
       {campData ? (
@@ -280,30 +258,28 @@ const DetailPage = () => {
               <img
                 className="detail__overview-image"
                 src={campData.firstImageUrl || noImage}
-                alt="캠핑장 사진"
+                alt="캠핑장 이미지"
               />
             </div>
             <div className="detail__overview-reserv">
-              <h4 className="detail__overview-reserv--location">
-                {campData.doNm} {campData.sigunguNm}
-              </h4>
-
               <h2 className="detail__overview-reserv--title">
+                <span className="detail__overview-reserv--location">
+                  {campData.doNm} {campData.sigunguNm}
+                </span>
                 {campData.facltNm}
               </h2>
-              <h4 className="detail__overview-reserv--campstyle">
+              <p className="detail__overview-reserv--campstyle">
                 {campData.induty}
-              </h4>
+              </p>
               {campData.themaEnvrnCl ? (
-                <h3 className="detail__overview-reserv--subtitle">
+                <p className="detail__overview-reserv--subtitle">
                   {campData.themaEnvrnCl}
-                </h3>
+                </p>
               ) : (
                 <></>
               )}
 
               <div className="detail__overview-reserv--option">
-                {/* <h4 className="detail__overview-reserv--option-text">옵션</h4> */}
                 <div className="btn-container">
                   <div className="btn-date">
                     <span className="btn-date-title">기간</span>
@@ -311,13 +287,19 @@ const DetailPage = () => {
                       className="searchbutton-site"
                       color="secondary"
                       iconPosition="left"
-                      // padding={"1rem 15rem 1rem 1rem"}
                       icon={<img src={calico} width={"20px"} height={"20px"} />}
-                      onClick={openDateModal}
+                      onClick={() => handleOpenModal(dateModal)}
                     >
                       날짜 선택
                     </SearchBarButton>
                   </div>
+                  {startDate && endDate ? (
+                    <span className="btn-date-result">
+                      {startDate} ~ {endDate}
+                    </span>
+                  ) : (
+                    <></>
+                  )}
                   <DateModal
                     modalRef={dateModal}
                     setStartDate={setStartDate}
@@ -329,16 +311,15 @@ const DetailPage = () => {
                       className={"searchbutton-site"}
                       color={"secondary"}
                       iconPosition="left"
-                      // margin={"1rem 0"}
-                      // padding={"1rem 15rem 1rem 1rem"}
                       icon={
                         <img src={siteico} width={"20px"} height={"20px"} />
                       }
-                      onClick={openSiteModal}
+                      onClick={() => handleOpenModal(siteModal)}
                     >
                       자리 선택
                     </SearchBarButton>
                   </div>
+                  <span className="btn-date-result">{getSelectedSites()}</span>
                   <DTsiteModal
                     modalRef={siteModal}
                     minAvailable={minAvailable}
@@ -370,7 +351,6 @@ const DetailPage = () => {
                       <Button
                         className="detail__overview-reserv--addCartBtn"
                         icon={<img src={addCart} />}
-                        padding={"0.6rem 5rem"}
                         onClick={() => {
                           mutation.mutate({
                             startDate,
@@ -378,7 +358,7 @@ const DetailPage = () => {
                             siteCounts,
                             totalPrice,
                           });
-                          openConfirmModal();
+                          handleOpenModal(cartModal);
                           resetSiteCounts(); // site 개수 초기화
                         }}
                         disabled={
@@ -391,7 +371,7 @@ const DetailPage = () => {
                       </Button>
                       <ConfirmModal
                         modalRef={cartModal}
-                        handleClose={handleCloseModal}
+                        handleClose={() => handleCancelModal(cartModal)}
                         startDate={startDate}
                         endDate={endDate}
                         totalPrice={totalPrice}

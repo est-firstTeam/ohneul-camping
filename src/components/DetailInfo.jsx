@@ -3,7 +3,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 const DetailInfo = ({ campData }) => {
   return (
     <div className="detail__add-on-right">
-      <h5 className="detail__add-on-right--title">기본 정보</h5>
+      <h3 className="detail__add-on-right--title">기본 정보</h3>
       {/* 홈페이지 data가 존재하면 a 태그 표시, 존재하지 않는다면 홈페이지 정보 없음 표시 */}
       {campData?.homepage ? (
         <p className="detail__add-on-right--homepage">
@@ -21,7 +21,7 @@ const DetailInfo = ({ campData }) => {
         style={{
           width: "40rem",
           height: "30rem",
-          borderRadius: "3rem",
+          borderRadius: "1rem",
           marginBottom: "2rem",
         }}
         level={3}

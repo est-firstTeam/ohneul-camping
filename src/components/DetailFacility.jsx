@@ -30,7 +30,7 @@ const DetailFacility = ({ campData }) => {
       <div className="detail__add-on-left--container">
         <h3 className="detail__add-on-left--title-amenity">시설 / 환경</h3>
         <div className="detail__orange-box">
-          <h4 className="detail__orange-box--title">편의시설</h4>
+          <strong className="detail__orange-box--title">편의시설</strong>
           <div className="detail__orange-box--container">
             {availableAmenities.map((amenity, index) => (
               <div key={index} className="detail__orange-box--amenity">
@@ -44,9 +44,9 @@ const DetailFacility = ({ campData }) => {
             ))}
           </div>
           {otherAmenities.length > 0 && (
-            <h5 className="detail__orange-box--contents">
+            <p className="detail__orange-box--contents">
               추가 편의시설: {transformedFacilities}
-            </h5>
+            </p>
           )}
         </div>
       </div>
