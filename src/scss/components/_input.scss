@@ -1,41 +1,41 @@
 @use "../abstracts" as *;
+.account__input-container {
+  display: flex;
+  flex-direction: column;
+}
 
-.account__input {
-  border: 1px solid #ff4e01;
-  height: 40px;
-  border-radius: 20px;
+.account__input-inner {
+  display: flex;
+  border: 1px solid $primary;
+  gap: 0.8rem;
   background-color: white;
   width: 25rem;
+  height: 4.6rem;
+  border-radius: 2rem;
+  padding: 1rem 1.2rem;
+}
+
+.account__input {
+  width: 100%;
+
   color: black;
-  line-height: 20px;
-  background-repeat: no-repeat;
-  background-position: 15px center;
+  line-height: 2rem;
   outline: none;
-  border-radius: 3px;
-  text-indent: 45px;
-  font-size: 16px;
-  border-radius: 20px;
-  box-sizing: border-box;
+  border: none;
+  font-size: 1.6rem;
 }
 
 .account__error {
   display: block;
-  color: red;
+  color: $red;
   font-size: 1.4rem;
-  padding-left: 2rem;
-  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-top: 0.4rem;
+  min-height: 2.4rem;
 }
 
 .account__displayName {
   @include background("ico_nickname.svg", left 10px bottom 10px, null, inherit);
-}
-
-.account__email {
-  @include background("ico_email.svg", left 10px bottom 10px, null, inherit);
-}
-
-.account__password {
-  @include background("ico_password.svg", left 10px bottom 7px, null, inherit);
 }
 
 .account__password-chk {

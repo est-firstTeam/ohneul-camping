@@ -13,6 +13,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { useUserStore } from "../store/useUserStore";
 import Button from "../components/Button";
 import imgLogo from "../../public/Logo.svg";
+import emailIcon from "../images/ico_email.svg";
+import keyIcon from "../images/ico_password.svg";
 
 const Login = () => {
   const { register, handleSubmit, formState } = useForm();
@@ -76,38 +78,45 @@ const Login = () => {
         </div>
         <form className="account__form" onSubmit={handleSubmit(onValid)}>
           {/* 닉네임*/}
-          <div>
-            <input
-              {...register("email", {
-                required: "이메일을 입력해주세요.",
-              })}
-              className="account__input account__email"
-              placeholder="이메일"
-              type="email"
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={emailIcon} />
+              <input
+                {...register("email", {
+                  required: "이메일을 입력해주세요.",
+                })}
+                className="account__input"
+                placeholder="이메일"
+                type="email"
+              />
+            </div>
+
             <span className="account__error">
               {formState.errors?.email?.message}
             </span>
           </div>
           {/* 비밀번호 */}
-          <div className="account__form__password">
-            <input
-              {...register("password", {
-                required: "패스워드를 입력해주세요.",
-              })}
-              className="account__input account__password"
-              placeholder="비밀번호"
-              type={pwIcon ? "password" : "text"}
-            />
+          <div className="account__input-container">
+            <div className="account__input-inner">
+              <img src={keyIcon} />
+              <input
+                {...register("password", {
+                  required: "패스워드를 입력해주세요.",
+                })}
+                className="account__input account__password"
+                placeholder="비밀번호"
+                type={pwIcon ? "password" : "text"}
+              />
+              <Button
+                type="button"
+                onClick={eyeToggle}
+                color="none"
+                className={pwIcon ? "account__icon" : "account__icon-slash"}
+              ></Button>
+            </div>
             <span className="account__error">
               {formState.errors?.password?.message}
             </span>
-            <Button
-              type="button"
-              onClick={eyeToggle}
-              color="none"
-              className={pwIcon ? "account__icon" : "account__icon-slash"}
-            ></Button>
           </div>
           {/* submit 버튼 */}
           <div>
