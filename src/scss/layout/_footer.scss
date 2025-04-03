@@ -11,8 +11,14 @@
   position: fixed;
   left: 0;
   width: calc(100vw + 1.2rem);
+  gap: 5rem;
   &__copyright {
     font-size: 1.6rem;
     font-weight: 300;
+  }
+  &__member {
+    font-size: 1.6rem;
+    font-weight: 300;
+    text-decoration: underline;
   }
 }

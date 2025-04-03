@@ -11,7 +11,6 @@ const LoadingSpinner = () => {
         width: "20rem",
         height: "20rem",
         margin: "2rem auto",
-        zIndex: "100000",
       }}
     >
       <Lottie animationData={loadingSpinner} />
