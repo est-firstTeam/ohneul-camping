@@ -30,16 +30,14 @@ import keyIcon from "../images/ico_password.svg";
 import { GoogleAuthProvider } from "firebase/auth/web-extension";
 
 export default function Account() {
-  const { register, handleSubmit, formState, reset, setFocus, setValue } =
-    useForm({
-      mode: "onBlur",
-      defaultValues: {
-        displayName: JSON.parse(localStorage.getItem("storage-user")).state
-          .name,
-      },
-    });
+  const { register, handleSubmit, formState, setFocus, setValue } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      displayName: JSON.parse(localStorage.getItem("storage-user")).state.name,
+    },
+  });
   const [isLoading, setLoading] = useState(false);
-  const [imgFile, setImgFile] = useState(null);
+  const [imgFile, setImgFile] = useState("");
   const [imgPath, setImgPath] = useState(
     JSON.parse(localStorage.getItem("storage-user")).state.profileImg
   );
@@ -53,13 +51,6 @@ export default function Account() {
   const [pwIcons, setPwIcons] = useState([true, true]);
 
   const navi = useNavigate();
-
-  //에러없이 모든게 Ok되면 FormState를 리셋해준다.
-  useEffect(() => {
-    if (formState.isSubmitSuccessful && error === "") {
-      reset();
-    }
-  }, [formState, reset, error]);
 
   useEffect(() => {
     if (userName) {
@@ -91,13 +82,11 @@ export default function Account() {
     const loginMethod = auth.currentUser.providerData[0].providerId;
 
     if (loginMethod === "password") {
-      console.log("login Method is  EMAIL");
       credential = EmailAuthProvider.credential(
         auth.currentUser.email,
         data.password
       );
     } else if (loginMethod === "google.com") {
-      console.log("login Method is  Google");
       credential = GoogleAuthProvider.credential(
         auth.currentUser.email,
         data.password
@@ -110,13 +99,12 @@ export default function Account() {
       .then(async () => {
         try {
           // Storage에 유저 이미지 저장. 파일이름 -> userID
-          if (data.profileImg) {
-            const file = data.profileImg[0];
+          if (imgFile !== "") {
             const locationRef = ref(
               fbStorage,
               `avatars/${auth.currentUser.uid}`
             );
-            const result = await uploadBytes(locationRef, file);
+            const result = await uploadBytes(locationRef, imgFile[0]);
             profileURL = await getDownloadURL(result.ref);
           }
 
@@ -234,6 +222,9 @@ export default function Account() {
         </span>
         {/* 닉네임 파트 */}
         <div className="account__input-container">
+          <span className="account__nickname-change-text">
+            닉네임을 바꾸고싶다면 입력하세요.
+          </span>
           <div className="account__input-inner">
             <img src={nicknameIcon} />
             <input
@@ -247,12 +238,12 @@ export default function Account() {
               className="account__input"
               autoComplete="new-password"
               value={user.displayName}
+              onFocus={() => setValue("displayName", "")}
             />
           </div>
 
           <span className="account__error">
-            {formState.errors?.displayName?.message ??
-              "변경할 닉네임을 입력하세요."}
+            {formState.errors?.displayName?.message}
           </span>
         </div>
         {/* 비밀번호 */}
