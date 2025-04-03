@@ -202,12 +202,22 @@ $ npm run dev
 <img width="800" alt="스크린샷 2025-04-03 오후 3 31 51" src="https://github.com/user-attachments/assets/76db4ee9-1e37-4d6a-a793-090d5fbe51c9" />
 
 #### 마이 페이지 - 장바구니
-<img width="800" alt="스크린샷 2025-04-03 오후 3 31 51" src="https://github.com/user-attachments/assets/36ad7af7-e947-40d5-9812-92ccf91b4796" />
+<img width="800" alt="스크린샷 2025-04-03 오후 3 59 02" src="https://github.com/user-attachments/assets/2aaee6e6-1d49-4049-94e5-e98a8942a656" />
 
 ### 푸터 & 팀 구성 페이지
-<img width="800" alt="스크린샷 2025-04-03 오후 3 37 12" src="https://github.com/user-attachments/assets/7c365d88-6e78-48bf-bd3a-4fcc24d10e1f" />
+<img width="800" alt="스크린샷 2025-04-03 오후 3 56 45" src="https://github.com/user-attachments/assets/88b160ae-e35b-477a-ad5e-eddca667a697" />
 
 
+## 6. 트러블 슈팅
+<img width="800" alt="스크린샷 2025-04-03 오후 3 47 14" src="https://github.com/user-attachments/assets/ef59565d-99f4-4ac6-a134-4407d82e9328" />
+<img width="800" alt="스크린샷 2025-04-03 오후 3 52 42" src="https://github.com/user-attachments/assets/d824a070-e7ff-4828-bd7c-7f8dafefa9e6" />
+
+
+
+## 7. 향후 개선 방향
+<img width="800" alt="스크린샷 2025-04-03 오후 3 43 30" src="https://github.com/user-attachments/assets/a517b827-769e-44ff-95e3-d04686bc1a3b" />
+
+## 8. 자체 평가 및 의견
 
 
 
