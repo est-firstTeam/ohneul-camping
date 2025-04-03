@@ -49,6 +49,8 @@ const DetailPage = () => {
   });
 
   const userId = useUserStore((state) => state.id);
+  const setCarts = useUserStore((state) => state.setCarts);
+
   const mutation = useMutation({
     mutationFn: async ({ startDate, endDate, siteCounts, totalPrice }) => {
       const userRef = doc(firebaseDB, "User", userId);
@@ -58,7 +60,7 @@ const DetailPage = () => {
         const userData = userSnap.data();
         const carts = userData.carts || [];
 
-        carts.push({
+        const newCart = {
           campSiteId: campData.contentId,
           firstImageUrl: campData.firstImageUrl,
           rsvStartDate: startDate,
@@ -70,9 +72,13 @@ const DetailPage = () => {
           facltNm: campData.facltNm,
           rsvTotalPrice: totalPrice,
           doNm: campData.doNm,
-        });
+        };
+
+        carts.push(newCart);
 
         await updateDoc(userRef, { carts });
+
+        setCarts(newCart);
       }
     },
   });
