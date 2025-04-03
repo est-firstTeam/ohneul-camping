@@ -1,5 +1,3 @@
-// import useSearchStore from "../store/useSearchStore";
-
 class Selectors {
   getSearchLocationStartDate = (siteArr, searchValue, filterValue) => {
     if (!siteArr[0] || siteArr[0].length === 0) {

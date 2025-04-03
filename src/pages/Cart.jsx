@@ -163,13 +163,13 @@ const Cart = () => {
                 }
                 return item;
               });
-              console.log("result: %o", updatedContentArray);
+              // console.log("result: %o", updatedContentArray);
               transaction.update(docRef, {
                 content: updatedContentArray,
               });
             });
 
-            console.log(`DB 업데이트 완료: ${docId}`);
+            // console.log(`DB 업데이트 완료: ${docId}`);
           } catch (error) {
             console.error(`DB 업데이트 실패: ${error}`);
           }
@@ -191,7 +191,7 @@ const Cart = () => {
           userId: userId,
         };
 
-        console.log("rsvData:%o", rsvData);
+        // console.log("rsvData:%o", rsvData);
         await fBService.insertReservation(rsvData);
         await fBService.increaseRsvComplete(toPayItem.campSiteId); // rsvComplete + 1
         refetch(); // 데이터 새로고침

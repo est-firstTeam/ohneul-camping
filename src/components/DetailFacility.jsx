@@ -23,8 +23,6 @@ const DetailFacility = ({ campData }) => {
     ? otherAmenities.map((item) => otherAmenities[item] || item).join(" | ")
     : "정보 없음";
 
-  console.log(campData);
-
   return (
     <div className="detail__add-on-left">
       <div className="detail__add-on-left--container">

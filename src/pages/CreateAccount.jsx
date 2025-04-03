@@ -76,7 +76,7 @@ const CreateAccount = () => {
       navi("/");
     } catch (error) {
       if (error instanceof FirebaseError) {
-        console.log("ERR code -> ", error.code);
+        //console.log("ERR code -> ", error.code);
       }
       setErr(errorCodes[error.code]);
     } finally {
@@ -87,7 +87,7 @@ const CreateAccount = () => {
   //에러없이 모든게 Ok되면 FormState를 리셋해준다.
   useEffect(() => {
     if (formState.isSubmitSuccessful && error === "") {
-      console.log("Submit Success !!");
+      // console.log("Submit Success !!");
       reset();
     }
   }, [formState, reset, error]);
@@ -136,8 +136,9 @@ const CreateAccount = () => {
         navi("/");
       })
       .catch((err) => {
-        console.log("Err!!!", error);
-        console.log(err);
+        throw new Error(err);
+        // console.log("Err!!!", error);
+        // console.log(err);
       });
   };
 
@@ -293,7 +294,6 @@ const CreateAccount = () => {
         <h2>소셜 회원가입</h2>
         <span className="hr-sect">OR</span>
         <Button className="btn-google" onClick={googleAccount}></Button>
-        {/* <button onClick={() => navi("/loginHome")}>로그인 홈 돌아가기</button> */}
       </section>
     </div>
   );

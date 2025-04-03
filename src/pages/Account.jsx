@@ -10,12 +10,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { auth, fbStorage, firebaseDB } from "../firebaseConfig";
-import {
-  deleteUser,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updateProfile,
-} from "firebase/auth";
+import { deleteUser, updateProfile } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
@@ -52,7 +47,6 @@ export default function Account() {
   //에러없이 모든게 Ok되면 FormState를 리셋해준다.
   useEffect(() => {
     if (formState.isSubmitSuccessful && error === "") {
-      console.log("Submit Success !!");
       reset();
     }
   }, [formState, reset, error]);
@@ -111,7 +105,7 @@ export default function Account() {
       await setDoc(doc(firebaseDB, "User", user.id), obj);
     } catch (error) {
       if (error instanceof FirebaseError) {
-        console.log("ERR code -> ", error.code);
+        //console.log("ERR code -> ", error.code);
       }
       setErr(errorCodes[error.code]);
     } finally {
@@ -134,12 +128,12 @@ export default function Account() {
       const deleteRef = ref(fbStorage, `avatars/${auth.currentUser.uid}`);
       deleteObject(deleteRef)
         .then(() => {
-          console.log("UserAvatar Delete Success!!");
+          //console.log("UserAvatar Delete Success!!");
         })
         .catch((error) => {
           if (error instanceof FirebaseError) {
             if (error.code === "storage/object-not-found") {
-              console.log("아바타가 없는 유저. 아바타 삭제 Pass");
+              // console.log("아바타가 없는 유저. 아바타 삭제 Pass");
             }
           }
         });
@@ -152,14 +146,15 @@ export default function Account() {
         })
         .catch((error) => {
           if (error instanceof FirebaseError) {
-            console.log("ERR!!", error.code);
+            // console.log("ERR!!", error.code);
           }
         });
       //Zustand Data 초기화
       resetUser();
-      console.log("User Delete Success!!");
+      // console.log("User Delete Success!!");
     } catch (error) {
-      console.log("ERR!!", error);
+      throw new Error(error);
+      // console.log("ERR!!", error);
     } finally {
       navi("/");
     }
