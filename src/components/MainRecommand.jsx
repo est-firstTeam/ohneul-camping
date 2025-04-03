@@ -30,9 +30,9 @@ const MainRecommand = () => {
               src={
                 isLoading
                   ? ""
-                  : data.firstImageUrl
+                  : data.firstImageUrl // img url이 있는지 확인
                   ? data.firstImageUrl
-                  : { noImage }
+                  : noImage
               }
               alt=""
             />
