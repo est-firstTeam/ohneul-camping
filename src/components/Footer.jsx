@@ -19,7 +19,12 @@ const Footer = () => {
         setFooterY(100);
       }
     } else {
-      setFooterY(0); // 스크롤 없을 때 하단 고정
+      if (scrollTop == 0) {
+        // 최상단일때
+        setFooterY(100);
+      } else {
+        setFooterY(0); // 스크롤 없을 때 하단 고정
+      }
     }
   };
 
