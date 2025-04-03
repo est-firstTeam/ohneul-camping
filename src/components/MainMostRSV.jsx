@@ -8,7 +8,7 @@ import ProductMain from "./ProductCard";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 
-const SLIDER_MAX_IDX = 9;
+const SLIDER_MAX_IDX = 7;
 const OFFSET = 3;
 
 export default function MainMostRSV() {
