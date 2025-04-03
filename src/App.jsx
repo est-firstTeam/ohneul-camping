@@ -18,6 +18,7 @@ const Cart = lazy(() => import("./pages/Cart.jsx"));
 const CreateAccount = lazy(() => import("./pages/CreateAccount.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const DetailPage = lazy(() => import("./pages/DetailPage.jsx"));
+const Team = lazy(() => import("./pages/Team.jsx"));
 
 function App() {
   const router = createBrowserRouter([
@@ -57,6 +58,10 @@ function App() {
         {
           path: "login",
           element: <Login />,
+        },
+        {
+          path: "team",
+          element: <Team />,
         },
       ],
     },

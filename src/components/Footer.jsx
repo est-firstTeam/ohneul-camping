@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [footerY, setFooterY] = useState(100); // 기본값: 숨김
@@ -49,8 +50,11 @@ const Footer = () => {
   return (
     <motion.footer className="footer" style={{ y: footerY }}>
       <span className="footer__copyright">
-        © {new Date().getFullYear()} Ohneul-Camping All rights reserved
+        © {new Date().getFullYear()} Ohneul-Camping All rights reserved.
       </span>
+      <Link to={"/team"}>
+        <p className="footer__member">About us</p>
+      </Link>
     </motion.footer>
   );
 };
