@@ -3,7 +3,6 @@
 <img width="1215" alt="스크린샷 2025-04-02 오전 10 23 47" src="https://github.com/user-attachments/assets/6a23027d-957a-4224-b98e-0985a0fd7740" />
 
 
-
 - 배포 URL : https://ohneul-camping.vercel.app/
 - Test ID : ohneul@test.com
 - Test PW : camping12!
@@ -162,7 +161,7 @@ $ npm run dev
 
 
 ## 3. 프로젝트 팀 구성 및 역할
-<img width="800" alt="스크린샷 2025-04-02 오전 9 38 16" src="https://github.com/user-attachments/assets/6ae4724d-8c2e-430c-8d50-8886bf609dc3" />
+<img width="800" alt="스크린샷 2025-04-03 오후 3 22 59" src="https://github.com/user-attachments/assets/d3e1c340-bfd2-4e2d-a3c3-da2df6d6f040" />
 
 ## 4. 프로젝트 수행 절차 및 방법
 <img width="800" alt="스크린샷 2025-04-02 오전 9 41 06" src="https://github.com/user-attachments/assets/e2959259-c118-48a7-80de-5f640905fad5" />
@@ -174,21 +173,39 @@ $ npm run dev
 #### 메인 페이지 - 헤더
 <img width="800" alt="스크린샷 2025-04-02 오후 5 32 25" src="https://github.com/user-attachments/assets/ddf53e1e-e644-467b-9908-36a883a339c4" />
 
-#### 회원가입 & 로그인
-<img width="800" alt="스크린샷 2025-04-02 오후 5 33 35" src="https://github.com/user-attachments/assets/d468f0f9-8535-4f62-bbe9-36642d779895" />
-<img width="800" alt="스크린샷 2025-04-02 오후 5 36 18" src="https://github.com/user-attachments/assets/e1eafc3a-aa0c-4c84-b749-3878cb05a0d0" />
+### 회원가입 & 로그인
+<img width="800" alt="스크린샷 2025-04-03 오후 3 27 11" src="https://github.com/user-attachments/assets/8439bfa4-004c-44c7-a568-0353d9f28930" />
+<img width="800" alt="스크린샷 2025-04-03 오후 3 28 08" src="https://github.com/user-attachments/assets/385ab64e-ee4f-4acd-8219-22f73fe1bbb1" />
 
-#### 검색바 · 검색 모달
+### 검색바 · 검색 모달
 <img width="800" alt="스크린샷 2025-04-02 오후 5 40 14" src="https://github.com/user-attachments/assets/6e9f3054-3c6b-4dc9-b8c1-aecb34f97d0a" />
 
-#### 검색 결과 페이지
+### 검색 결과 페이지
 <img width="800" alt="스크린샷 2025-04-02 오후 5 40 39" src="https://github.com/user-attachments/assets/9fdd471a-c700-4a51-a751-36632affee3b" />
 
-#### 상세 정보 페이지
-<img width="800" alt="스크린샷 2025-04-02 오후 5 40 59" src="https://github.com/user-attachments/assets/24e5977d-41c9-403e-b4a8-1fa4d88f70d0" />
+### 상세 정보 페이지
+<img width="800" alt="스크린샷 2025-04-03 오후 3 19 22" src="https://github.com/user-attachments/assets/a1fdfbfd-8e84-496a-b439-d31c3a1ebc0e" />
 
-#### 마이 페이지
+#### 상세 정보 페이지 - 옵션 선택 모달
+<img width="800" alt="스크린샷 2025-04-03 오후 3 20 58" src="https://github.com/user-attachments/assets/e6b1786f-ec0b-493d-9041-206d0f5321b5" />
 
+#### 상세 정보 페이지 - 옵션 박스
+<img width="800" alt="스크린샷 2025-04-03 오후 3 22 17" src="https://github.com/user-attachments/assets/66eccbd2-c26c-4fdb-9612-15990882faa8" />
+
+### 마이 페이지
+<img width="800" alt="스크린샷 2025-04-03 오후 3 30 03" src="https://github.com/user-attachments/assets/8b0da497-8e77-4994-9a2b-a5193b1be3b9" />
+
+#### 마이 페이지 - 예약 현황
+<img width="800" alt="스크린샷 2025-04-03 오후 3 31 18" src="https://github.com/user-attachments/assets/24197cb2-9423-4a7b-9305-205dc26e6ad3" />
+
+#### 마이 페이지 - 정보 변경
+<img width="800" alt="스크린샷 2025-04-03 오후 3 31 51" src="https://github.com/user-attachments/assets/76db4ee9-1e37-4d6a-a793-090d5fbe51c9" />
+
+#### 마이 페이지 - 장바구니
+<img width="800" alt="스크린샷 2025-04-03 오후 3 31 51" src="https://github.com/user-attachments/assets/36ad7af7-e947-40d5-9812-92ccf91b4796" />
+
+### 푸터 & 팀 구성 페이지
+<img width="800" alt="스크린샷 2025-04-03 오후 3 37 12" src="https://github.com/user-attachments/assets/7c365d88-6e78-48bf-bd3a-4fcc24d10e1f" />
 
 
 
