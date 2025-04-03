@@ -10,7 +10,12 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { auth, fbStorage, firebaseDB } from "../firebaseConfig";
-import { deleteUser, updateProfile } from "firebase/auth";
+import {
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateProfile,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { errorCodes } from "../constants/errorCodes";
 import { doc, setDoc } from "firebase/firestore";
@@ -21,14 +26,18 @@ import profileimg from "../images/ico_profile.svg";
 import { handleOpenModal } from "../util/modalUtil";
 import { reservationService } from "../util/reservationService";
 import nicknameIcon from "../images/ico_profile.svg";
+import keyIcon from "../images/ico_password.svg";
+import { GoogleAuthProvider } from "firebase/auth/web-extension";
 
 export default function Account() {
-  const { register, handleSubmit, formState, reset } = useForm({
-    mode: "onBlur",
-    defaultValues: {
-      displayName: JSON.parse(localStorage.getItem("storage-user")).state.name,
-    },
-  });
+  const { register, handleSubmit, formState, reset, setFocus, setValue } =
+    useForm({
+      mode: "onBlur",
+      defaultValues: {
+        displayName: JSON.parse(localStorage.getItem("storage-user")).state
+          .name,
+      },
+    });
   const [isLoading, setLoading] = useState(false);
   const [imgFile, setImgFile] = useState(null);
   const [imgPath, setImgPath] = useState(
@@ -41,6 +50,7 @@ export default function Account() {
   const resetUser = useUserStore((state) => state.resetUser);
   const userName = useUserStore((state) => state.name); // User/name: 레이아웃 상단에 이름 출력 시 사용
   const { setTitle } = myPageTitleStore();
+  const [pwIcons, setPwIcons] = useState([true, true]);
 
   const navi = useNavigate();
 
@@ -51,6 +61,12 @@ export default function Account() {
     }
   }, [formState, reset, error]);
 
+  useEffect(() => {
+    if (userName) {
+      setTitle(`${userName} 님, 반가워요!`);
+    }
+  }, [userName, setTitle]);
+
   const avatarURL = (event) => {
     const { files } = event.target;
     if (files && files.length === 1) {
@@ -59,59 +75,96 @@ export default function Account() {
     }
   };
 
-  useEffect(() => {
-    if (userName) {
-      setTitle(`${userName} 님, 반가워요!`);
-    }
-  }, [userName, setTitle]);
+  const eyeToggle = (idx) => {
+    setPwIcons((prev) => {
+      const pwIcons = [...prev];
+      pwIcons[idx] = !pwIcons[idx];
+      return pwIcons;
+    });
+  };
 
   const onValid = async (data) => {
     setLoading(true);
     let profileURL = null;
+    let credential = null;
     data.profileImg = imgFile === null ? "" : imgFile;
+    const loginMethod = auth.currentUser.providerData[0].providerId;
 
-    try {
-      // Storage에 유저 이미지 저장. 파일이름 -> userID
-      if (data.profileImg) {
-        const file = data.profileImg[0];
-        const locationRef = ref(fbStorage, `avatars/${auth.currentUser.uid}`);
-        const result = await uploadBytes(locationRef, file);
-        profileURL = await getDownloadURL(result.ref);
-      }
-
-      await updateProfile(auth.currentUser, {
-        displayName: data.displayName ?? user.displayName,
-        photoURL: profileURL ?? user.profileImg,
-      });
-
-      user.displayName = data.displayName ?? user.displayName;
-      user.photoURL = profileURL ?? user.profileImg;
-
-      //Zustand Data 세팅
-      setUser({
-        id: auth.currentUser.uid,
-        name: user.displayName,
-        email: user.email,
-        profileImg: user.photoURL,
-      });
-
-      const obj = {
-        id: auth.currentUser.uid,
-        name: user.displayName,
-        email: user.email,
-        profileImg: user.photoURL,
-        carts: user.carts,
-      };
-      await setDoc(doc(firebaseDB, "User", user.id), obj);
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        //console.log("ERR code -> ", error.code);
-      }
-      setErr(errorCodes[error.code]);
-    } finally {
-      setLoading(false);
-      navi("/");
+    if (loginMethod === "password") {
+      console.log("login Method is  EMAIL");
+      credential = EmailAuthProvider.credential(
+        auth.currentUser.email,
+        data.password
+      );
+    } else if (loginMethod === "google.com") {
+      console.log("login Method is  Google");
+      credential = GoogleAuthProvider.credential(
+        auth.currentUser.email,
+        data.password
+      );
     }
+
+    //사용자 인증 재확인
+    reauthenticateWithCredential(auth.currentUser, credential)
+      //인증되면 처리
+      .then(async () => {
+        try {
+          // Storage에 유저 이미지 저장. 파일이름 -> userID
+          if (data.profileImg) {
+            const file = data.profileImg[0];
+            const locationRef = ref(
+              fbStorage,
+              `avatars/${auth.currentUser.uid}`
+            );
+            const result = await uploadBytes(locationRef, file);
+            profileURL = await getDownloadURL(result.ref);
+          }
+
+          await updateProfile(auth.currentUser, {
+            displayName: data.displayName ?? user.displayName,
+            photoURL: profileURL ?? user.profileImg,
+          });
+
+          user.displayName = data.displayName ?? user.displayName;
+          user.photoURL = profileURL ?? user.profileImg;
+
+          //Zustand Data 세팅
+          setUser({
+            id: auth.currentUser.uid,
+            name: user.displayName,
+            email: user.email,
+            profileImg: user.photoURL,
+          });
+
+          const obj = {
+            id: auth.currentUser.uid,
+            name: user.displayName,
+            email: user.email,
+            profileImg: user.photoURL,
+            carts: user.carts,
+          };
+          await setDoc(doc(firebaseDB, "User", user.id), obj);
+        } catch (error) {
+          if (error instanceof FirebaseError) {
+            //console.log("ERR code -> ", error.code);
+            setErr(errorCodes[error.code]);
+          }
+        } finally {
+          setLoading(false);
+          navi("/");
+        }
+      })
+      //에러면 재입력요청
+      .catch((error) => {
+        if (error instanceof FirebaseError) {
+          console.log("ERR code -> ", error.code);
+          setErr(errorCodes[error.code]);
+        }
+        setFocus("password");
+        setValue("password", "");
+        setLoading(false);
+        return;
+      });
   };
 
   const deleteConfirm = async () => {
@@ -198,7 +251,35 @@ export default function Account() {
           </div>
 
           <span className="account__error">
-            {formState.errors?.displayName?.message ?? "변경할 닉네임 입력"}
+            {formState.errors?.displayName?.message ??
+              "변경할 닉네임을 입력하세요."}
+          </span>
+        </div>
+        {/* 비밀번호 */}
+        <div className="account__input-container">
+          <div className="account__input-inner">
+            <img src={keyIcon} />
+            <input
+              {...register("password", {
+                pattern: {
+                  value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/,
+                  message: "6~15자 이내 / 숫자+영문 조합 필요.",
+                },
+                required: "패스워드를 입력해주세요.",
+              })}
+              className="account__input"
+              placeholder="비밀번호"
+              type={pwIcons[0] ? "password" : "text"}
+            />
+            <button
+              onClick={() => eyeToggle(0)}
+              type="button"
+              color="none"
+              className={pwIcons[0] ? "account__icon" : "account__icon-slash"}
+            ></button>
+          </div>
+          <span className="account__error">
+            {formState.errors?.password?.message}
           </span>
         </div>
 
