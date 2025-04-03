@@ -284,7 +284,7 @@ const DetailPage = () => {
                       className="searchbutton-site"
                       color="secondary"
                       iconPosition="left"
-                      icon={<img src={calico} width={"2rem"} height={"2rem"} />}
+                      icon={<img src={calico} width={"20px"} height={"20px"} />}
                       onClick={() => handleOpenModal(dateModal)}
                     >
                       날짜 선택
@@ -309,7 +309,7 @@ const DetailPage = () => {
                       color={"secondary"}
                       iconPosition="left"
                       icon={
-                        <img src={siteico} width={"2rem"} height={"2rem"} />
+                        <img src={siteico} width={"20px"} height={"20px"} />
                       }
                       onClick={() => handleOpenModal(siteModal)}
                     >

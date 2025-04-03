@@ -33,11 +33,7 @@ const Cart = () => {
   const paymentCompleteRef = useRef(null); // 결제완료모달 관리
   const [amountToPay, setAmountToPay] = useState(0);
 
-  const {
-    data: carts,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: carts, refetch } = useQuery({
     queryKey: [`/cart/${userId}`],
     queryFn: async () => {
       const users = await fBService.fetchUser(userId);
@@ -215,9 +211,6 @@ const Cart = () => {
         : true;
   }
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
   return (
     <section className="cart">
       <h2 className="cart__title">장바구니</h2>
