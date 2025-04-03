@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { fBService } from "../util/fbService";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../components/Button";

@@ -182,9 +182,9 @@ class FBService {
         rsvComplete: currentCount + 1,
       });
 
-      console.log(
-        `rsvComplete 업데이트에 성공했습니다. (새 값: ${currentCount + 1})`
-      );
+      // console.log(
+      //   `rsvComplete 업데이트에 성공했습니다. (새 값: ${currentCount + 1})`
+      // );
     } catch (error) {
       console.error("rsvComplete 오류:%o", error);
       throw new Error("rsvComplete 업데이트에 실패했습니다.");

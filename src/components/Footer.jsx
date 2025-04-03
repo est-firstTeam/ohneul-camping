@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 const Footer = () => {
   const [footerY, setFooterY] = useState(100); // 기본값: 숨김
-  const [isScroll, setIsScroll] = useState(false);
   const location = useLocation(); // 현재 페이지 확인
 
   const updateFooter = () => {
@@ -13,14 +12,12 @@ const Footer = () => {
     const clientHeight = window.innerHeight;
 
     if (scrollHeight > clientHeight) {
-      setIsScroll(true);
       if (scrollTop + clientHeight >= scrollHeight - 10) {
         setFooterY(0);
       } else {
         setFooterY(100);
       }
     } else {
-      setIsScroll(false);
       setFooterY(0); // 스크롤 없을 때 하단 고정
     }
   };

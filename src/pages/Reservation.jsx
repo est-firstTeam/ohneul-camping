@@ -101,7 +101,7 @@ const Reservation = () => {
         // 중복 업데이트 방지: 이전과 같은 업데이트 요청인지 확인
         const updateKey = `${selectedReservationId}-${modalStep}-${campSiteId}`;
         if (previousUpdateRef.current === updateKey) {
-          console.log("중복 실행 방지: 이미 처리된 업데이트");
+          //console.log("중복 실행 방지: 이미 처리된 업데이트");
           return;
         }
         previousUpdateRef.current = updateKey;
@@ -160,7 +160,7 @@ const Reservation = () => {
                     });
                   });
 
-                  console.log(`DB 업데이트 완료: ${docId}`);
+                  // console.log(`DB 업데이트 완료: ${docId}`);
                 } catch (error) {
                   console.error(`DB 업데이트 실패: ${error}`);
                 }

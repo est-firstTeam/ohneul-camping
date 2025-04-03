@@ -59,7 +59,7 @@ class ReservationService {
       const newCount = Math.max(0, currentCount - 1); // 0 이하로 내려가지 않음
 
       await updateDoc(campsiteRef, { rsvComplete: newCount });
-      console.log(`rsvComplete 업데이트에 성공했습니다. (새 값: ${newCount})`);
+      // console.log(`rsvComplete 업데이트에 성공했습니다. (새 값: ${newCount})`);
     } catch (error) {
       console.error("rsvComplete 오류:", error);
       throw new Error("rsvComplete 업데이트에 실패했습니다.");

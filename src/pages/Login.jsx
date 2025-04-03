@@ -55,11 +55,11 @@ const Login = () => {
       })
       .catch((err) => {
         if (err instanceof FirebaseError) {
-          console.log("DB ERROR!!!");
-          console.log("code -> ", err.code);
+          //console.log("DB ERROR!!!");
+          //console.log("code -> ", err.code);
           setErr(errorCodes[err.code]);
         }
-        console.log("Err!!!", err);
+        //console.log("Err!!!", err);
       });
   };
 
