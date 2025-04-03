@@ -32,6 +32,7 @@ const Cart = () => {
   const cannotPaymentRef = useRef(null); // 결제 불가 모달
   const paymentCompleteRef = useRef(null); // 결제완료모달 관리
   const [amountToPay, setAmountToPay] = useState(0);
+  const setCarts = useUserStore((state) => state.setCarts);
 
   const { data: carts, refetch } = useQuery({
     queryKey: [`/cart/${userId}`],
@@ -93,6 +94,7 @@ const Cart = () => {
   const handleDeleteItem = async (id) => {
     const newCarts = carts.filter((_, index) => index !== id); // 불변성 유지
     await fBService.insertUserCart(userId, newCarts);
+    setCarts(newCarts); // []
     refetch();
   };
 

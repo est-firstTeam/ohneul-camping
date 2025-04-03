@@ -78,7 +78,7 @@ const DetailPage = () => {
 
         await updateDoc(userRef, { carts });
 
-        setCarts(newCart);
+        setCarts([...carts]);
       }
     },
   });

@@ -122,6 +122,7 @@ export default function Account() {
             name: user.displayName,
             email: user.email,
             profileImg: user.photoURL,
+            carts: user.carts,
           });
 
           const obj = {

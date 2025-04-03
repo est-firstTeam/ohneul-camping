@@ -18,6 +18,7 @@ export const useUserStore = create(
             name: userInfo.name,
             email: userInfo.email,
             profileImg: userInfo.profileImg,
+            carts: userInfo.carts,
             isLoggedIn: true,
           };
         });
@@ -25,7 +26,7 @@ export const useUserStore = create(
       setUserLoggedIn: (flag) => set(() => ({ isLoggedIn: flag })),
       setProfileImgPath: (imgPath) => set(() => ({ profileImg: imgPath })),
 
-      setCarts: (cart) => set((state) => ({ carts: [...state.carts, cart] })),
+      setCarts: (cart) => set(() => ({ carts: cart })),
       resetUser: () => {
         set(() => ({
           id: "",
