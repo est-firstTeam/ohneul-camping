@@ -1,0 +1,69 @@
+@use "../abstracts/" as *;
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team__inner {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  gap: 2.8rem;
+  width: 100%;
+  padding-top: 5rem;
+  border-top: 0.1rem solid $gray4;
+}
+
+.team__title {
+  font-size: 3.2rem;
+  font-weight: bold;
+  font-family: $title;
+  margin: 3.2rem;
+}
+
+.team__box {
+  border: 1px solid $secondary;
+  border-radius: 1rem;
+  box-shadow: 2px 3px 6px 0px $secondary;
+  line-height: 3rem;
+  img {
+    margin: 1rem;
+    border-radius: 1rem;
+  }
+
+  &--role {
+    font-size: 2rem;
+    font-family: $title;
+    margin-top: 1rem;
+    color: $primary;
+  }
+  &--title {
+    font-size: 2rem;
+    font-family: $title;
+  }
+  &--git {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.4rem;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 2.5rem;
+      aspect-ratio: 1;
+      margin-right: 5px;
+      @include background("ico-github.svg", center center, null, contain);
+    }
+  }
+  &--subtitle {
+    font-family: $title;
+    font-size: 1.4rem;
+    color: $primary;
+    border-top: 1px dotted $secondary;
+  }
+  &--content {
+    font-size: 1.4rem;
+  }
+}
