@@ -169,6 +169,8 @@ $ npm run dev
 ## 5. 프로젝트 수행경과
 
 ### 메인 페이지
+![ohneul](https://github.com/user-attachments/assets/0931a5f4-d08e-4fb3-9e0d-711a0a997ecb)
+<img width="800" alt="스크린샷 2025-04-03 오후 5 38 51" src="https://github.com/user-attachments/assets/df7f4db7-03d8-4ac0-8390-37506c24b565" />
 
 #### 메인 페이지 - 헤더
 <img width="800" alt="스크린샷 2025-04-02 오후 5 32 25" src="https://github.com/user-attachments/assets/ddf53e1e-e644-467b-9908-36a883a339c4" />
@@ -207,17 +209,23 @@ $ npm run dev
 ### 푸터 & 팀 구성 페이지
 <img width="800" alt="스크린샷 2025-04-03 오후 3 56 45" src="https://github.com/user-attachments/assets/88b160ae-e35b-477a-ad5e-eddca667a697" />
 
+### 개발 진행 상황
+<img width="800" alt="스크린샷 2025-04-03 오후 5 24 12" src="https://github.com/user-attachments/assets/1561a2ea-900b-4d3f-921f-ba9eabac4e57" />
+<img width="800" alt="스크린샷 2025-04-03 오후 5 26 41" src="https://github.com/user-attachments/assets/e1408271-4b89-4287-b4db-87a5227d23b2" />
+<img width="800" alt="스크린샷 2025-04-03 오후 5 28 49" src="https://github.com/user-attachments/assets/9b45b879-8c1d-4a8f-a2db-8b339a47bc1e" />
+<img width="800" alt="스크린샷 2025-04-03 오후 5 30 43" src="https://github.com/user-attachments/assets/e7c79f8c-9c0a-4f68-8faf-69f3f9af8b0b" />
+<img width="800" alt="스크린샷 2025-04-03 오후 5 30 07" src="https://github.com/user-attachments/assets/78e96f0d-0a0e-46ee-bcf0-8e87a47916c5" />
+<img width="800" alt="스크린샷 2025-04-03 오후 5 27 43" src="https://github.com/user-attachments/assets/411ceecb-abb7-4122-b010-3337ce3eb95d" />
 
 ## 6. 트러블 슈팅
 <img width="800" alt="스크린샷 2025-04-03 오후 3 47 14" src="https://github.com/user-attachments/assets/ef59565d-99f4-4ac6-a134-4407d82e9328" />
-<img width="800" alt="스크린샷 2025-04-03 오후 3 52 42" src="https://github.com/user-attachments/assets/d824a070-e7ff-4828-bd7c-7f8dafefa9e6" />
-
-
+<img width="800" alt="스크린샷 2025-04-03 오후 4 55 20" src="https://github.com/user-attachments/assets/d6c4579e-cb7f-4430-89f8-8e717e0938fb" />
 
 ## 7. 향후 개선 방향
 <img width="800" alt="스크린샷 2025-04-03 오후 3 43 30" src="https://github.com/user-attachments/assets/a517b827-769e-44ff-95e3-d04686bc1a3b" />
 
 ## 8. 자체 평가 및 의견
+<img width="800" alt="스크린샷 2025-04-03 오후 5 21 32" src="https://github.com/user-attachments/assets/13e2c8d0-d8c0-4ade-976c-718e43013116" />
 
 
 
