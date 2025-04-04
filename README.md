@@ -139,8 +139,6 @@
 #### 디자인 
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)
 
-
-
 ### 1.5 활용 방안 및 기대 효과 
 
 - 지역, 날짜, 사이트 수등 맞춤형 검색을 통해 편리한 캠핑장 조회 및 예약 가능
@@ -159,7 +157,6 @@ $ npm install
 $ npm run dev
 ```
 
-
 ## 3. 프로젝트 팀 구성 및 역할
 <img width="800" alt="스크린샷 2025-04-03 오후 3 22 59" src="https://github.com/user-attachments/assets/d3e1c340-bfd2-4e2d-a3c3-da2df6d6f040" />
 
@@ -167,6 +164,12 @@ $ npm run dev
 <img width="800" alt="스크린샷 2025-04-02 오전 9 41 06" src="https://github.com/user-attachments/assets/e2959259-c118-48a7-80de-5f640905fad5" />
 
 ## 5. 프로젝트 수행경과
+
+### Firebase DB 구조
+<img width="800" alt="스크린샷 2025-04-04 오전 9 06 07" src="https://github.com/user-attachments/assets/32e3492a-646a-4a23-a99e-b0859cb7ba52" />
+<img width="800" alt="스크린샷 2025-04-04 오전 10 04 57" src="https://github.com/user-attachments/assets/16eef67d-5519-4cfe-a873-206e60990f85" />
+<img width="800" alt="스크린샷 2025-04-04 오전 10 06 33" src="https://github.com/user-attachments/assets/84711745-6b7f-4176-85ac-ea4e53ecb24f" />
+<img width="800" alt="스크린샷 2025-04-04 오전 10 05 45" src="https://github.com/user-attachments/assets/53fa8ad0-7011-423d-b457-7c203a09fd1a" />
 
 ### 메인 페이지
 ![ohneul](https://github.com/user-attachments/assets/0931a5f4-d08e-4fb3-9e0d-711a0a997ecb)
