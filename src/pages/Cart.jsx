@@ -101,6 +101,7 @@ const Cart = () => {
   const payMutation = useMutation({
     mutationFn: async ({ toPayItems, notToPayItems }) => {
       await fBService.insertUserCart(userId, notToPayItems); // 유저 장바구니에서 제거
+      setCarts(notToPayItems); // justand에서 장바구니 데이터 제거
 
       // available rsv에서 - 1
       // doNm_date로 document조회
