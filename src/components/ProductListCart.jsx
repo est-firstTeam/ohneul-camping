@@ -78,7 +78,6 @@ const ProductListCart = ({
           margin={"1rem"}
           disabled={isDisabled}
           onClick={onCancelClick}
-          className="cancel-btn"
         >
           {buttonText}
         </Button>
