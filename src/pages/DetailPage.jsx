@@ -30,6 +30,7 @@ import noImage from "./../images/no_image.png";
 import { useUserStore } from "../store/useUserStore.js";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal.jsx";
+import useSearchStore from "../store/useSearchStore.js";
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -38,8 +39,9 @@ const DetailPage = () => {
   const cartModal = useRef(null);
   const { siteCounts } = useSiteStore();
   const resetSiteCounts = useSiteStore((state) => state.resetSiteCounts);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const { searchValue } = useSearchStore();
+  const [startDate, setStartDate] = useState(searchValue.startDate);
+  const [endDate, setEndDate] = useState(searchValue.endDate);
   const [minAvailable, setMinAvailable] = useState(null);
 
   const { data: campData } = useQuery({
@@ -237,7 +239,7 @@ const DetailPage = () => {
     };
 
     fetchData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, campData]);
 
   // site 개수 보여주기 위한 함수
   const getSelectedSites = () => {
